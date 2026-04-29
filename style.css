@@ -300,7 +300,7 @@ p.small {
         font-size: 1.8em;
         top: 20px;
         white-space: nowrap;
-        max-width: 90vw;
+        max-width: 95vw;
     }
 
     .permission-box, .game-container {
@@ -332,11 +332,10 @@ p.small {
 
 @media (max-width: 400px) {
     .game-title {
-        font-size: 1.5em;
+        font-size: 1.4em;
         top: 15px;
-        line-height: 1.2;
-        white-space: normal;
-        text-align: center;
+        white-space: nowrap;
+        max-width: 95vw;
     }
 
     .permission-box {
@@ -350,5 +349,12 @@ p.small {
     .btn-primary, .btn-secondary {
         font-size: 0.95em;
         padding: 14px 30px;
+    }
+}
+
+@media (max-width: 350px) {
+    .game-title {
+        font-size: 1.2em;
+        white-space: nowrap;
     }
 }
