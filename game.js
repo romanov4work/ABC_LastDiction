@@ -1,3 +1,4 @@
+// === ВЕРСИЯ 1.7 ===
 // Экраны
 const micPermissionScreen = document.getElementById('micPermissionScreen');
 const micDeniedScreen = document.getElementById('micDeniedScreen');
@@ -438,15 +439,16 @@ async function recordAndTranscribe() {
                 recordBtn.disabled = true;
 
                 try {
-                    const recognizedText = await sendToWhisper(audioBlob);
+                    const response = await sendToWhisper(audioBlob);
+                    const recognizedText = response.text;
                     console.log(`📝 Распознано: "${recognizedText}"`);
 
                     // Сравниваем с эталоном
                     const accuracy = calculateAccuracy(expectedText, recognizedText);
                     console.log(`🎯 Точность: ${accuracy}%`);
 
-                    // Показываем результаты
-                    showResults(recordingTime, accuracy);
+                    // Показываем результаты (передаем распознанный текст)
+                    showResults(recordingTime, accuracy, recognizedText);
 
                 } catch (error) {
                     console.error('❌ Ошибка распознавания:', error);
@@ -495,7 +497,12 @@ async function sendToWhisper(audioBlob) {
     }
 
     const data = await response.json();
-    return data.text;
+
+    if (!data.success) {
+        throw new Error(data.error || 'Ошибка распознавания');
+    }
+
+    return data;  // Возвращаем весь объект {text, success}
 }
 
 // Сравнение текстов и расчет точности
@@ -523,7 +530,7 @@ function calculateAccuracy(expected, recognized) {
 }
 
 // Показать реальные результаты
-function showResults(time, accuracy) {
+function showResults(time, accuracy, recognizedText) {
     const resultSection = document.getElementById('resultSection');
     const timeResult = document.getElementById('timeResult');
     const dictionResult = document.getElementById('dictionResult');
@@ -531,7 +538,17 @@ function showResults(time, accuracy) {
     timeResult.textContent = `${time} сек`;
     dictionResult.textContent = `${accuracy}%`;
 
+    // Добавляем отображение распознанного текста
+    let recognizedTextElement = document.getElementById('recognizedText');
+    if (!recognizedTextElement) {
+        recognizedTextElement = document.createElement('div');
+        recognizedTextElement.id = 'recognizedText';
+        recognizedTextElement.style.cssText = 'margin: 15px 0; padding: 10px; background: rgba(255,255,255,0.2); border-radius: 10px; font-size: 14px;';
+        resultSection.insertBefore(recognizedTextElement, resultSection.querySelector('.result-stats'));
+    }
+    recognizedTextElement.innerHTML = `<strong>Распознано:</strong> "${recognizedText}"`;
+
     resultSection.style.display = 'block';
 
-    console.log(`✅ Результаты: ${time} сек, ${accuracy}%`);
+    console.log(`✅ Результаты: ${time} сек, ${accuracy}%, распознано: "${recognizedText}"`);
 }
