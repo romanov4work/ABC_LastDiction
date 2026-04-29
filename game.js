@@ -141,6 +141,11 @@ function isLevelUnlocked(levelNum) {
         return isLevelCompleted(2) || isLevelCompleted(3);
     }
 
+    // Уровень 5 открывается после уровня 4
+    if (levelNum === 5) {
+        return isLevelCompleted(4);
+    }
+
     // Остальные уровни открываются последовательно
     return isLevelCompleted(levelNum - 1);
 }

@@ -294,10 +294,10 @@ p.small {
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
-    padding: 120px 20px 40px 20px;
+    padding: 80px 20px 40px 20px;
     display: flex;
     flex-direction: column;
-    gap: 60px;
+    gap: 50px;
     min-height: 100vh;
 }
 
@@ -306,12 +306,20 @@ p.small {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 20px;
+}
+
+/* Ряд уровней (для 2 и 3 уровня рядом) */
+.level-row {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Заголовок темы */
 .theme-title {
-    font-size: 2em;
+    font-size: 1.8em;
     font-weight: 800;
     color: var(--house-red);
     text-shadow:
@@ -329,8 +337,8 @@ p.small {
 
 /* Остров-уровень */
 .level-island {
-    width: 160px;
-    height: 160px;
+    width: 80px;
+    height: 80px;
     border-radius: 50% 50% 48% 52%;
     position: relative;
     cursor: pointer;
@@ -346,40 +354,40 @@ p.small {
     background:
         radial-gradient(circle at 30% 30%, #A8E063 0%, #7EC850 50%, #5FB83D 100%);
     box-shadow:
-        0 10px 0 #4A9630,
-        0 20px 40px rgba(126, 200, 80, 0.5),
-        inset 0 -8px 15px rgba(0, 0, 0, 0.15),
-        inset 0 3px 10px rgba(255, 255, 255, 0.3);
-    border: 4px solid #5FB83D;
+        0 5px 0 #4A9630,
+        0 10px 20px rgba(126, 200, 80, 0.5),
+        inset 0 -4px 8px rgba(0, 0, 0, 0.15),
+        inset 0 2px 5px rgba(255, 255, 255, 0.3);
+    border: 2px solid #5FB83D;
 }
 
 .level-island.unlocked::before {
     content: '🌿';
     position: absolute;
-    bottom: 15px;
-    left: 15px;
-    font-size: 1.5em;
+    bottom: 5px;
+    left: 5px;
+    font-size: 0.8em;
     animation: decorationSway 2s ease-in-out infinite;
 }
 
 .level-island.unlocked::after {
     content: '🌸';
     position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 1.3em;
+    top: 5px;
+    right: 5px;
+    font-size: 0.7em;
     animation: decorationSpin 4s linear infinite;
 }
 
 .level-island.unlocked:hover {
-    transform: translateY(-15px) scale(1.15);
+    transform: translateY(-8px) scale(1.15);
     box-shadow:
-        0 15px 0 #4A9630,
-        0 30px 60px rgba(126, 200, 80, 0.7);
+        0 8px 0 #4A9630,
+        0 15px 30px rgba(126, 200, 80, 0.7);
 }
 
 .level-island.unlocked:active {
-    transform: translateY(-8px) scale(1.08);
+    transform: translateY(-4px) scale(1.08);
 }
 
 /* Закрытый остров */
@@ -387,13 +395,13 @@ p.small {
     background:
         radial-gradient(circle at 30% 30%, #C0C0C0 0%, #A0A0A0 50%, #808080 100%);
     box-shadow:
-        0 8px 0 #606060,
-        0 15px 35px rgba(0, 0, 0, 0.3),
-        inset 0 -8px 15px rgba(0, 0, 0, 0.2),
-        inset 0 3px 10px rgba(255, 255, 255, 0.2);
+        0 4px 0 #606060,
+        0 8px 18px rgba(0, 0, 0, 0.3),
+        inset 0 -4px 8px rgba(0, 0, 0, 0.2),
+        inset 0 2px 5px rgba(255, 255, 255, 0.2);
     cursor: not-allowed;
     filter: grayscale(0.8);
-    border: 4px solid #808080;
+    border: 2px solid #808080;
 }
 
 .level-island.locked:hover {
@@ -405,27 +413,27 @@ p.small {
     background:
         radial-gradient(circle at 30% 30%, #FFE66D 0%, #FFD93D 50%, #FFC93D 100%);
     box-shadow:
-        0 10px 0 #E6B82D,
-        0 20px 40px rgba(255, 217, 61, 0.5),
-        inset 0 -8px 15px rgba(0, 0, 0, 0.15),
-        inset 0 3px 10px rgba(255, 255, 255, 0.4);
-    border: 4px solid #FFC93D;
+        0 5px 0 #E6B82D,
+        0 10px 20px rgba(255, 217, 61, 0.5),
+        inset 0 -4px 8px rgba(0, 0, 0, 0.15),
+        inset 0 2px 5px rgba(255, 255, 255, 0.4);
+    border: 2px solid #FFC93D;
 }
 
 .level-island.completed::before {
     content: '⭐';
     position: absolute;
-    bottom: 15px;
-    left: 15px;
-    font-size: 1.8em;
+    bottom: 5px;
+    left: 5px;
+    font-size: 0.9em;
     animation: starTwinkle 1.5s ease-in-out infinite;
 }
 
 .level-island.completed:hover {
-    transform: translateY(-15px) scale(1.15);
+    transform: translateY(-8px) scale(1.15);
     box-shadow:
-        0 15px 0 #E6B82D,
-        0 30px 60px rgba(255, 217, 61, 0.7);
+        0 8px 0 #E6B82D,
+        0 15px 30px rgba(255, 217, 61, 0.7);
 }
 
 /* Содержимое острова */
@@ -441,12 +449,12 @@ p.small {
 
 /* Номер уровня */
 .island-number {
-    font-size: 3.5em;
+    font-size: 1.8em;
     font-weight: 900;
     color: white;
     text-shadow:
-        4px 4px 0 rgba(0, 0, 0, 0.3),
-        0 0 30px rgba(255, 255, 255, 0.6);
+        2px 2px 0 rgba(0, 0, 0, 0.3),
+        0 0 15px rgba(255, 255, 255, 0.6);
     z-index: 10;
 }
 
@@ -461,7 +469,7 @@ p.small {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 3em;
+    font-size: 1.5em;
     z-index: 10;
 }
 
@@ -471,21 +479,21 @@ p.small {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 4em;
+    font-size: 2em;
     animation: checkPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 10;
 }
 
 /* Речка между островами */
 .river-flow {
-    font-size: 2.5em;
+    font-size: 1.5em;
     color: var(--river-blue);
     opacity: 0.7;
     text-align: center;
     animation: riverWave 2s ease-in-out infinite;
     user-select: none;
     text-shadow: 0 2px 8px rgba(111, 186, 255, 0.5);
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 /* Анимации */
@@ -596,33 +604,37 @@ p.small {
 
     /* Карта уровней на мобильных */
     .level-map {
-        padding: 100px 10px 40px 10px;
-        gap: 40px;
+        padding: 70px 10px 40px 10px;
+        gap: 30px;
     }
 
     .theme-title {
-        font-size: 1.6em;
+        font-size: 1.4em;
+    }
+
+    .level-row {
+        gap: 30px;
     }
 
     .level-island {
-        width: 140px;
-        height: 140px;
+        width: 70px;
+        height: 70px;
     }
 
     .island-number {
-        font-size: 3em;
+        font-size: 1.5em;
     }
 
     .island-lock {
-        font-size: 2.5em;
+        font-size: 1.3em;
     }
 
     .island-check {
-        font-size: 3.5em;
+        font-size: 1.8em;
     }
 
     .river-flow {
-        font-size: 2em;
+        font-size: 1.2em;
     }
 }
 
