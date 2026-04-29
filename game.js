@@ -98,7 +98,7 @@ retryMicBtn.addEventListener('click', requestMicrophone);
 // Проверка при загрузке страницы
 window.addEventListener('load', () => {
     console.log('Игра "Прокачай Речь" загружена');
-    console.log('Версия: v1.5.1');
+    console.log('Версия: v1.5.5');
     initLevelMap();
     initControlButtons();
     initLevelScreen();
@@ -210,22 +210,42 @@ function initLevelMap() {
 
     islands.forEach(island => {
         const levelNum = parseInt(island.dataset.level);
+        const content = island.querySelector('.island-content');
+
+        // Удаляем старые замочки и галочки если есть
+        const oldLock = content.querySelector('.island-lock');
+        const oldCheck = content.querySelector('.island-check');
+        const oldDecoration = content.querySelector('.island-decoration');
+
+        if (oldLock) oldLock.remove();
+        if (oldCheck) oldCheck.remove();
+        if (oldDecoration) oldDecoration.remove();
 
         // Устанавливаем состояние острова
         if (isLevelCompleted(levelNum)) {
             island.classList.remove('locked', 'unlocked');
             island.classList.add('completed');
-            // Добавляем галочку
-            const check = document.createElement('div');
-            check.className = 'island-check';
-            check.textContent = '✓';
-            island.querySelector('.island-content').appendChild(check);
+            // Добавляем звездочку
+            const star = document.createElement('div');
+            star.className = 'island-decoration';
+            star.textContent = '⭐';
+            content.appendChild(star);
         } else if (isLevelUnlocked(levelNum)) {
             island.classList.remove('locked', 'completed');
             island.classList.add('unlocked');
+            // Добавляем цветочек
+            const flower = document.createElement('div');
+            flower.className = 'island-decoration';
+            flower.textContent = '🌸';
+            content.appendChild(flower);
         } else {
             island.classList.remove('unlocked', 'completed');
             island.classList.add('locked');
+            // Добавляем замочек
+            const lock = document.createElement('div');
+            lock.className = 'island-lock';
+            lock.textContent = '🔒';
+            content.appendChild(lock);
         }
 
         // Обработчик клика
