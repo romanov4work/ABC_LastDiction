@@ -484,6 +484,9 @@ async function sendToWhisper(audioBlob) {
 
     const response = await fetch(`${WHISPER_API_URL}/transcribe`, {
         method: 'POST',
+        headers: {
+            'ngrok-skip-browser-warning': 'true'  // Пропускаем предупреждение ngrok
+        },
         body: formData
     });
 
