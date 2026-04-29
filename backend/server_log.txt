@@ -14,3 +14,9 @@ Press CTRL+C to quit
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 550-234-121
+ * Detected change in 'C:\\Users\\Admin\\Desktop\\audio-romanov\\ABC_LastDiction\\backend\\server.py', reloading
+Загружаем Whisper large модель...
+Whisper large модель загружена!
+Запускаем сервер на http://localhost:5000
+Exception in thread Thread-1 (serve_forever):
+ * Restarting with stat
