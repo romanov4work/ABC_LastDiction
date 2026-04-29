@@ -54,7 +54,7 @@ body {
     z-index: 100;
     margin: 0;
     white-space: nowrap;
-    padding: 15px 80px;
+    padding: 10px 20px;
     background: white;
     border-radius: 50px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -686,7 +686,7 @@ p.small {
     .game-title {
         font-size: 1.4em;
         top: 22px;
-        padding: 0 60px;
+        padding: 8px 15px;
     }
 
     .permission-box, .game-container {
@@ -799,7 +799,7 @@ p.small {
     .game-title {
         font-size: 1.2em;
         top: 22px;
-        padding: 0 55px;
+        padding: 8px 12px;
     }
 
     .permission-box {
