@@ -33,10 +33,10 @@ body {
 /* Заголовок игры (всегда виден вверху) */
 .game-title {
     position: absolute;
-    top: 30px;
+    top: 25px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 3.5em;
+    font-size: 2em;
     color: var(--house-red);
     text-shadow:
         -4px -4px 0 white,
@@ -54,7 +54,7 @@ body {
     z-index: 100;
     margin: 0;
     white-space: nowrap;
-    padding: 0 20px;
+    padding: 0 80px;
 }
 
 @keyframes titleBounce {
@@ -378,7 +378,6 @@ p.small {
     bottom: 5px;
     left: 5px;
     font-size: 0.8em;
-    animation: decorationSway 2s ease-in-out infinite;
 }
 
 .level-island.unlocked::after {
@@ -387,7 +386,6 @@ p.small {
     top: 5px;
     right: 5px;
     font-size: 0.7em;
-    animation: decorationSpin 4s linear infinite;
 }
 
 .level-island.unlocked:hover {
@@ -416,7 +414,8 @@ p.small {
 }
 
 .level-island.locked:hover {
-    animation: islandShake 0.5s ease-in-out;
+    transform: translateX(-5px);
+    animation: none;
 }
 
 /* Пройденный остров */
@@ -437,7 +436,6 @@ p.small {
     bottom: 5px;
     left: 5px;
     font-size: 0.9em;
-    animation: starTwinkle 1.5s ease-in-out infinite;
 }
 
 .level-island.completed:hover {
@@ -554,7 +552,7 @@ p.small {
 
 /* Кнопки управления */
 .control-btn {
-    position: fixed;
+    position: absolute;
     top: 20px;
     width: 50px;
     height: 50px;
@@ -607,10 +605,9 @@ p.small {
 /* Адаптив для мобильных */
 @media (max-width: 600px) {
     .game-title {
-        font-size: 2.2em;
-        top: 20px;
-        white-space: nowrap;
-        max-width: 95vw;
+        font-size: 1.4em;
+        top: 22px;
+        padding: 0 60px;
     }
 
     .permission-box, .game-container {
@@ -653,7 +650,7 @@ p.small {
 
     /* Карта уровней на мобильных */
     .level-map {
-        padding: 70px 10px 40px 10px;
+        padding: 80px 10px 40px 10px;
         gap: 30px;
     }
 
@@ -688,27 +685,26 @@ p.small {
 
     /* Кнопки управления на мобильных */
     .control-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 1.3em;
-        top: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+        top: 18px;
     }
 
     .back-btn {
-        left: 15px;
+        left: 10px;
     }
 
     .fullscreen-btn {
-        right: 15px;
+        right: 10px;
     }
 }
 
 @media (max-width: 400px) {
     .game-title {
-        font-size: 1.8em;
-        top: 15px;
-        white-space: nowrap;
-        max-width: 95vw;
+        font-size: 1.2em;
+        top: 22px;
+        padding: 0 55px;
     }
 
     .permission-box {
@@ -725,18 +721,18 @@ p.small {
     }
 
     .control-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2em;
-        top: 12px;
+        width: 38px;
+        height: 38px;
+        font-size: 1.1em;
+        top: 18px;
     }
 
     .back-btn {
-        left: 12px;
+        left: 8px;
     }
 
     .fullscreen-btn {
-        right: 12px;
+        right: 8px;
     }
 }
 

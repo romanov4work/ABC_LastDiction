@@ -111,7 +111,7 @@ function initControlButtons() {
 
     // Кнопка "Назад"
     backBtn.addEventListener('click', () => {
-        alert('Кнопка назад на сайт Учи.ру');
+        alert('Переход на сайт Учи.ру');
         console.log('Нажата кнопка "Назад на Учи.ру"');
     });
 
