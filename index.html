@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прокачай Речь</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Экран запроса микрофона -->
+    <div id="micPermissionScreen" class="screen active">
+        <div class="permission-box">
+            <h1>🎤 Прокачай Речь</h1>
+            <p>Для игры нужен доступ к микрофону</p>
+            <button id="requestMicBtn" class="btn-primary">Разрешить микрофон</button>
+        </div>
+    </div>
+
+    <!-- Экран отказа в доступе -->
+    <div id="micDeniedScreen" class="screen">
+        <div class="permission-box">
+            <h1>😔 Упс!</h1>
+            <p>Для этой игры нужен микрофон</p>
+            <p class="small">Пожалуйста, разрешите доступ к микрофону в настройках браузера</p>
+            <button id="retryMicBtn" class="btn-secondary">Попробовать снова</button>
+        </div>
+    </div>
+
+    <!-- Главный экран игры -->
+    <div id="gameScreen" class="screen">
+        <div class="game-container">
+            <h1>Прокачай Речь</h1>
+            <p>Игра загружена! Микрофон работает ✓</p>
+            <!-- Здесь будут уровни и темы -->
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
