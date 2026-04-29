@@ -39,14 +39,6 @@ body {
     font-size: 2em;
     color: var(--house-red);
     text-shadow:
-        -4px -4px 0 white,
-        4px -4px 0 white,
-        -4px 4px 0 white,
-        4px 4px 0 white,
-        -4px 0 0 white,
-        4px 0 0 white,
-        0 -4px 0 white,
-        0 4px 0 white,
         0 0 15px rgba(255, 255, 255, 0.9),
         4px 4px 10px rgba(0, 0, 0, 0.4);
     font-weight: 800;
