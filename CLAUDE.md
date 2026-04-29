@@ -38,7 +38,8 @@
 - Клод выполняет выбранное действие
 
 ### История версий (обновляется при каждом деплое):
-- **v1.7** (текущая) - Whisper API интегрирован! Исправлена дикция, показывается распознанный текст
+- **v1.7.1** (текущая) - Whisper small модель (в 2 раза точнее для скороговорок!)
+- **v1.7** - Whisper API интегрирован! Исправлена дикция, показывается распознанный текст
 - **v1.6.2-fix** - Исправлен merge conflict, упрощен server.py
 - **v1.6.2** - Попытка добавить ffmpeg (файлы слишком большие для GitHub)
 - **v1.6.1** - Настройка ngrok для HTTPS туннелинга
@@ -102,13 +103,14 @@
    - Алерт при клике на "Назад": "Переход на сайт Учи.ру"
    - Полноэкранный режим работает (toggleFullscreen)
 
-✅ **Whisper API интеграция (v1.7)**
-   - Backend: Flask + Whisper base модель (быстрая, 3-5 сек обработки)
+✅ **Whisper API интеграция (v1.7.1)**
+   - Backend: Flask + Whisper **small** модель (точнее в 2 раза, ~10 сек обработки)
    - Файлы: backend/server_simple.py, backend/requirements.txt
    - API endpoint: POST /transcribe (принимает audio файл, возвращает {text, success})
    - Ngrok туннелинг: https://pried-isolation-joystick.ngrok-free.dev
    - Ngrok authtoken: 3D2ktlIffwfndU6vJVfYntRngkS_oHMmFGMrppsR6f8HBB4r
    - ffmpeg: скопирован в C:\Python314\Scripts\ (для работы Whisper)
+   - **Модель small**: точность ~6-8% ошибок (vs base ~10-12%)
    - ВАЖНО: Backend работает ТОЛЬКО когда компьютер включен и запущены:
      * python backend/server_simple.py
      * ngrok http 5000

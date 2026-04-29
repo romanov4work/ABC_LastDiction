@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 1.7 ===
+// === ВЕРСИЯ 1.7.1 ===
 // Экраны
 const micPermissionScreen = document.getElementById('micPermissionScreen');
 const micDeniedScreen = document.getElementById('micDeniedScreen');

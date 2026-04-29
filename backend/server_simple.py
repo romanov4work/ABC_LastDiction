@@ -16,13 +16,13 @@ app = Flask(__name__)
 CORS(app)
 
 # Загружаем модель
-print("Загружаем Whisper base модель...", flush=True)
-model = whisper.load_model("base")
-print("Whisper base модель загружена!", flush=True)
+print("Загружаем Whisper small модель...", flush=True)
+model = whisper.load_model("small")
+print("Whisper small модель загружена!", flush=True)
 
 @app.route('/health', methods=['GET'])
 def health():
-    return jsonify({'status': 'ok', 'model': 'base', 'message': 'Whisper API работает!'})
+    return jsonify({'status': 'ok', 'model': 'small', 'message': 'Whisper API работает!'})
 
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
