@@ -98,7 +98,7 @@ retryMicBtn.addEventListener('click', requestMicrophone);
 // Проверка при загрузке страницы
 window.addEventListener('load', () => {
     console.log('Игра "Прокачай Речь" загружена');
-    console.log('Версия: v1.5.7');
+    console.log('Версия: v1.6.0-whisper');
     initLevelMap();
     initControlButtons();
     initLevelScreen();
@@ -324,12 +324,9 @@ function initLevelScreen() {
         speakText(text);
     });
 
-    // Кнопка "Записать голос" - пока заглушка
-    recordBtn.addEventListener('click', () => {
-        alert('Запись голоса будет работать после подключения Whisper');
-
-        // Показываем mock результаты для демонстрации
-        showMockResults();
+    // Кнопка "Записать голос" - реальная запись с Whisper
+    recordBtn.addEventListener('click', async () => {
+        await recordAndTranscribe();
     });
 
     // Кнопка "Повторить"
@@ -390,4 +387,148 @@ function showMockResults() {
     resultSection.style.display = 'block';
 
     console.log(`📊 Mock результаты: ${mockTime} сек, ${mockDiction}%`);
+}
+
+// ========== ЗАПИСЬ И РАСПОЗНАВАНИЕ ГОЛОСА ==========
+
+const WHISPER_API_URL = 'http://localhost:5000'; // Локальный Whisper сервер
+
+let mediaRecorder = null;
+let audioChunks = [];
+let recordingStartTime = 0;
+
+async function recordAndTranscribe() {
+    const recordBtn = document.getElementById('recordBtn');
+    const expectedText = document.getElementById('tonguetwisterText').textContent;
+
+    try {
+        if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+            // Начинаем запись
+            console.log('🎤 Начинаем запись...');
+            recordBtn.textContent = '⏹️ Остановить запись';
+            recordBtn.style.background = 'linear-gradient(145deg, #ff4444, #cc0000)';
+
+            const stream = await startRecording();
+            if (!stream) return;
+
+            audioChunks = [];
+            recordingStartTime = Date.now();
+
+            mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    audioChunks.push(event.data);
+                }
+            };
+
+            mediaRecorder.onstop = async () => {
+                const recordingTime = ((Date.now() - recordingStartTime) / 1000).toFixed(1);
+                console.log(`⏱️ Время записи: ${recordingTime} сек`);
+
+                // Создаем аудио blob
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                console.log(`📦 Размер аудио: ${(audioBlob.size / 1024).toFixed(1)} KB`);
+
+                // Останавливаем микрофон
+                stream.getTracks().forEach(track => track.stop());
+
+                // Отправляем на Whisper
+                recordBtn.textContent = '⏳ Распознаем...';
+                recordBtn.disabled = true;
+
+                try {
+                    const recognizedText = await sendToWhisper(audioBlob);
+                    console.log(`📝 Распознано: "${recognizedText}"`);
+
+                    // Сравниваем с эталоном
+                    const accuracy = calculateAccuracy(expectedText, recognizedText);
+                    console.log(`🎯 Точность: ${accuracy}%`);
+
+                    // Показываем результаты
+                    showResults(recordingTime, accuracy);
+
+                } catch (error) {
+                    console.error('❌ Ошибка распознавания:', error);
+                    alert('Ошибка распознавания речи. Попробуй еще раз!');
+                } finally {
+                    recordBtn.textContent = '🎤 Записать голос';
+                    recordBtn.style.background = 'linear-gradient(145deg, #ff6b6b, #ee5a6f)';
+                    recordBtn.disabled = false;
+                }
+            };
+
+            mediaRecorder.start();
+
+        } else {
+            // Останавливаем запись
+            console.log('⏹️ Останавливаем запись...');
+            mediaRecorder.stop();
+            recordBtn.textContent = '🎤 Записать голос';
+            recordBtn.style.background = 'linear-gradient(145deg, #ff6b6b, #ee5a6f)';
+        }
+
+    } catch (error) {
+        console.error('❌ Ошибка записи:', error);
+        alert('Ошибка доступа к микрофону!');
+        recordBtn.textContent = '🎤 Записать голос';
+        recordBtn.style.background = 'linear-gradient(145deg, #ff6b6b, #ee5a6f)';
+        recordBtn.disabled = false;
+    }
+}
+
+// Отправка аудио на Whisper API
+async function sendToWhisper(audioBlob) {
+    const formData = new FormData();
+    formData.append('audio', audioBlob, 'recording.webm');
+
+    const response = await fetch(`${WHISPER_API_URL}/transcribe`, {
+        method: 'POST',
+        body: formData
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.text;
+}
+
+// Сравнение текстов и расчет точности
+function calculateAccuracy(expected, recognized) {
+    // Нормализуем тексты (убираем знаки препинания, приводим к нижнему регистру)
+    const normalize = (text) => text.toLowerCase()
+        .replace(/[.,!?;:]/g, '')
+        .trim()
+        .split(/\s+/);
+
+    const expectedWords = normalize(expected);
+    const recognizedWords = normalize(recognized);
+
+    // Считаем совпадения слов
+    let matches = 0;
+    for (const word of recognizedWords) {
+        if (expectedWords.includes(word)) {
+            matches++;
+        }
+    }
+
+    // Процент совпадения
+    const accuracy = Math.round((matches / expectedWords.length) * 100);
+    return Math.min(accuracy, 100); // Максимум 100%
+}
+
+// Показать реальные результаты
+function showResults(time, accuracy) {
+    const resultSection = document.getElementById('resultSection');
+    const timeResult = document.getElementById('timeResult');
+    const dictionResult = document.getElementById('dictionResult');
+
+    timeResult.textContent = `${time} сек`;
+    dictionResult.textContent = `${accuracy}%`;
+
+    resultSection.style.display = 'block';
+
+    console.log(`✅ Результаты: ${time} сек, ${accuracy}%`);
 }
