@@ -38,9 +38,6 @@ body {
     transform: translateX(-50%);
     font-size: 2em;
     color: var(--house-red);
-    text-shadow:
-        0 0 15px rgba(255, 255, 255, 0.9),
-        4px 4px 10px rgba(0, 0, 0, 0.4);
     font-weight: 800;
     letter-spacing: -1px;
     z-index: 100;
