@@ -17,17 +17,20 @@
 
 body {
     font-family: 'Nunito', 'Fredoka', 'Comic Sans MS', sans-serif;
-    background: linear-gradient(180deg, var(--sky-blue) 0%, #B8E6FF 100%);
-    background-attachment: fixed;
-    background-size: cover;
+    background: var(--sky-blue);
     min-height: 100vh;
-    height: auto;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-dark);
     position: relative;
     overflow-x: hidden;
+}
+
+html {
+    background: var(--sky-blue);
+    min-height: 100%;
 }
 
 /* Заголовок игры (всегда виден вверху) */
@@ -684,34 +687,15 @@ p.small {
 }
 
 .back-to-map-btn {
-    align-self: flex-start;
-    background: rgba(255, 255, 255, 0.9);
-    border: 3px solid var(--grass-green);
-    border-radius: 30px;
-    padding: 10px 20px;
-    font-size: 1.1em;
-    font-weight: 700;
-    color: var(--grass-green);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: 'Nunito', sans-serif;
-}
-
-.back-to-map-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(126, 200, 80, 0.4);
-}
-
-.back-to-map-btn:active {
-    transform: translateY(0);
+    display: none;
 }
 
 .level-title {
-    font-size: 2.5em;
+    font-size: 1.8em;
     font-weight: 800;
     color: var(--house-red);
     text-align: center;
-    margin: 0;
+    margin: 0 0 20px 0;
 }
 
 .tongue-twister-box {

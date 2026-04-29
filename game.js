@@ -98,7 +98,7 @@ retryMicBtn.addEventListener('click', requestMicrophone);
 // Проверка при загрузке страницы
 window.addEventListener('load', () => {
     console.log('Игра "Прокачай Речь" загружена');
-    console.log('Версия: v1.5.0');
+    console.log('Версия: v1.5.1');
     initLevelMap();
     initControlButtons();
     initLevelScreen();
@@ -110,10 +110,19 @@ function initControlButtons() {
     const backBtn = document.getElementById('backBtn');
     const fullscreenBtn = document.getElementById('fullscreenBtn');
 
-    // Кнопка "Назад"
+    // Кнопка "Назад" - возвращает в меню если в уровне, иначе на Учи.ру
     backBtn.addEventListener('click', () => {
-        alert('Переход на сайт Учи.ру');
-        console.log('Нажата кнопка "Назад на Учи.ру"');
+        const levelScreen = document.getElementById('levelScreen');
+
+        if (levelScreen.classList.contains('active')) {
+            // Если в уровне - возвращаемся на карту
+            showScreen(gameScreen);
+            console.log('Возврат на карту уровней');
+        } else {
+            // Если в меню - переход на Учи.ру
+            alert('Переход на сайт Учи.ру');
+            console.log('Нажата кнопка "Назад на Учи.ру"');
+        }
     });
 
     // Кнопка "Полноэкранный режим"
@@ -274,11 +283,6 @@ function initLevelScreen() {
     const recordBtn = document.getElementById('recordBtn');
     const retryBtn = document.getElementById('retryBtn');
     const nextLevelBtn = document.getElementById('nextLevelBtn');
-
-    // Кнопка "Назад на карту"
-    backToMapBtn.addEventListener('click', () => {
-        showScreen(gameScreen);
-    });
 
     // Кнопка "Послушать" - озвучка скороговорки
     listenBtn.addEventListener('click', () => {
