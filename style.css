@@ -546,6 +546,12 @@ p.small {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Скрываем замочек на пройденных и открытых уровнях */
+.level-island.completed .island-lock,
+.level-island.unlocked .island-lock {
+    display: none !important;
+}
+
 /* Галочка для пройденного */
 .island-check {
     position: absolute;

@@ -98,7 +98,7 @@ retryMicBtn.addEventListener('click', requestMicrophone);
 // Проверка при загрузке страницы
 window.addEventListener('load', () => {
     console.log('Игра "Прокачай Речь" загружена');
-    console.log('Версия: v1.5.6-debug');
+    console.log('Версия: v1.5.7');
     initLevelMap();
     initControlButtons();
     initLevelScreen();
