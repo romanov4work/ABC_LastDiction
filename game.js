@@ -98,7 +98,7 @@ retryMicBtn.addEventListener('click', requestMicrophone);
 // Проверка при загрузке страницы
 window.addEventListener('load', () => {
     console.log('Игра "Прокачай Речь" загружена');
-    console.log('Версия: v1.6.0-whisper');
+    console.log('Версия: v1.6.1-ngrok');
     initLevelMap();
     initControlButtons();
     initLevelScreen();
@@ -391,7 +391,7 @@ function showMockResults() {
 
 // ========== ЗАПИСЬ И РАСПОЗНАВАНИЕ ГОЛОСА ==========
 
-const WHISPER_API_URL = 'http://localhost:5000'; // Локальный Whisper сервер
+const WHISPER_API_URL = 'https://pried-isolation-joystick.ngrok-free.dev'; // Ngrok tunnel к Whisper
 
 let mediaRecorder = null;
 let audioChunks = [];
