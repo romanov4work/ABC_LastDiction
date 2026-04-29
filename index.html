@@ -30,10 +30,52 @@
         </div>
     </div>
 
-    <!-- Главный экран игры (только облака после разрешения) -->
+    <!-- Главный экран игры - Карта уровней -->
     <div id="gameScreen" class="screen">
-        <div class="game-container">
-            <p>Здесь будут уровни...</p>
+        <div class="level-map">
+
+            <!-- Тема 1: Скороговорки -->
+            <div class="theme-section">
+                <h2 class="theme-title">🗣️ Скороговорки</h2>
+
+                <div class="level-island unlocked" data-level="1">
+                    <div class="island-content">
+                        <div class="island-number">1</div>
+                        <div class="island-decoration">🌸</div>
+                    </div>
+                </div>
+
+                <div class="river-flow">〰️〰️〰️</div>
+
+                <div class="level-island locked" data-level="2">
+                    <div class="island-content">
+                        <div class="island-number">2</div>
+                        <div class="island-lock">🔒</div>
+                    </div>
+                </div>
+
+                <div class="river-flow">〰️〰️〰️</div>
+
+                <div class="level-island locked" data-level="3">
+                    <div class="island-content">
+                        <div class="island-number">3</div>
+                        <div class="island-lock">🔒</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Тема 2: Озвучь мультик -->
+            <div class="theme-section">
+                <h2 class="theme-title">🎬 Озвучь мультик</h2>
+
+                <div class="level-island locked" data-level="4">
+                    <div class="island-content">
+                        <div class="island-number">4</div>
+                        <div class="island-lock">🔒</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -44,7 +86,7 @@
     <div class="cloud cloud-4">☁️</div>
 
     <!-- Номер деплоя -->
-    <div class="deploy-version">v1.1.1</div>
+    <div class="deploy-version">v1.2.0</div>
 
     <script src="game.js"></script>
 </body>

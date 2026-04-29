@@ -289,6 +289,190 @@ p.small {
     animation: rotate 20s linear infinite;
 }
 
+/* КАРТА УРОВНЕЙ */
+.level-map {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}
+
+/* Секция темы */
+.theme-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Заголовок темы */
+.theme-title {
+    font-size: 2em;
+    font-weight: 800;
+    color: var(--house-red);
+    text-shadow:
+        3px 3px 0 rgba(255, 255, 255, 0.8),
+        4px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 0;
+    animation: themeTitleBounce 2s ease-in-out infinite;
+}
+
+@keyframes themeTitleBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Остров-уровень */
+.level-island {
+    width: 140px;
+    height: 140px;
+    border-radius: 50% 50% 45% 45%;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: islandFloat 3s ease-in-out infinite;
+}
+
+/* Открытый остров */
+.level-island.unlocked {
+    background: linear-gradient(135deg, #7EC850 0%, #5FB83D 100%);
+    box-shadow:
+        0 8px 0 #4A9630,
+        0 15px 30px rgba(126, 200, 80, 0.4),
+        inset 0 -5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.level-island.unlocked:hover {
+    transform: translateY(-10px) scale(1.1);
+    box-shadow:
+        0 12px 0 #4A9630,
+        0 25px 50px rgba(126, 200, 80, 0.6);
+}
+
+.level-island.unlocked:active {
+    transform: translateY(-5px) scale(1.05);
+}
+
+/* Закрытый остров */
+.level-island.locked {
+    background: linear-gradient(135deg, #B0B0B0 0%, #909090 100%);
+    box-shadow:
+        0 6px 0 #707070,
+        0 12px 25px rgba(0, 0, 0, 0.2),
+        inset 0 -5px 10px rgba(0, 0, 0, 0.15);
+    cursor: not-allowed;
+    filter: grayscale(0.5);
+}
+
+.level-island.locked:hover {
+    animation: islandShake 0.5s ease-in-out;
+}
+
+/* Пройденный остров */
+.level-island.completed {
+    background: linear-gradient(135deg, #FFD93D 0%, #FFC93D 100%);
+    box-shadow:
+        0 8px 0 #E6B82D,
+        0 15px 30px rgba(255, 217, 61, 0.4),
+        inset 0 -5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.level-island.completed:hover {
+    transform: translateY(-10px) scale(1.1);
+    box-shadow:
+        0 12px 0 #E6B82D,
+        0 25px 50px rgba(255, 217, 61, 0.6);
+}
+
+/* Содержимое острова */
+.island-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Номер уровня */
+.island-number {
+    font-size: 3em;
+    font-weight: 800;
+    color: white;
+    text-shadow:
+        3px 3px 0 rgba(0, 0, 0, 0.2),
+        0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* Декорация (цветочек) */
+.island-decoration {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em;
+    animation: decorationSpin 4s linear infinite;
+}
+
+/* Замочек */
+.island-lock {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.8em;
+}
+
+/* Галочка для пройденного */
+.island-check {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 2em;
+    animation: checkPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Речка между островами */
+.river-flow {
+    font-size: 2em;
+    color: var(--river-blue);
+    opacity: 0.6;
+    text-align: center;
+    animation: riverWave 2s ease-in-out infinite;
+    user-select: none;
+}
+
+/* Анимации */
+@keyframes islandFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes islandShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+@keyframes decorationSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes checkPop {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+@keyframes riverWave {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(10px); }
+}
+
 @keyframes rotate {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
@@ -355,6 +539,29 @@ p.small {
 
     .cloud-4 {
         font-size: 95px;
+    }
+
+    /* Карта уровней на мобильных */
+    .level-map {
+        padding: 20px 10px;
+        gap: 40px;
+    }
+
+    .theme-title {
+        font-size: 1.6em;
+    }
+
+    .level-island {
+        width: 120px;
+        height: 120px;
+    }
+
+    .island-number {
+        font-size: 2.5em;
+    }
+
+    .river-flow {
+        font-size: 1.5em;
     }
 }
 

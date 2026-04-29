@@ -98,5 +98,111 @@ retryMicBtn.addEventListener('click', requestMicrophone);
 // Проверка при загрузке страницы
 window.addEventListener('load', () => {
     console.log('Игра "Прокачай Речь" загружена');
-    console.log('Версия: v1.1.0');
+    console.log('Версия: v1.2.0');
+    initLevelMap();
 });
+
+// ========== СИСТЕМА УРОВНЕЙ ==========
+
+// Прогресс игрока (сохраняется в localStorage)
+let playerProgress = {
+    completedLevels: [] // массив пройденных уровней [1, 2, 3...]
+};
+
+// Загрузка прогресса из localStorage
+function loadProgress() {
+    const saved = localStorage.getItem('speechGameProgress');
+    if (saved) {
+        playerProgress = JSON.parse(saved);
+    }
+}
+
+// Сохранение прогресса в localStorage
+function saveProgress() {
+    localStorage.setItem('speechGameProgress', JSON.stringify(playerProgress));
+}
+
+// Проверка, пройден ли уровень
+function isLevelCompleted(levelNum) {
+    return playerProgress.completedLevels.includes(levelNum);
+}
+
+// Проверка, открыт ли уровень
+function isLevelUnlocked(levelNum) {
+    if (levelNum === 1) return true; // Первый уровень всегда открыт
+
+    // Уровень 2 и 3 открываются после уровня 1
+    if (levelNum === 2 || levelNum === 3) {
+        return isLevelCompleted(1);
+    }
+
+    // Уровень 4 открывается после уровня 2 ИЛИ 3
+    if (levelNum === 4) {
+        return isLevelCompleted(2) || isLevelCompleted(3);
+    }
+
+    // Остальные уровни открываются последовательно
+    return isLevelCompleted(levelNum - 1);
+}
+
+// Инициализация карты уровней
+function initLevelMap() {
+    loadProgress();
+
+    const islands = document.querySelectorAll('.level-island');
+
+    islands.forEach(island => {
+        const levelNum = parseInt(island.dataset.level);
+
+        // Устанавливаем состояние острова
+        if (isLevelCompleted(levelNum)) {
+            island.classList.remove('locked', 'unlocked');
+            island.classList.add('completed');
+            // Добавляем галочку
+            const check = document.createElement('div');
+            check.className = 'island-check';
+            check.textContent = '✓';
+            island.querySelector('.island-content').appendChild(check);
+        } else if (isLevelUnlocked(levelNum)) {
+            island.classList.remove('locked', 'completed');
+            island.classList.add('unlocked');
+        } else {
+            island.classList.remove('unlocked', 'completed');
+            island.classList.add('locked');
+        }
+
+        // Обработчик клика
+        island.addEventListener('click', () => handleIslandClick(levelNum, island));
+    });
+}
+
+// Обработка клика по острову
+function handleIslandClick(levelNum, island) {
+    if (island.classList.contains('locked')) {
+        // Закрытый уровень - показываем сообщение
+        console.log(`Уровень ${levelNum} закрыт. Пройди предыдущие уровни!`);
+        // TODO: показать всплывающее сообщение
+        return;
+    }
+
+    // Открытый или пройденный уровень - запускаем
+    console.log(`Запуск уровня ${levelNum}`);
+    startLevel(levelNum);
+}
+
+// Запуск уровня
+function startLevel(levelNum) {
+    console.log(`🎮 Начинаем уровень ${levelNum}`);
+    // TODO: здесь будет переход на экран уровня
+    alert(`Уровень ${levelNum} скоро будет готов!`);
+}
+
+// Завершение уровня (вызывается после прохождения)
+function completeLevel(levelNum) {
+    if (!playerProgress.completedLevels.includes(levelNum)) {
+        playerProgress.completedLevels.push(levelNum);
+        saveProgress();
+        initLevelMap(); // Обновляем карту
+        console.log(`✅ Уровень ${levelNum} пройден!`);
+    }
+}
