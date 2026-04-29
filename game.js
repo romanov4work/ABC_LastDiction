@@ -98,9 +98,10 @@ retryMicBtn.addEventListener('click', requestMicrophone);
 // Проверка при загрузке страницы
 window.addEventListener('load', () => {
     console.log('Игра "Прокачай Речь" загружена');
-    console.log('Версия: v1.3.1');
+    console.log('Версия: v1.5.0');
     initLevelMap();
     initControlButtons();
+    initLevelScreen();
 });
 
 // ========== КНОПКИ УПРАВЛЕНИЯ ==========
@@ -240,8 +241,18 @@ function handleIslandClick(levelNum, island) {
 // Запуск уровня
 function startLevel(levelNum) {
     console.log(`🎮 Начинаем уровень ${levelNum}`);
-    // TODO: здесь будет переход на экран уровня
-    alert(`Уровень ${levelNum} скоро будет готов!`);
+
+    // Скрываем карту, показываем экран уровня
+    showScreen(document.getElementById('levelScreen'));
+
+    // Устанавливаем номер уровня
+    document.getElementById('currentLevelNum').textContent = levelNum;
+
+    // Скрываем результаты
+    document.getElementById('resultSection').style.display = 'none';
+
+    // Сохраняем текущий уровень
+    window.currentLevel = levelNum;
 }
 
 // Завершение уровня (вызывается после прохождения)
@@ -252,4 +263,93 @@ function completeLevel(levelNum) {
         initLevelMap(); // Обновляем карту
         console.log(`✅ Уровень ${levelNum} пройден!`);
     }
+}
+
+// ========== ЭКРАН УРОВНЯ ==========
+
+// Инициализация экрана уровня
+function initLevelScreen() {
+    const backToMapBtn = document.getElementById('backToMapBtn');
+    const listenBtn = document.getElementById('listenBtn');
+    const recordBtn = document.getElementById('recordBtn');
+    const retryBtn = document.getElementById('retryBtn');
+    const nextLevelBtn = document.getElementById('nextLevelBtn');
+
+    // Кнопка "Назад на карту"
+    backToMapBtn.addEventListener('click', () => {
+        showScreen(gameScreen);
+    });
+
+    // Кнопка "Послушать" - озвучка скороговорки
+    listenBtn.addEventListener('click', () => {
+        const text = document.getElementById('tonguetwisterText').textContent;
+        speakText(text);
+    });
+
+    // Кнопка "Записать голос" - пока заглушка
+    recordBtn.addEventListener('click', () => {
+        alert('Запись голоса будет работать после подключения Whisper');
+
+        // Показываем mock результаты для демонстрации
+        showMockResults();
+    });
+
+    // Кнопка "Повторить"
+    retryBtn.addEventListener('click', () => {
+        document.getElementById('resultSection').style.display = 'none';
+    });
+
+    // Кнопка "Следующий уровень"
+    nextLevelBtn.addEventListener('click', () => {
+        const currentLevel = window.currentLevel || 1;
+
+        // Отмечаем уровень как пройденный
+        completeLevel(currentLevel);
+
+        // Переходим на следующий уровень если он открыт
+        const nextLevel = currentLevel + 1;
+        if (isLevelUnlocked(nextLevel)) {
+            startLevel(nextLevel);
+        } else {
+            // Возвращаемся на карту
+            showScreen(gameScreen);
+        }
+    });
+}
+
+// Озвучка текста через Web Speech API
+function speakText(text) {
+    if ('speechSynthesis' in window) {
+        // Останавливаем предыдущую озвучку если есть
+        window.speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ru-RU';
+        utterance.rate = 0.9; // Немного медленнее для детей
+        utterance.pitch = 1.2; // Чуть выше для детского голоса
+
+        window.speechSynthesis.speak(utterance);
+        console.log('🔊 Озвучка:', text);
+    } else {
+        alert('Озвучка не поддерживается в этом браузере');
+    }
+}
+
+// Показать mock результаты (для демонстрации)
+function showMockResults() {
+    const resultSection = document.getElementById('resultSection');
+    const timeResult = document.getElementById('timeResult');
+    const dictionResult = document.getElementById('dictionResult');
+
+    // Mock данные
+    const mockTime = (Math.random() * 2 + 2).toFixed(1); // 2.0-4.0 сек
+    const mockDiction = Math.floor(Math.random() * 20 + 75); // 75-95%
+
+    timeResult.textContent = `${mockTime} сек`;
+    dictionResult.textContent = `${mockDiction}%`;
+
+    // Показываем результаты
+    resultSection.style.display = 'block';
+
+    console.log(`📊 Mock результаты: ${mockTime} сек, ${mockDiction}%`);
 }

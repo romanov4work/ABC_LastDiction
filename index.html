@@ -131,6 +131,46 @@
         </div>
     </div>
 
+    <!-- Экран уровня -->
+    <div id="levelScreen" class="screen">
+        <div class="level-container">
+            <button id="backToMapBtn" class="back-to-map-btn">← Назад</button>
+
+            <h2 class="level-title">Уровень <span id="currentLevelNum">1</span></h2>
+
+            <div class="tongue-twister-box">
+                <p class="tongue-twister-text" id="tonguetwisterText">От топота копыт пыль по полю летит</p>
+                <button id="listenBtn" class="btn-listen">🔊 Послушать</button>
+            </div>
+
+            <div class="record-section">
+                <button id="recordBtn" class="btn-record">🎤 Записать голос</button>
+                <p class="record-hint">Нажми и произнеси скороговорку!</p>
+            </div>
+
+            <div id="resultSection" class="result-section" style="display: none;">
+                <h3>Результат:</h3>
+                <div class="result-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Время:</span>
+                        <span class="stat-value" id="timeResult">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Дикция:</span>
+                        <span class="stat-value" id="dictionResult">-</span>
+                    </div>
+                </div>
+                <div class="goals">
+                    <p>🎯 Цель: Время ≤ 3 сек, Дикция ≥ 80%</p>
+                </div>
+                <div class="level-actions">
+                    <button id="retryBtn" class="btn-secondary">🔄 Повторить</button>
+                    <button id="nextLevelBtn" class="btn-primary">➡️ Следующий уровень</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Дополнительные облака -->
     <div class="cloud cloud-1">☁️</div>
     <div class="cloud cloud-2">☁️</div>
@@ -142,7 +182,7 @@
     <div class="cloud cloud-8">☁️</div>
 
     <!-- Номер деплоя -->
-    <div class="deploy-version">v1.4.3</div>
+    <div class="deploy-version">v1.5.0</div>
 
     <script src="game.js"></script>
 </body>
