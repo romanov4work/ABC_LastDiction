@@ -98,9 +98,38 @@ retryMicBtn.addEventListener('click', requestMicrophone);
 // Проверка при загрузке страницы
 window.addEventListener('load', () => {
     console.log('Игра "Прокачай Речь" загружена');
-    console.log('Версия: v1.2.0');
+    console.log('Версия: v1.3.1');
     initLevelMap();
+    initControlButtons();
 });
+
+// ========== КНОПКИ УПРАВЛЕНИЯ ==========
+
+function initControlButtons() {
+    const backBtn = document.getElementById('backBtn');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+    // Кнопка "Назад"
+    backBtn.addEventListener('click', () => {
+        alert('Кнопка назад на сайт Учи.ру');
+        console.log('Нажата кнопка "Назад на Учи.ру"');
+    });
+
+    // Кнопка "Полноэкранный режим"
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+}
+
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        // Включить полноэкранный режим
+        document.documentElement.requestFullscreen().catch(err => {
+            console.error('Ошибка при включении полноэкранного режима:', err);
+        });
+    } else {
+        // Выключить полноэкранный режим
+        document.exitFullscreen();
+    }
+}
 
 // ========== СИСТЕМА УРОВНЕЙ ==========
 

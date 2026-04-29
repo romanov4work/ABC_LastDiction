@@ -32,19 +32,23 @@ body {
 
 /* Заголовок игры (всегда виден вверху) */
 .game-title {
-    position: fixed;
+    position: absolute;
     top: 30px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 3em;
+    font-size: 3.5em;
     color: var(--house-red);
     text-shadow:
-        -2px -2px 0 white,
-        2px -2px 0 white,
-        -2px 2px 0 white,
-        2px 2px 0 white,
-        0 0 10px rgba(255, 255, 255, 0.8),
-        3px 3px 8px rgba(0, 0, 0, 0.3);
+        -4px -4px 0 white,
+        4px -4px 0 white,
+        -4px 4px 0 white,
+        4px 4px 0 white,
+        -4px 0 0 white,
+        4px 0 0 white,
+        0 -4px 0 white,
+        0 4px 0 white,
+        0 0 15px rgba(255, 255, 255, 0.9),
+        4px 4px 10px rgba(0, 0, 0, 0.4);
     font-weight: 800;
     letter-spacing: -1px;
     z-index: 100;
@@ -351,7 +355,6 @@ p.small {
     position: relative;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    animation: islandFloat 3s ease-in-out infinite;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -498,10 +501,12 @@ p.small {
     color: var(--river-blue);
     opacity: 0.7;
     text-align: center;
-    animation: riverWave 2s ease-in-out infinite;
     user-select: none;
     text-shadow: 0 2px 8px rgba(111, 186, 255, 0.5);
     margin: 5px 0;
+    animation: riverFlow 1.5s linear infinite;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
 }
 
 /* Анимации */
@@ -537,14 +542,50 @@ p.small {
     100% { transform: translate(-50%, -50%) scale(1); }
 }
 
-@keyframes riverWave {
-    0%, 100% { transform: translateX(0) scale(1); }
-    50% { transform: translateX(15px) scale(1.05); }
+@keyframes riverFlow {
+    0% { transform: rotate(180deg) translateY(0); }
+    100% { transform: rotate(180deg) translateY(10px); }
 }
 
 @keyframes rotate {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+/* Кнопки управления */
+.control-btn {
+    position: fixed;
+    top: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid white;
+    background: rgba(126, 200, 80, 0.9);
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 200;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn:hover {
+    transform: scale(1.1);
+    background: rgba(126, 200, 80, 1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+}
+
+.back-btn {
+    left: 20px;
+}
+
+.fullscreen-btn {
+    right: 20px;
 }
 
 /* Номер деплоя */
@@ -566,7 +607,7 @@ p.small {
 /* Адаптив для мобильных */
 @media (max-width: 600px) {
     .game-title {
-        font-size: 1.8em;
+        font-size: 2.2em;
         top: 20px;
         white-space: nowrap;
         max-width: 95vw;
@@ -644,11 +685,27 @@ p.small {
     .river-flow {
         font-size: 1.2em;
     }
+
+    /* Кнопки управления на мобильных */
+    .control-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3em;
+        top: 15px;
+    }
+
+    .back-btn {
+        left: 15px;
+    }
+
+    .fullscreen-btn {
+        right: 15px;
+    }
 }
 
 @media (max-width: 400px) {
     .game-title {
-        font-size: 1.4em;
+        font-size: 1.8em;
         top: 15px;
         white-space: nowrap;
         max-width: 95vw;
@@ -665,6 +722,21 @@ p.small {
     .btn-primary, .btn-secondary {
         font-size: 0.95em;
         padding: 14px 30px;
+    }
+
+    .control-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+        top: 12px;
+    }
+
+    .back-btn {
+        left: 12px;
+    }
+
+    .fullscreen-btn {
+        right: 12px;
     }
 }
 
