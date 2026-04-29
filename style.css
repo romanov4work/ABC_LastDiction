@@ -52,52 +52,54 @@ body {
     50% { transform: translateX(-50%) translateY(-5px); }
 }
 
-/* Облака */
+/* Облака - красивые, объемные, всегда минимум 4 на экране */
 .cloud {
     position: fixed;
-    font-size: 70px;
-    opacity: 0.6;
+    font-size: 120px;
+    opacity: 0.8;
     z-index: 1;
     pointer-events: none;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.1));
 }
 
 .cloud-1 {
-    top: 15%;
-    left: -100px;
-    animation: cloudFloat1 30s linear infinite;
+    top: 10%;
+    left: -150px;
+    font-size: 140px;
+    animation: cloudFloat1 35s linear infinite;
 }
 
 .cloud-2 {
-    top: 40%;
-    right: -100px;
-    font-size: 90px;
-    animation: cloudFloat2 35s linear infinite reverse;
+    top: 25%;
+    right: -150px;
+    font-size: 160px;
+    animation: cloudFloat2 40s linear infinite reverse;
 }
 
 .cloud-3 {
-    top: 65%;
-    left: -100px;
-    font-size: 60px;
-    animation: cloudFloat1 40s linear infinite;
-    animation-delay: 5s;
+    top: 50%;
+    left: -150px;
+    font-size: 130px;
+    animation: cloudFloat1 45s linear infinite;
+    animation-delay: 8s;
 }
 
 .cloud-4 {
-    top: 80%;
-    right: -100px;
-    font-size: 75px;
-    animation: cloudFloat2 38s linear infinite reverse;
-    animation-delay: 10s;
+    top: 75%;
+    right: -150px;
+    font-size: 150px;
+    animation: cloudFloat2 42s linear infinite reverse;
+    animation-delay: 15s;
 }
 
 @keyframes cloudFloat1 {
     from { transform: translateX(0); }
-    to { transform: translateX(calc(100vw + 200px)); }
+    to { transform: translateX(calc(100vw + 300px)); }
 }
 
 @keyframes cloudFloat2 {
     from { transform: translateX(0); }
-    to { transform: translateX(calc(-100vw - 200px)); }
+    to { transform: translateX(calc(-100vw - 300px)); }
 }
 
 .screen {
@@ -322,11 +324,23 @@ p.small {
     }
 
     .cloud {
-        font-size: 50px;
+        font-size: 80px;
+    }
+
+    .cloud-1 {
+        font-size: 90px;
     }
 
     .cloud-2 {
-        font-size: 60px;
+        font-size: 100px;
+    }
+
+    .cloud-3 {
+        font-size: 85px;
+    }
+
+    .cloud-4 {
+        font-size: 95px;
     }
 }
 
