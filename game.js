@@ -14,21 +14,23 @@ let hasMicPermission = false;
 // Функция переключения экранов
 function showScreen(screen) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    screen.classList.add('active);
+    screen.classList.add('active');
 }
 
-// Запрос доступа к микрофону (НЕ начинает запись, только получает разрешение)
+// Запрос доступа к микрофону (показывает системное окно браузера)
 async function requestMicrophone() {
     try {
-        // Запрашиваем разрешение на микрофон
+        // Запрашиваем разрешение - БРАУЗЕР ПОКАЖЕТ СИСТЕМНОЕ ОКНО
         micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-        // Сразу останавливаем поток - мы только проверили разрешение
-        // Реальная запись начнется только когда пользователь нажмет кнопку записи
-        micStream.getTracks().forEach(track => track.stop());
-
         hasMicPermission = true;
-        console.log('✓ Разрешение на микрофон получено (микрофон НЕ слушает)');
+        console.log('✓ Разрешение на микрофон получено');
+
+        // Останавливаем поток - реальная запись начнется при нажатии кнопки записи
+        micStream.getTracks().forEach(track => track.stop());
+        micStream = null;
+
+        // Убираем окошко, показываем только облака
         showScreen(gameScreen);
     } catch (error) {
         console.error('✗ Доступ к микрофону отклонен:', error);
@@ -37,10 +39,11 @@ async function requestMicrophone() {
     }
 }
 
-// Функция для начала записи (вызывается только при нажатии кнопки записи)
+// Функция для начала записи (вызывается только при нажатии кнопки записи в уровне)
 async function startRecording() {
     if (!hasMicPermission) {
         console.error('Нет разрешения на микрофон');
+        showScreen(micPermissionScreen);
         return null;
     }
 
@@ -51,6 +54,8 @@ async function startRecording() {
         return micStream;
     } catch (error) {
         console.error('Ошибка при начале записи:', error);
+        hasMicPermission = false;
+        showScreen(micPermissionScreen);
         return null;
     }
 }
@@ -64,19 +69,18 @@ function stopRecording() {
     }
 }
 
-// Проверка при возвращении на страницу (visibility change)
+// Проверка при возвращении на страницу
 document.addEventListener('visibilitychange', async () => {
     if (document.hidden) {
-        // Пользователь ушел со страницы - останавливаем запись если она идет
+        // Пользователь ушел - останавливаем запись если идет
         stopRecording();
         console.log('👋 Пользователь ушел - запись остановлена');
     } else {
-        // Пользователь вернулся - проверяем разрешение микрофона
+        // Пользователь вернулся
+        console.log('👋 Пользователь вернулся');
         if (hasMicPermission) {
-            console.log('👋 Пользователь вернулся - разрешение есть');
             showScreen(gameScreen);
         } else {
-            console.log('👋 Пользователь вернулся - нужно разрешение');
             showScreen(micPermissionScreen);
         }
     }
@@ -94,5 +98,5 @@ retryMicBtn.addEventListener('click', requestMicrophone);
 // Проверка при загрузке страницы
 window.addEventListener('load', () => {
     console.log('Игра "Прокачай Речь" загружена');
-    console.log('Версия: v1.0.0');
+    console.log('Версия: v1.0.1');
 });
