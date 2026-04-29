@@ -18,14 +18,16 @@
 body {
     font-family: 'Nunito', 'Fredoka', 'Comic Sans MS', sans-serif;
     background: linear-gradient(180deg, var(--sky-blue) 0%, #B8E6FF 100%);
+    background-attachment: fixed;
+    background-size: cover;
     min-height: 100vh;
-    height: 100vh;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-dark);
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 /* Заголовок игры (всегда виден вверху) */
@@ -37,13 +39,16 @@ body {
     font-size: 3em;
     color: var(--house-red);
     text-shadow:
-        3px 3px 0 rgba(255, 255, 255, 0.8),
-        5px 5px 15px rgba(0, 0, 0, 0.2);
+        -2px -2px 0 white,
+        2px -2px 0 white,
+        -2px 2px 0 white,
+        2px 2px 0 white,
+        0 0 10px rgba(255, 255, 255, 0.8),
+        3px 3px 8px rgba(0, 0, 0, 0.3);
     font-weight: 800;
     letter-spacing: -1px;
     z-index: 100;
     margin: 0;
-    animation: titleBounce 2s ease-in-out infinite;
     white-space: nowrap;
     padding: 0 20px;
 }
@@ -323,11 +328,14 @@ p.small {
     font-weight: 800;
     color: var(--house-red);
     text-shadow:
-        3px 3px 0 rgba(255, 255, 255, 0.8),
-        4px 4px 10px rgba(0, 0, 0, 0.1);
+        -2px -2px 0 white,
+        2px -2px 0 white,
+        -2px 2px 0 white,
+        2px 2px 0 white,
+        0 0 10px rgba(255, 255, 255, 0.8),
+        3px 3px 8px rgba(0, 0, 0, 0.3);
     text-align: center;
     margin: 0;
-    animation: themeTitleBounce 2s ease-in-out infinite;
 }
 
 @keyframes themeTitleBounce {
