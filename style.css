@@ -19,12 +19,13 @@ body {
     font-family: 'Nunito', 'Fredoka', 'Comic Sans MS', sans-serif;
     background: linear-gradient(180deg, var(--sky-blue) 0%, #B8E6FF 100%);
     min-height: 100vh;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--text-dark);
     position: relative;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 /* Заголовок игры (всегда виден вверху) */
@@ -115,6 +116,19 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* Блокируем скролл на экранах запроса микрофона */
+body:has(#micPermissionScreen.active),
+body:has(#micDeniedScreen.active) {
+    overflow: hidden;
+    touch-action: none;
+}
+
+/* Разрешаем скролл на экране игры */
+body:has(#gameScreen.active) {
+    overflow-y: auto;
+    touch-action: pan-y;
 }
 
 .permission-box {
