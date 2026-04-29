@@ -98,7 +98,7 @@ retryMicBtn.addEventListener('click', requestMicrophone);
 // Проверка при загрузке страницы
 window.addEventListener('load', () => {
     console.log('Игра "Прокачай Речь" загружена');
-    console.log('Версия: v1.5.5');
+    console.log('Версия: v1.5.6-debug');
     initLevelMap();
     initControlButtons();
     initLevelScreen();
@@ -153,6 +153,9 @@ function loadProgress() {
     const saved = localStorage.getItem('speechGameProgress');
     if (saved) {
         playerProgress = JSON.parse(saved);
+        console.log('📊 Загружен прогресс:', playerProgress);
+    } else {
+        console.log('📊 Прогресс не найден, начинаем с нуля');
     }
 }
 
@@ -206,11 +209,16 @@ function isLevelUnlocked(levelNum) {
 function initLevelMap() {
     loadProgress();
 
+    console.log('🗺️ Инициализация карты уровней');
+    console.log('📊 Пройденные уровни:', playerProgress.completedLevels);
+
     const islands = document.querySelectorAll('.level-island');
 
     islands.forEach(island => {
         const levelNum = parseInt(island.dataset.level);
         const content = island.querySelector('.island-content');
+
+        console.log(`🏝️ Уровень ${levelNum}: completed=${isLevelCompleted(levelNum)}, unlocked=${isLevelUnlocked(levelNum)}`);
 
         // Удаляем старые замочки и галочки если есть
         const oldLock = content.querySelector('.island-lock');
@@ -223,6 +231,7 @@ function initLevelMap() {
 
         // Устанавливаем состояние острова
         if (isLevelCompleted(levelNum)) {
+            console.log(`✅ Уровень ${levelNum} ПРОЙДЕН - добавляем звездочку`);
             island.classList.remove('locked', 'unlocked');
             island.classList.add('completed');
             // Добавляем звездочку
@@ -231,6 +240,7 @@ function initLevelMap() {
             star.textContent = '⭐';
             content.appendChild(star);
         } else if (isLevelUnlocked(levelNum)) {
+            console.log(`🔓 Уровень ${levelNum} ОТКРЫТ - добавляем цветочек`);
             island.classList.remove('locked', 'completed');
             island.classList.add('unlocked');
             // Добавляем цветочек
@@ -239,6 +249,7 @@ function initLevelMap() {
             flower.textContent = '🌸';
             content.appendChild(flower);
         } else {
+            console.log(`🔒 Уровень ${levelNum} ЗАКРЫТ - добавляем замочек`);
             island.classList.remove('unlocked', 'completed');
             island.classList.add('locked');
             // Добавляем замочек
@@ -289,8 +300,11 @@ function completeLevel(levelNum) {
     if (!playerProgress.completedLevels.includes(levelNum)) {
         playerProgress.completedLevels.push(levelNum);
         saveProgress();
-        initLevelMap(); // Обновляем карту
         console.log(`✅ Уровень ${levelNum} пройден!`);
+        console.log('📊 Обновленный прогресс:', playerProgress);
+        initLevelMap(); // Обновляем карту
+    } else {
+        console.log(`ℹ️ Уровень ${levelNum} уже был пройден ранее`);
     }
 }
 
