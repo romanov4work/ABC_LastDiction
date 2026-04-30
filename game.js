@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 1.7.2 ===
+// === ВЕРСИЯ 1.8.0 ===
 // Экраны
 const micPermissionScreen = document.getElementById('micPermissionScreen');
 const micDeniedScreen = document.getElementById('micDeniedScreen');
@@ -394,7 +394,7 @@ function showMockResults() {
 
 // Настройки распознавателя (можно менять через dev menu)
 let recognizerSettings = {
-    type: 'whisper-small',
+    type: 'web-speech-api',  // По умолчанию Google (быстро и точно)
     apiUrl: 'https://pried-isolation-joystick.ngrok-free.dev'
 };
 
@@ -412,6 +412,40 @@ async function recordAndTranscribe() {
     const recordBtn = document.getElementById('recordBtn');
     const expectedText = document.getElementById('tonguetwisterText').textContent;
 
+    // Проверяем какой распознаватель выбран
+    if (recognizerSettings.type === 'web-speech-api') {
+        // Используем Web Speech API (Google)
+        try {
+            recordBtn.textContent = '🎤 Говорите...';
+            recordBtn.style.background = 'linear-gradient(145deg, #ff4444, #cc0000)';
+            recordBtn.disabled = true;
+
+            const startTime = Date.now();
+            const response = await recognizeWithWebSpeech(expectedText);
+            const recordingTime = ((Date.now() - startTime) / 1000).toFixed(1);
+
+            const recognizedText = response.text;
+            console.log(`📝 Распознано: "${recognizedText}"`);
+
+            // Сравниваем с эталоном
+            const accuracy = calculateAccuracy(expectedText, recognizedText);
+            console.log(`🎯 Точность: ${accuracy}%`);
+
+            // Показываем результаты
+            showResults(recordingTime, accuracy, recognizedText);
+
+        } catch (error) {
+            console.error('❌ Ошибка Web Speech API:', error);
+            alert('Ошибка распознавания речи. Попробуй еще раз!\n\n' + error.message);
+        } finally {
+            recordBtn.textContent = '🎤 Записать голос';
+            recordBtn.style.background = 'linear-gradient(145deg, #ff6b6b, #ee5a6f)';
+            recordBtn.disabled = false;
+        }
+        return;
+    }
+
+    // Используем Whisper (старая логика с записью)
     try {
         if (!mediaRecorder || mediaRecorder.state === 'inactive') {
             // Начинаем запись
@@ -487,6 +521,52 @@ async function recordAndTranscribe() {
         recordBtn.style.background = 'linear-gradient(145deg, #ff6b6b, #ee5a6f)';
         recordBtn.disabled = false;
     }
+}
+
+// ========== WEB SPEECH API (GOOGLE) ==========
+
+function recognizeWithWebSpeech(expectedText) {
+    return new Promise((resolve, reject) => {
+        // Проверяем поддержку Web Speech API
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (!SpeechRecognition) {
+            reject(new Error('Web Speech API не поддерживается в этом браузере'));
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'ru-RU';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            const confidence = event.results[0][0].confidence;
+
+            console.log(`📝 Web Speech API распознал: "${transcript}" (уверенность: ${(confidence * 100).toFixed(1)}%)`);
+
+            resolve({
+                text: transcript,
+                confidence: confidence,
+                success: true
+            });
+        };
+
+        recognition.onerror = (event) => {
+            console.error('❌ Ошибка Web Speech API:', event.error);
+            reject(new Error(`Web Speech API ошибка: ${event.error}`));
+        };
+
+        recognition.onend = () => {
+            console.log('🎤 Web Speech API завершил работу');
+        };
+
+        // Запускаем распознавание
+        recognition.start();
+        console.log('🎤 Web Speech API начал слушать...');
+    });
 }
 
 // Отправка аудио на Whisper API
