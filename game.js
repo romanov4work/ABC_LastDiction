@@ -167,6 +167,10 @@ function loadProgress() {
     const saved = localStorage.getItem('speechGameProgress');
     if (saved) {
         playerProgress = JSON.parse(saved);
+        // Инициализируем levelStars если его нет
+        if (!playerProgress.levelStars) {
+            playerProgress.levelStars = {};
+        }
         console.log('📊 Загружен прогресс:', playerProgress);
     } else {
         console.log('📊 Прогресс не найден, начинаем с нуля');
