@@ -565,58 +565,66 @@ function showResults(time, accuracy, recognizedText) {
 
 // ========== МОДАЛЬНОЕ ОКНО РАЗРАБОТЧИКА ==========
 
-const versionBtn = document.getElementById('versionBtn');
-const devModal = document.getElementById('devModal');
-const devSaveBtn = document.getElementById('devSaveBtn');
-const devCloseBtn = document.getElementById('devCloseBtn');
+// Инициализация после загрузки DOM
+document.addEventListener('DOMContentLoaded', () => {
+    const versionBtn = document.getElementById('versionBtn');
+    const devModal = document.getElementById('devModal');
+    const devSaveBtn = document.getElementById('devSaveBtn');
+    const devCloseBtn = document.getElementById('devCloseBtn');
 
-// Открытие модального окна при клике на версию
-versionBtn.addEventListener('click', () => {
-    devModal.style.display = 'flex';
-
-    // Загружаем текущие настройки
-    const currentRecognizer = recognizerSettings.type;
-    const radioBtn = document.querySelector(`input[name="recognizer"][value="${currentRecognizer}"]`);
-    if (radioBtn) {
-        radioBtn.checked = true;
+    if (!versionBtn || !devModal) {
+        console.warn('Dev menu elements not found');
+        return;
     }
-});
 
-// Закрытие модального окна
-devCloseBtn.addEventListener('click', () => {
-    devModal.style.display = 'none';
-});
+    // Открытие модального окна при клике на версию
+    versionBtn.addEventListener('click', () => {
+        devModal.style.display = 'flex';
 
-// Закрытие при клике вне окна
-devModal.addEventListener('click', (e) => {
-    if (e.target === devModal) {
+        // Загружаем текущие настройки
+        const currentRecognizer = recognizerSettings.type;
+        const radioBtn = document.querySelector(`input[name="recognizer"][value="${currentRecognizer}"]`);
+        if (radioBtn) {
+            radioBtn.checked = true;
+        }
+    });
+
+    // Закрытие модального окна
+    devCloseBtn.addEventListener('click', () => {
         devModal.style.display = 'none';
-    }
-});
+    });
 
-// Сохранение настроек
-devSaveBtn.addEventListener('click', () => {
-    const selectedRecognizer = document.querySelector('input[name="recognizer"]:checked').value;
+    // Закрытие при клике вне окна
+    devModal.addEventListener('click', (e) => {
+        if (e.target === devModal) {
+            devModal.style.display = 'none';
+        }
+    });
 
-    // Обновляем настройки
-    recognizerSettings.type = selectedRecognizer;
+    // Сохранение настроек
+    devSaveBtn.addEventListener('click', () => {
+        const selectedRecognizer = document.querySelector('input[name="recognizer"]:checked').value;
 
-    // В будущем здесь можно менять API URL для разных моделей
-    switch (selectedRecognizer) {
-        case 'whisper-small':
-            recognizerSettings.apiUrl = 'https://pried-isolation-joystick.ngrok-free.dev';
-            break;
-        // Добавим другие модели позже
-    }
+        // Обновляем настройки
+        recognizerSettings.type = selectedRecognizer;
 
-    // Сохраняем в localStorage
-    localStorage.setItem('recognizerSettings', JSON.stringify(recognizerSettings));
+        // В будущем здесь можно менять API URL для разных моделей
+        switch (selectedRecognizer) {
+            case 'whisper-small':
+                recognizerSettings.apiUrl = 'https://pried-isolation-joystick.ngrok-free.dev';
+                break;
+            // Добавим другие модели позже
+        }
 
-    console.log(`✅ Распознаватель изменен на: ${selectedRecognizer}`);
+        // Сохраняем в localStorage
+        localStorage.setItem('recognizerSettings', JSON.stringify(recognizerSettings));
 
-    // Закрываем окно
-    devModal.style.display = 'none';
+        console.log(`✅ Распознаватель изменен на: ${selectedRecognizer}`);
 
-    // Показываем уведомление
-    alert(`Распознаватель изменен на: ${selectedRecognizer}\n\nНастройки сохранены!`);
+        // Закрываем окно
+        devModal.style.display = 'none';
+
+        // Показываем уведомление
+        alert(`Распознаватель изменен на: ${selectedRecognizer}\n\nНастройки сохранены!`);
+    });
 });
