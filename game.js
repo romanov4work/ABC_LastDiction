@@ -317,8 +317,12 @@ function startLevel(levelNum) {
         document.getElementById('tonguetwisterText').textContent = "Озвучь персонажа мультика";
     }
 
-    // Скрываем результаты
-    document.getElementById('resultSection').style.display = 'none';
+    // Показываем скороговорку, скрываем результаты
+    const tonguetwisterBox = document.querySelector('.tongue-twister-box');
+    const resultSection = document.getElementById('resultSection');
+
+    if (tonguetwisterBox) tonguetwisterBox.style.display = 'block';
+    if (resultSection) resultSection.style.display = 'none';
 
     // Сохраняем текущий уровень
     window.currentLevel = levelNum;
