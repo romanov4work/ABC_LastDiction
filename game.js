@@ -245,14 +245,17 @@ function initLevelMap() {
 
         // Устанавливаем состояние острова
         if (isLevelCompleted(levelNum)) {
-            console.log(`✅ Уровень ${levelNum} ПРОЙДЕН - добавляем звездочку`);
+            const stars = getLevelStars(levelNum);
+            console.log(`✅ Уровень ${levelNum} ПРОЙДЕН - ${stars} звезд`);
             island.classList.remove('locked', 'unlocked');
             island.classList.add('completed');
-            // Добавляем звездочку
-            const star = document.createElement('div');
-            star.className = 'island-decoration';
-            star.textContent = '⭐';
-            content.appendChild(star);
+
+            // Добавляем звезды
+            const starsDiv = document.createElement('div');
+            starsDiv.className = 'island-decoration island-stars';
+            starsDiv.textContent = '⭐'.repeat(stars);
+            starsDiv.style.cssText = 'font-size: 0.6em; line-height: 1;';
+            content.appendChild(starsDiv);
         } else if (isLevelUnlocked(levelNum)) {
             console.log(`🔓 Уровень ${levelNum} ОТКРЫТ - добавляем цветочек`);
             island.classList.remove('locked', 'completed');
@@ -328,6 +331,34 @@ function completeLevel(levelNum) {
     } else {
         console.log(`ℹ️ Уровень ${levelNum} уже был пройден ранее`);
     }
+}
+
+// Сохранение звезд для уровня
+function saveLevelStars(levelNum, stars) {
+    if (!playerProgress.levelStars) {
+        playerProgress.levelStars = {};
+    }
+
+    // Сохраняем только если новый результат лучше
+    const currentStars = playerProgress.levelStars[levelNum] || 0;
+    if (stars > currentStars) {
+        playerProgress.levelStars[levelNum] = stars;
+        saveProgress();
+        console.log(`⭐ Уровень ${levelNum}: ${stars} звезд (было ${currentStars})`);
+    }
+
+    // Если набрал хотя бы 1 звезду - уровень пройден
+    if (stars > 0) {
+        completeLevel(levelNum);
+    }
+}
+
+// Получение звезд для уровня
+function getLevelStars(levelNum) {
+    if (!playerProgress.levelStars) {
+        return 0;
+    }
+    return playerProgress.levelStars[levelNum] || 0;
 }
 
 // ========== ЭКРАН УРОВНЯ ==========
@@ -657,9 +688,64 @@ function showResults(time, accuracy, recognizedText) {
     const tonguetwisterBox = document.querySelector('.tongue-twister-box');
     const timeResult = document.getElementById('timeResult');
     const dictionResult = document.getElementById('dictionResult');
+    const nextLevelBtn = document.getElementById('nextLevelBtn');
 
     timeResult.textContent = `${time} сек`;
     dictionResult.textContent = `${accuracy}%`;
+
+    // Определяем количество звезд
+    let stars = 0;
+    let message = '';
+    let showConfetti = false;
+
+    if (accuracy >= 90 && time <= 3) {
+        stars = 3;
+        message = '🌟 Невероятно! Ты настоящий мастер!';
+        showConfetti = true;
+    } else if (accuracy >= 80 || time <= 3) {
+        stars = 2;
+        message = '✅ Отлично! Так держать!';
+        showConfetti = true;
+    } else if (accuracy >= 70) {
+        stars = 1;
+        message = '👍 Хорошо! Уровень пройден!';
+        showConfetti = true;
+    } else {
+        stars = 0;
+        message = '⚠️ Попробуй еще раз! Нужно минимум 70% дикции';
+        showConfetti = false;
+    }
+
+    // Сохраняем звезды для текущего уровня
+    const currentLevel = window.currentLevel || 1;
+    saveLevelStars(currentLevel, stars);
+
+    // Показываем/скрываем кнопку "Следующий уровень"
+    if (stars > 0) {
+        nextLevelBtn.style.display = 'inline-block';
+    } else {
+        nextLevelBtn.style.display = 'none';
+    }
+
+    // Добавляем сообщение с результатом
+    let messageElement = document.getElementById('resultMessage');
+    if (!messageElement) {
+        messageElement = document.createElement('div');
+        messageElement.id = 'resultMessage';
+        messageElement.style.cssText = 'font-size: 1.5em; font-weight: 800; margin-bottom: 20px; color: var(--text-dark);';
+        resultSection.insertBefore(messageElement, resultSection.querySelector('.result-stats'));
+    }
+    messageElement.textContent = message;
+
+    // Добавляем звезды
+    let starsElement = document.getElementById('resultStars');
+    if (!starsElement) {
+        starsElement = document.createElement('div');
+        starsElement.id = 'resultStars';
+        starsElement.style.cssText = 'font-size: 3em; margin-bottom: 15px;';
+        resultSection.insertBefore(starsElement, messageElement);
+    }
+    starsElement.textContent = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
 
     // Добавляем отображение распознанного текста
     let recognizedTextElement = document.getElementById('recognizedText');
@@ -675,14 +761,16 @@ function showResults(time, accuracy, recognizedText) {
     tonguetwisterBox.style.display = 'none';
     resultSection.style.display = 'block';
 
-    // Запускаем конфетти!
-    confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-    });
+    // Запускаем конфетти только если прошел уровень
+    if (showConfetti) {
+        confetti({
+            particleCount: stars === 3 ? 150 : 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    }
 
-    console.log(`✅ Результаты: ${time} сек, ${accuracy}%, распознано: "${recognizedText}"`);
+    console.log(`✅ Результаты: ${time} сек, ${accuracy}%, ${stars} звезд, распознано: "${recognizedText}"`);
 }
 
 // ========== МОДАЛЬНОЕ ОКНО РАЗРАБОТЧИКА ==========
