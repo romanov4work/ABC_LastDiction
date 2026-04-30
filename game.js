@@ -1,4 +1,17 @@
-// === ВЕРСИЯ 1.8.0 ===
+// === ВЕРСИЯ 1.8.1 ===
+
+// Скороговорки для каждого уровня
+const tongueTwisters = {
+    1: "Шла Саша по шоссе",
+    2: "Карл у Клары украл кораллы",
+    3: "Ехал Грека через реку",
+    4: "Белый снег белый мел",
+    5: null, // Озвучка мультика - без скороговорки
+    6: "Три сороки три трещотки",
+    7: "Купи кипу пик",
+    8: "От топота копыт пыль по полю летит"
+};
+
 // Экраны
 const micPermissionScreen = document.getElementById('micPermissionScreen');
 const micDeniedScreen = document.getElementById('micDeniedScreen');
@@ -289,6 +302,14 @@ function startLevel(levelNum) {
     // Устанавливаем номер уровня
     document.getElementById('currentLevelNum').textContent = levelNum;
 
+    // Загружаем скороговорку для уровня
+    const twister = tongueTwisters[levelNum];
+    if (twister) {
+        document.getElementById('tonguetwisterText').textContent = twister;
+    } else {
+        document.getElementById('tonguetwisterText').textContent = "Озвучь персонажа мультика";
+    }
+
     // Скрываем результаты
     document.getElementById('resultSection').style.display = 'none';
 
@@ -431,8 +452,8 @@ async function recordAndTranscribe() {
             const accuracy = calculateAccuracy(expectedText, recognizedText);
             console.log(`🎯 Точность: ${accuracy}%`);
 
-            // Показываем результаты
-            showResults(recordingTime, accuracy, recognizedText);
+            // Показываем результаты с префиксом модели
+            showResults(recordingTime, accuracy, `[Web Speech API] ${recognizedText}`);
 
         } catch (error) {
             console.error('❌ Ошибка Web Speech API:', error);
@@ -491,8 +512,8 @@ async function recordAndTranscribe() {
                     const accuracy = calculateAccuracy(expectedText, recognizedText);
                     console.log(`🎯 Точность: ${accuracy}%`);
 
-                    // Показываем результаты (передаем распознанный текст)
-                    showResults(recordingTime, accuracy, recognizedText);
+                    // Показываем результаты (передаем распознанный текст с префиксом)
+                    showResults(recordingTime, accuracy, `[Whisper Small] ${recognizedText}`);
 
                 } catch (error) {
                     console.error('❌ Ошибка распознавания:', error);
