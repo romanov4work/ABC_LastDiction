@@ -1125,7 +1125,6 @@ p.small {
     cursor: pointer;
     transition: all 0.3s ease;
     z-index: 999;
-    animation: catBounce 2s ease-in-out infinite;
 }
 
 .cat-helper:hover {
@@ -1134,7 +1133,7 @@ p.small {
 }
 
 .cat-body {
-    font-size: 3em;
+    font-size: 1.5em;
     animation: catWave 1.5s ease-in-out infinite;
 }
 
