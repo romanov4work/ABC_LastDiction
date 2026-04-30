@@ -360,7 +360,11 @@ function initLevelScreen() {
 
     // Кнопка "Повторить"
     retryBtn.addEventListener('click', () => {
-        document.getElementById('resultSection').style.display = 'none';
+        const resultSection = document.getElementById('resultSection');
+        const tonguetwisterBox = document.querySelector('.tongue-twister-box');
+
+        resultSection.style.display = 'none';
+        tonguetwisterBox.style.display = 'block';
     });
 
     // Кнопка "Следующий уровень"
@@ -650,6 +654,7 @@ function calculateAccuracy(expected, recognized) {
 // Показать реальные результаты
 function showResults(time, accuracy, recognizedText) {
     const resultSection = document.getElementById('resultSection');
+    const tonguetwisterBox = document.querySelector('.tongue-twister-box');
     const timeResult = document.getElementById('timeResult');
     const dictionResult = document.getElementById('dictionResult');
 
@@ -666,7 +671,16 @@ function showResults(time, accuracy, recognizedText) {
     }
     recognizedTextElement.innerHTML = `<strong>Распознано:</strong> "${recognizedText}"`;
 
+    // Скрываем скороговорку, показываем результат
+    tonguetwisterBox.style.display = 'none';
     resultSection.style.display = 'block';
+
+    // Запускаем конфетти!
+    confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+    });
 
     console.log(`✅ Результаты: ${time} сек, ${accuracy}%, распознано: "${recognizedText}"`);
 }
