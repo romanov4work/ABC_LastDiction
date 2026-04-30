@@ -1133,7 +1133,7 @@ p.small {
 }
 
 .cat-body {
-    font-size: 1.5em;
+    font-size: 3em;
     animation: catWave 1.5s ease-in-out infinite;
 }
 
