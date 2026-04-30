@@ -919,4 +919,32 @@ document.addEventListener('DOMContentLoaded', () => {
         // Показываем уведомление
         alert(`Распознаватель изменен на: ${selectedRecognizer}\n\nНастройки сохранены!`);
     });
+
+    // Кнопка "Сбросить прогресс"
+    const devResetBtn = document.getElementById('devResetBtn');
+    if (devResetBtn) {
+        devResetBtn.addEventListener('click', () => {
+            if (confirm('Вы уверены? Это удалит все звезды и пройденные уровни!')) {
+                // Очищаем прогресс
+                localStorage.removeItem('speechGameProgress');
+                localStorage.removeItem('hasSeenCatGreeting');
+
+                // Сбрасываем в памяти
+                playerProgress = {
+                    completedLevels: [],
+                    levelStars: {}
+                };
+
+                console.log('🔄 Прогресс сброшен!');
+
+                // Закрываем окно
+                devModal.style.display = 'none';
+
+                // Обновляем карту
+                initLevelMap();
+
+                alert('Прогресс сброшен! Игра как для нового пользователя.');
+            }
+        });
+    }
 });
