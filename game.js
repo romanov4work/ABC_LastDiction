@@ -261,9 +261,21 @@ function initLevelMap() {
             const starsDiv = document.createElement('div');
             starsDiv.className = 'island-stars';
             // Используем HTML символы звезд (не эмодзи!)
-            // ★ - закрашенная звезда, ☆ - незакрашенная
-            starsDiv.innerHTML = '★'.repeat(stars) + '☆'.repeat(3 - stars);
-            starsDiv.style.cssText = 'font-size: 0.9em; line-height: 1; margin-bottom: 2px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5);';
+            starsDiv.innerHTML = '<span class="filled-stars">' + '★'.repeat(stars) + '</span>' +
+                                '<span class="empty-stars">' + '☆'.repeat(3 - stars) + '</span>';
+            starsDiv.style.cssText = 'font-size: 0.9em; line-height: 1; margin-bottom: 2px;';
+
+            // Стили для закрашенных и незакрашенных звезд
+            const filledStars = starsDiv.querySelector('.filled-stars');
+            const emptyStars = starsDiv.querySelector('.empty-stars');
+
+            if (filledStars) {
+                filledStars.style.cssText = 'color: white; -webkit-text-stroke: 1.5px gold; text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);';
+            }
+            if (emptyStars) {
+                emptyStars.style.cssText = 'color: #666; -webkit-text-stroke: 1px #999;';
+            }
+
             // Вставляем ПЕРЕД номером уровня
             content.insertBefore(starsDiv, content.firstChild);
         } else if (isLevelUnlocked(levelNum)) {
@@ -775,7 +787,20 @@ function showResults(time, accuracy, recognizedText) {
         starsElement.style.cssText = 'font-size: 3em; margin-bottom: 15px;';
         resultSection.insertBefore(starsElement, messageElement);
     }
-    starsElement.textContent = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
+    // Используем HTML символы вместо эмодзи
+    starsElement.innerHTML = '<span class="filled-stars">' + '★'.repeat(stars) + '</span>' +
+                             '<span class="empty-stars">' + '☆'.repeat(3 - stars) + '</span>';
+
+    // Стили для звезд
+    const filledStars = starsElement.querySelector('.filled-stars');
+    const emptyStars = starsElement.querySelector('.empty-stars');
+
+    if (filledStars) {
+        filledStars.style.cssText = 'color: white; -webkit-text-stroke: 2px gold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);';
+    }
+    if (emptyStars) {
+        emptyStars.style.cssText = 'color: #666; -webkit-text-stroke: 1px #999;';
+    }
 
     // Добавляем отображение распознанного текста
     let recognizedTextElement = document.getElementById('recognizedText');
