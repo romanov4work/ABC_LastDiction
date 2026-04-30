@@ -402,16 +402,26 @@ function initLevelScreen() {
     nextLevelBtn.addEventListener('click', () => {
         const currentLevel = window.currentLevel || 1;
 
-        // Отмечаем уровень как пройденный
-        completeLevel(currentLevel);
+        // Отмечаем уровень как пройденный (уже сделано в saveLevelStars)
+        // completeLevel уже вызван в saveLevelStars
 
-        // Переходим на следующий уровень если он открыт
+        // Скрываем результат, показываем скороговорку для следующего уровня
+        const resultSection = document.getElementById('resultSection');
+        const tonguetwisterBox = document.querySelector('.tongue-twister-box');
+
+        resultSection.style.display = 'none';
+        tonguetwisterBox.style.display = 'block';
+
+        // Переходим на следующий уровень
         const nextLevel = currentLevel + 1;
-        if (isLevelUnlocked(nextLevel)) {
+
+        if (nextLevel <= 8 && tongueTwisters[nextLevel] !== undefined) {
+            // Запускаем следующий уровень
             startLevel(nextLevel);
         } else {
-            // Возвращаемся на карту
+            // Все уровни пройдены - возвращаемся на карту
             showScreen(gameScreen);
+            initLevelMap(); // Обновляем карту со звездами
         }
     });
 }
