@@ -2,10 +2,10 @@
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
-    1: "Шла Саша по шоссе",
+    1: "Белый снег белый мел",
     2: "Мама мыла Милу мылом",
-    3: "Шесть мышат в шалаше шуршат",
-    4: "Четыре черненьких чумазеньких чертенка",
+    3: "Три сороки три трещотки",
+    4: "Четыре чёрненьких чумазеньких чертёнка",
     5: null, // Озвучка мультика - без скороговорки
     6: "На дворе трава на траве дрова",
     7: "Корабли лавировали лавировали да не вылавировали",
@@ -342,8 +342,15 @@ function initLevelScreen() {
 
     // Кнопка "Послушать" - озвучка скороговорки
     listenBtn.addEventListener('click', () => {
-        const text = document.getElementById('tonguetwisterText').textContent;
-        speakText(text);
+        // Проигрываем аудиофайл для текущего уровня
+        const audioPath = `assets/audio/level${currentLevel}.mp3`;
+        const audio = new Audio(audioPath);
+        audio.play().catch(error => {
+            console.error('Ошибка воспроизведения:', error);
+            // Fallback на синтез речи если аудио не загрузилось
+            const text = document.getElementById('tonguetwisterText').textContent;
+            speakText(text);
+        });
     });
 
     // Кнопка "Записать голос" - реальная запись с Whisper
@@ -668,6 +675,33 @@ function showResults(time, accuracy, recognizedText) {
 
 // Инициализация после загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
+    // Приветствие кота при первом входе
+    const catHelper = document.getElementById('catHelper');
+    const hasSeenCatGreeting = localStorage.getItem('hasSeenCatGreeting');
+
+    if (!hasSeenCatGreeting && catHelper) {
+        setTimeout(() => {
+            const greetingAudio = new Audio('assets/audio/cat_greeting.mp3');
+            greetingAudio.play().catch(error => {
+                console.log('Не удалось воспроизвести приветствие кота:', error);
+            });
+            localStorage.setItem('hasSeenCatGreeting', 'true');
+
+            // Анимация кота при приветствии
+            catHelper.style.animation = 'catBounce 0.5s ease-in-out 3';
+        }, 1000);
+    }
+
+    // Клик по коту - повторное приветствие
+    if (catHelper) {
+        catHelper.addEventListener('click', () => {
+            const greetingAudio = new Audio('assets/audio/cat_greeting.mp3');
+            greetingAudio.play().catch(error => {
+                console.log('Не удалось воспроизвести приветствие кота:', error);
+            });
+        });
+    }
+
     const versionBtn = document.getElementById('versionBtn');
     const devModal = document.getElementById('devModal');
     const devSaveBtn = document.getElementById('devSaveBtn');

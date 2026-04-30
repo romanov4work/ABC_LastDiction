@@ -1107,3 +1107,53 @@ p.small {
 .deploy-version:hover {
     transform: scale(1.1);
 }
+
+/* Кот-помощник */
+.cat-helper {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(145deg, #ff9a3c, #ff7b00);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(255, 123, 0, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 999;
+    animation: catBounce 2s ease-in-out infinite;
+}
+
+.cat-helper:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 12px 30px rgba(255, 123, 0, 0.6);
+}
+
+.cat-body {
+    font-size: 3em;
+    animation: catWave 1.5s ease-in-out infinite;
+}
+
+@keyframes catBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes catWave {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-10deg);
+    }
+    75% {
+        transform: rotate(10deg);
+    }
+}
