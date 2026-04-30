@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 2.0.3 ===
+// === ВЕРСИЯ 2.0.4 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -395,6 +395,17 @@ function startLevel(levelNum) {
 
     // Сохраняем текущий уровень
     window.currentLevel = levelNum;
+
+    // Автоматически проигрываем скороговорку при входе на уровень
+    if (twister) {
+        const audioPath = `assets/audio/level${levelNum}.mp3`;
+        const audio = new Audio(audioPath);
+        audio.play().catch(error => {
+            console.error('Ошибка автовоспроизведения:', error);
+            // Fallback на синтез речи если аудио не загрузилось
+            speakText(twister);
+        });
+    }
 }
 
 // Завершение уровня (вызывается после прохождения)

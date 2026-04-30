@@ -718,7 +718,43 @@ p.small {
     font-weight: 700;
     color: var(--text-dark);
     line-height: 1.5;
+    margin: 0;
+    flex: 1;
+}
+
+/* Строка со скороговоркой и кнопкой прослушивания */
+.tongue-twister-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     margin-bottom: 20px;
+}
+
+/* Маленькая кнопка прослушивания (только иконка) */
+.btn-listen-small {
+    background: linear-gradient(135deg, var(--sun-yellow) 0%, #FFC93D 100%);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 0 #E6B82D, 0 6px 15px rgba(255, 217, 61, 0.3);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-listen-small:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 0 #E6B82D, 0 10px 20px rgba(255, 217, 61, 0.4);
+}
+
+.btn-listen-small:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 0 #E6B82D, 0 4px 10px rgba(255, 217, 61, 0.3);
 }
 
 .btn-listen {
