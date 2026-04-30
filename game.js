@@ -262,7 +262,7 @@ function initLevelMap() {
             starsDiv.className = 'island-stars';
             // Закрашенные звезды + незакрашенные (всего 3)
             starsDiv.textContent = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
-            starsDiv.style.cssText = 'font-size: 0.8em; line-height: 1; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); margin-bottom: 2px;';
+            starsDiv.style.cssText = 'font-size: 0.8em; line-height: 1; margin-bottom: 2px; filter: brightness(0) invert(1);';
             // Вставляем ПЕРЕД номером уровня
             content.insertBefore(starsDiv, content.firstChild);
         } else if (isLevelUnlocked(levelNum)) {
