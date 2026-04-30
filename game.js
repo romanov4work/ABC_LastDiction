@@ -131,6 +131,7 @@ function initControlButtons() {
         if (levelScreen.classList.contains('active')) {
             // Если в уровне - возвращаемся на карту
             showScreen(gameScreen);
+            initLevelMap(); // Обновляем карту со звездами
             console.log('Возврат на карту уровней');
         } else {
             // Если в меню - переход на Учи.ру
@@ -238,14 +239,16 @@ function initLevelMap() {
 
         console.log(`🏝️ Уровень ${levelNum}: completed=${isLevelCompleted(levelNum)}, unlocked=${isLevelUnlocked(levelNum)}`);
 
-        // Удаляем старые замочки и галочки если есть
+        // Удаляем старые элементы
         const oldLock = content.querySelector('.island-lock');
         const oldCheck = content.querySelector('.island-check');
         const oldDecoration = content.querySelector('.island-decoration');
+        const oldStars = content.querySelector('.island-stars');
 
         if (oldLock) oldLock.remove();
         if (oldCheck) oldCheck.remove();
         if (oldDecoration) oldDecoration.remove();
+        if (oldStars) oldStars.remove();
 
         // Устанавливаем состояние острова
         if (isLevelCompleted(levelNum)) {
@@ -254,13 +257,14 @@ function initLevelMap() {
             island.classList.remove('locked', 'unlocked');
             island.classList.add('completed');
 
-            // Добавляем звезды (закрашенные + незакрашенные)
+            // Добавляем звезды СВЕРХУ (перед номером)
             const starsDiv = document.createElement('div');
-            starsDiv.className = 'island-decoration island-stars';
+            starsDiv.className = 'island-stars';
             // Закрашенные звезды + незакрашенные (всего 3)
             starsDiv.textContent = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
-            starsDiv.style.cssText = 'font-size: 0.6em; line-height: 1; margin-top: 2px;';
-            content.appendChild(starsDiv);
+            starsDiv.style.cssText = 'font-size: 0.8em; line-height: 1; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.3); margin-bottom: 2px;';
+            // Вставляем ПЕРЕД номером уровня
+            content.insertBefore(starsDiv, content.firstChild);
         } else if (isLevelUnlocked(levelNum)) {
             console.log(`🔓 Уровень ${levelNum} ОТКРЫТ - добавляем цветочек`);
             island.classList.remove('locked', 'completed');
@@ -408,6 +412,9 @@ function initLevelScreen() {
 
         resultSection.style.display = 'none';
         tonguetwisterBox.style.display = 'block';
+
+        // Обновляем карту уровней (на случай если пользователь вернется)
+        initLevelMap();
     });
 
     // Кнопка "Следующий уровень"
