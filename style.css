@@ -733,6 +733,9 @@ p.small {
     transition: all 0.2s ease;
     font-family: 'Nunito', sans-serif;
     box-shadow: 0 6px 0 #E6B82D, 0 10px 20px rgba(255, 217, 61, 0.3);
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 300px;
 }
 
 .btn-listen:hover {
@@ -743,11 +746,6 @@ p.small {
 .btn-listen:active {
     transform: translateY(1px);
     box-shadow: 0 4px 0 #E6B82D, 0 6px 15px rgba(255, 217, 61, 0.3);
-}
-
-.record-section {
-    text-align: center;
-    width: 100%;
 }
 
 .btn-record {
@@ -762,6 +760,9 @@ p.small {
     transition: all 0.2s ease;
     font-family: 'Nunito', sans-serif;
     box-shadow: 0 8px 0 #D43F3F, 0 12px 25px rgba(255, 107, 107, 0.4);
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 300px;
 }
 
 .btn-record:hover {
@@ -775,10 +776,10 @@ p.small {
 }
 
 .record-hint {
-    margin-top: 15px;
-    font-size: 1.1em;
-    color: var(--text-dark);
-    font-weight: 600;
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #666;
+    font-weight: 500;
 }
 
 .result-section {
@@ -1115,12 +1116,12 @@ p.small {
     right: 20px;
     width: 100px;
     height: 100px;
-    background: linear-gradient(145deg, #ff9a3c, #ff7b00);
+    background: white;
     border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 20px rgba(255, 123, 0, 0.4);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     transition: all 0.3s ease;
     z-index: 999;
@@ -1129,7 +1130,7 @@ p.small {
 
 .cat-helper:hover {
     transform: scale(1.1) translateY(-5px);
-    box-shadow: 0 12px 30px rgba(255, 123, 0, 0.6);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
 }
 
 .cat-body {
