@@ -146,15 +146,15 @@ async function checkMicrophonePermission() {
                 // Доступ уже есть - сразу показываем игру
                 hasMicPermission = true;
                 showScreen(gameScreen);
+                return; // ВАЖНО: выходим из функции
             } else if (permissionStatus.state === 'denied') {
                 // Доступ запрещен - показываем экран отказа
                 hasMicPermission = false;
                 showScreen(micDeniedScreen);
-            } else {
-                // Доступ не запрошен - показываем экран запроса
-                hasMicPermission = false;
-                showScreen(micPermissionScreen);
+                return; // ВАЖНО: выходим из функции
             }
+
+            // Если state === 'prompt' - продолжаем ниже
 
             // Слушаем изменения разрешения
             permissionStatus.onchange = () => {
@@ -166,10 +166,11 @@ async function checkMicrophonePermission() {
                     showScreen(gameScreen);
                 }
             };
-        } else {
-            // Permissions API не поддерживается - показываем запрос
-            showScreen(micPermissionScreen);
         }
+
+        // Если Permissions API не поддерживается ИЛИ state === 'prompt'
+        // Показываем экран запроса
+        showScreen(micPermissionScreen);
     } catch (error) {
         console.error('Ошибка проверки микрофона:', error);
         showScreen(micPermissionScreen);
