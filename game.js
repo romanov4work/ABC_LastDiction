@@ -392,7 +392,17 @@ function showMockResults() {
 
 // ========== ЗАПИСЬ И РАСПОЗНАВАНИЕ ГОЛОСА ==========
 
-const WHISPER_API_URL = 'https://pried-isolation-joystick.ngrok-free.dev'; // Ngrok tunnel к Whisper
+// Настройки распознавателя (можно менять через dev menu)
+let recognizerSettings = {
+    type: 'whisper-small',
+    apiUrl: 'https://pried-isolation-joystick.ngrok-free.dev'
+};
+
+// Загружаем настройки из localStorage
+const savedSettings = localStorage.getItem('recognizerSettings');
+if (savedSettings) {
+    recognizerSettings = JSON.parse(savedSettings);
+}
 
 let mediaRecorder = null;
 let audioChunks = [];
@@ -484,7 +494,7 @@ async function sendToWhisper(audioBlob) {
     const formData = new FormData();
     formData.append('audio', audioBlob, 'recording.webm');
 
-    const response = await fetch(`${WHISPER_API_URL}/transcribe`, {
+    const response = await fetch(`${recognizerSettings.apiUrl}/transcribe`, {
         method: 'POST',
         headers: {
             'ngrok-skip-browser-warning': 'true'  // Пропускаем предупреждение ngrok
@@ -552,3 +562,61 @@ function showResults(time, accuracy, recognizedText) {
 
     console.log(`✅ Результаты: ${time} сек, ${accuracy}%, распознано: "${recognizedText}"`);
 }
+
+// ========== МОДАЛЬНОЕ ОКНО РАЗРАБОТЧИКА ==========
+
+const versionBtn = document.getElementById('versionBtn');
+const devModal = document.getElementById('devModal');
+const devSaveBtn = document.getElementById('devSaveBtn');
+const devCloseBtn = document.getElementById('devCloseBtn');
+
+// Открытие модального окна при клике на версию
+versionBtn.addEventListener('click', () => {
+    devModal.style.display = 'flex';
+
+    // Загружаем текущие настройки
+    const currentRecognizer = recognizerSettings.type;
+    const radioBtn = document.querySelector(`input[name="recognizer"][value="${currentRecognizer}"]`);
+    if (radioBtn) {
+        radioBtn.checked = true;
+    }
+});
+
+// Закрытие модального окна
+devCloseBtn.addEventListener('click', () => {
+    devModal.style.display = 'none';
+});
+
+// Закрытие при клике вне окна
+devModal.addEventListener('click', (e) => {
+    if (e.target === devModal) {
+        devModal.style.display = 'none';
+    }
+});
+
+// Сохранение настроек
+devSaveBtn.addEventListener('click', () => {
+    const selectedRecognizer = document.querySelector('input[name="recognizer"]:checked').value;
+
+    // Обновляем настройки
+    recognizerSettings.type = selectedRecognizer;
+
+    // В будущем здесь можно менять API URL для разных моделей
+    switch (selectedRecognizer) {
+        case 'whisper-small':
+            recognizerSettings.apiUrl = 'https://pried-isolation-joystick.ngrok-free.dev';
+            break;
+        // Добавим другие модели позже
+    }
+
+    // Сохраняем в localStorage
+    localStorage.setItem('recognizerSettings', JSON.stringify(recognizerSettings));
+
+    console.log(`✅ Распознаватель изменен на: ${selectedRecognizer}`);
+
+    // Закрываем окно
+    devModal.style.display = 'none';
+
+    // Показываем уведомление
+    alert(`Распознаватель изменен на: ${selectedRecognizer}\n\nНастройки сохранены!`);
+});

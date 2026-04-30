@@ -179,7 +179,28 @@
     <div class="cloud cloud-8">☁️</div>
 
     <!-- Номер деплоя -->
-    <div class="deploy-version">v1.7.1</div>
+    <div class="deploy-version" id="versionBtn">v1.7.1</div>
+
+    <!-- Модальное окно разработчика -->
+    <div id="devModal" class="dev-modal" style="display: none;">
+        <div class="dev-modal-content">
+            <h2>🔧 Меню разработчика</h2>
+            <div class="dev-section">
+                <h3>Распознаватель речи:</h3>
+                <div class="recognizer-options">
+                    <label class="recognizer-option">
+                        <input type="radio" name="recognizer" value="whisper-small" checked>
+                        <span>Whisper Small (текущий)</span>
+                        <small>Точность: ~6-8% ошибок, Время: ~10 сек</small>
+                    </label>
+                </div>
+            </div>
+            <div class="dev-actions">
+                <button id="devSaveBtn" class="btn-primary">Сохранить</button>
+                <button id="devCloseBtn" class="btn-secondary">Закрыть</button>
+            </div>
+        </div>
+    </div>
 
     <script src="game.js"></script>
 </body>
