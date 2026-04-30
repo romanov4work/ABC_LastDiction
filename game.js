@@ -65,6 +65,18 @@ async function startRecording() {
         // Только ЗДЕСЬ начинаем реально слушать микрофон
         micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
         console.log('🎤 Микрофон начал запись');
+        hasMicPermission = true;
+        return micStream;
+    } catch (error) {
+        console.error('✗ Ошибка доступа к микрофону:', error);
+        hasMicPermission = false;
+
+        // Показываем экран отказа
+        showScreen(micDeniedScreen);
+
+        return null;
+    }
+}
         return micStream;
     } catch (error) {
         console.error('Ошибка при начале записи:', error);
@@ -110,13 +122,59 @@ requestMicBtn.addEventListener('click', requestMicrophone);
 retryMicBtn.addEventListener('click', requestMicrophone);
 
 // Проверка при загрузке страницы
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
     console.log('Игра "Прокачай Речь" загружена');
-    console.log('Версия: v1.6.1-ngrok');
+    console.log('Версия: v2.0.0');
     initLevelMap();
     initControlButtons();
     initLevelScreen();
+
+    // Проверяем доступ к микрофону
+    await checkMicrophonePermission();
 });
+
+// Функция проверки доступа к микрофону
+async function checkMicrophonePermission() {
+    try {
+        // Проверяем через Permissions API
+        if (navigator.permissions && navigator.permissions.query) {
+            const permissionStatus = await navigator.permissions.query({ name: 'microphone' });
+
+            console.log(`🎤 Статус микрофона: ${permissionStatus.state}`);
+
+            if (permissionStatus.state === 'granted') {
+                // Доступ уже есть - сразу показываем игру
+                hasMicPermission = true;
+                showScreen(gameScreen);
+            } else if (permissionStatus.state === 'denied') {
+                // Доступ запрещен - показываем экран отказа
+                hasMicPermission = false;
+                showScreen(micDeniedScreen);
+            } else {
+                // Доступ не запрошен - показываем экран запроса
+                hasMicPermission = false;
+                showScreen(micPermissionScreen);
+            }
+
+            // Слушаем изменения разрешения
+            permissionStatus.onchange = () => {
+                console.log(`🎤 Статус микрофона изменился: ${permissionStatus.state}`);
+                if (permissionStatus.state === 'denied') {
+                    showScreen(micDeniedScreen);
+                } else if (permissionStatus.state === 'granted') {
+                    hasMicPermission = true;
+                    showScreen(gameScreen);
+                }
+            };
+        } else {
+            // Permissions API не поддерживается - показываем запрос
+            showScreen(micPermissionScreen);
+        }
+    } catch (error) {
+        console.error('Ошибка проверки микрофона:', error);
+        showScreen(micPermissionScreen);
+    }
+}
 
 // ========== КНОПКИ УПРАВЛЕНИЯ ==========
 
