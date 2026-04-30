@@ -260,9 +260,10 @@ function initLevelMap() {
             // Добавляем звезды СВЕРХУ (перед номером)
             const starsDiv = document.createElement('div');
             starsDiv.className = 'island-stars';
-            // Закрашенные звезды + незакрашенные (всего 3)
-            starsDiv.textContent = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
-            starsDiv.style.cssText = 'font-size: 0.8em; line-height: 1; margin-bottom: 2px; filter: brightness(0) invert(1);';
+            // Используем HTML символы звезд (не эмодзи!)
+            // ★ - закрашенная звезда, ☆ - незакрашенная
+            starsDiv.innerHTML = '★'.repeat(stars) + '☆'.repeat(3 - stars);
+            starsDiv.style.cssText = 'font-size: 0.9em; line-height: 1; margin-bottom: 2px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5);';
             // Вставляем ПЕРЕД номером уровня
             content.insertBefore(starsDiv, content.firstChild);
         } else if (isLevelUnlocked(levelNum)) {
