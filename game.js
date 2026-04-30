@@ -77,14 +77,6 @@ async function startRecording() {
         return null;
     }
 }
-        return micStream;
-    } catch (error) {
-        console.error('Ошибка при начале записи:', error);
-        hasMicPermission = false;
-        showScreen(micPermissionScreen);
-        return null;
-    }
-}
 
 // Функция для остановки записи
 function stopRecording() {
