@@ -254,11 +254,12 @@ function initLevelMap() {
             island.classList.remove('locked', 'unlocked');
             island.classList.add('completed');
 
-            // Добавляем звезды
+            // Добавляем звезды (закрашенные + незакрашенные)
             const starsDiv = document.createElement('div');
             starsDiv.className = 'island-decoration island-stars';
-            starsDiv.textContent = '⭐'.repeat(stars);
-            starsDiv.style.cssText = 'font-size: 0.6em; line-height: 1;';
+            // Закрашенные звезды + незакрашенные (всего 3)
+            starsDiv.textContent = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
+            starsDiv.style.cssText = 'font-size: 0.6em; line-height: 1; margin-top: 2px;';
             content.appendChild(starsDiv);
         } else if (isLevelUnlocked(levelNum)) {
             console.log(`🔓 Уровень ${levelNum} ОТКРЫТ - добавляем цветочек`);
@@ -353,6 +354,9 @@ function saveLevelStars(levelNum, stars) {
         playerProgress.levelStars[levelNum] = stars;
         saveProgress();
         console.log(`⭐ Уровень ${levelNum}: ${stars} звезд (было ${currentStars})`);
+        console.log(`📊 Все звезды:`, playerProgress.levelStars);
+    } else {
+        console.log(`⭐ Уровень ${levelNum}: оставляем ${currentStars} звезд (новый результат ${stars})`);
     }
 
     // Если набрал хотя бы 1 звезду - уровень пройден
