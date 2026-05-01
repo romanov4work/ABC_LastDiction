@@ -704,7 +704,7 @@ p.small {
 }
 
 .tongue-twister-text {
-    font-size: 5vw;
+    font-size: 10vw;
     font-weight: 700;
     color: var(--text-dark);
     line-height: 1.4;
@@ -715,7 +715,7 @@ p.small {
 
 @media (min-width: 600px) {
     .tongue-twister-text {
-        font-size: 2em;
+        font-size: 4em;
     }
 }
 
