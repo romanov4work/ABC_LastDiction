@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 2.1.7 ===
+// === ВЕРСИЯ 2.1.8 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -636,7 +636,7 @@ function recognizeWithWebSpeech(expectedText) {
 
         const recognition = new SpeechRecognition();
         recognition.lang = 'ru-RU';
-        recognition.continuous = false;
+        recognition.continuous = true;
         recognition.interimResults = false;
         recognition.maxAlternatives = 1;
 
