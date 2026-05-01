@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.0.4 ===
+// === ВЕРСИЯ 3.0.5 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -421,8 +421,12 @@ function startLevel(levelNum) {
             if (words[i + 1]) formattedText += ' ' + words[i + 1];
         }
         document.getElementById('tonguetwisterText').innerHTML = formattedText;
+
+        // Сохраняем оригинальный текст для распознавания
+        window.currentTwister = twister;
     } else {
         document.getElementById('tonguetwisterText').textContent = "Озвучь персонажа мультика";
+        window.currentTwister = null;
     }
 
     // Показываем скороговорку, скрываем результаты
@@ -588,7 +592,7 @@ function speakText(text) {
 
 async function recordAndTranscribe() {
     const recordBtn = document.getElementById('recordBtn');
-    const expectedText = document.getElementById('tonguetwisterText').textContent;
+    const expectedText = window.currentTwister || document.getElementById('tonguetwisterText').textContent;
 
     // Используем Web Speech API (Google)
     try {
