@@ -1152,47 +1152,6 @@ p.small {
     margin-bottom: 15px;
 }
 
-.recognizer-options {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.recognizer-option {
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.recognizer-option:hover {
-    border-color: var(--grass-green);
-    background: rgba(126, 200, 80, 0.05);
-}
-
-.recognizer-option input[type="radio"] {
-    margin-right: 10px;
-}
-
-.recognizer-option input[type="radio"]:checked + span {
-    color: var(--grass-green);
-    font-weight: 600;
-}
-
-.recognizer-option span {
-    font-size: 1.1em;
-    margin-bottom: 5px;
-}
-
-.recognizer-option small {
-    color: #666;
-    font-size: 0.85em;
-    margin-left: 30px;
-}
-
 .dev-actions {
     display: flex;
     gap: 10px;

@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 2.0.5 ===
+// === ВЕРСИЯ 2.1.0 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -504,7 +504,7 @@ function initLevelScreen() {
         });
     });
 
-    // Кнопка "Записать голос" - реальная запись с Whisper
+    // Кнопка "Записать голос"
     recordBtn.addEventListener('click', async () => {
         await recordAndTranscribe();
     });
@@ -588,131 +588,34 @@ function showMockResults() {
 
 // ========== ЗАПИСЬ И РАСПОЗНАВАНИЕ ГОЛОСА ==========
 
-// Настройки распознавателя (можно менять через dev menu)
-let recognizerSettings = {
-    type: 'web-speech-api',  // По умолчанию Google (быстро и точно)
-    apiUrl: 'https://pried-isolation-joystick.ngrok-free.dev'
-};
-
-// Загружаем настройки из localStorage
-const savedSettings = localStorage.getItem('recognizerSettings');
-if (savedSettings) {
-    recognizerSettings = JSON.parse(savedSettings);
-}
-
-let mediaRecorder = null;
-let audioChunks = [];
-let recordingStartTime = 0;
-
 async function recordAndTranscribe() {
     const recordBtn = document.getElementById('recordBtn');
     const expectedText = document.getElementById('tonguetwisterText').textContent;
 
-    // Проверяем какой распознаватель выбран
-    if (recognizerSettings.type === 'web-speech-api') {
-        // Используем Web Speech API (Google)
-        try {
-            recordBtn.textContent = '🎤 Говорите...';
-            recordBtn.style.background = 'linear-gradient(145deg, #ff4444, #cc0000)';
-            recordBtn.disabled = true;
-
-            const startTime = Date.now();
-            const response = await recognizeWithWebSpeech(expectedText);
-            const recordingTime = ((Date.now() - startTime) / 1000).toFixed(1);
-
-            const recognizedText = response.text;
-            console.log(`📝 Распознано: "${recognizedText}"`);
-
-            // Сравниваем с эталоном
-            const accuracy = calculateAccuracy(expectedText, recognizedText);
-            console.log(`🎯 Точность: ${accuracy}%`);
-
-            // Показываем результаты с префиксом модели
-            showResults(recordingTime, accuracy, `[Web Speech API] ${recognizedText}`);
-
-        } catch (error) {
-            console.error('❌ Ошибка Web Speech API:', error);
-            alert('Ошибка распознавания речи. Попробуй еще раз!\n\n' + error.message);
-        } finally {
-            recordBtn.textContent = '🎤 Записать голос';
-            recordBtn.style.background = 'linear-gradient(145deg, #ff6b6b, #ee5a6f)';
-            recordBtn.disabled = false;
-        }
-        return;
-    }
-
-    // Используем Whisper (старая логика с записью)
+    // Используем Web Speech API (Google)
     try {
-        if (!mediaRecorder || mediaRecorder.state === 'inactive') {
-            // Начинаем запись
-            console.log('🎤 Начинаем запись...');
-            recordBtn.textContent = '⏹️ Остановить запись';
-            recordBtn.style.background = 'linear-gradient(145deg, #ff4444, #cc0000)';
+        recordBtn.textContent = '🎤 Говорите...';
+        recordBtn.style.background = 'linear-gradient(145deg, #ff4444, #cc0000)';
+        recordBtn.disabled = true;
 
-            const stream = await startRecording();
-            if (!stream) return;
+        const startTime = Date.now();
+        const response = await recognizeWithWebSpeech(expectedText);
+        const recordingTime = ((Date.now() - startTime) / 1000).toFixed(1);
 
-            audioChunks = [];
-            recordingStartTime = Date.now();
+        const recognizedText = response.text;
+        console.log(`📝 Распознано: "${recognizedText}"`);
 
-            mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+        // Сравниваем с эталоном
+        const accuracy = calculateAccuracy(expectedText, recognizedText);
+        console.log(`🎯 Точность: ${accuracy}%`);
 
-            mediaRecorder.ondataavailable = (event) => {
-                if (event.data.size > 0) {
-                    audioChunks.push(event.data);
-                }
-            };
-
-            mediaRecorder.onstop = async () => {
-                const recordingTime = ((Date.now() - recordingStartTime) / 1000).toFixed(1);
-                console.log(`⏱️ Время записи: ${recordingTime} сек`);
-
-                // Создаем аудио blob
-                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                console.log(`📦 Размер аудио: ${(audioBlob.size / 1024).toFixed(1)} KB`);
-
-                // Останавливаем микрофон
-                stream.getTracks().forEach(track => track.stop());
-
-                // Отправляем на Whisper
-                recordBtn.textContent = '⏳ Распознаем...';
-                recordBtn.disabled = true;
-
-                try {
-                    const response = await sendToWhisper(audioBlob);
-                    const recognizedText = response.text;
-                    console.log(`📝 Распознано: "${recognizedText}"`);
-
-                    // Сравниваем с эталоном
-                    const accuracy = calculateAccuracy(expectedText, recognizedText);
-                    console.log(`🎯 Точность: ${accuracy}%`);
-
-                    // Показываем результаты (передаем распознанный текст с префиксом)
-                    showResults(recordingTime, accuracy, `[Whisper Small] ${recognizedText}`);
-
-                } catch (error) {
-                    console.error('❌ Ошибка распознавания:', error);
-                    alert('Ошибка распознавания речи. Попробуй еще раз!');
-                } finally {
-                    recordBtn.textContent = '🎤 Записать голос';
-                    recordBtn.style.background = 'linear-gradient(145deg, #ff6b6b, #ee5a6f)';
-                    recordBtn.disabled = false;
-                }
-            };
-
-            mediaRecorder.start();
-
-        } else {
-            // Останавливаем запись
-            console.log('⏹️ Останавливаем запись...');
-            mediaRecorder.stop();
-            recordBtn.textContent = '🎤 Записать голос';
-            recordBtn.style.background = 'linear-gradient(145deg, #ff6b6b, #ee5a6f)';
-        }
+        // Показываем результаты
+        showResults(recordingTime, accuracy, recognizedText);
 
     } catch (error) {
-        console.error('❌ Ошибка записи:', error);
-        alert('Ошибка доступа к микрофону!');
+        console.error('❌ Ошибка Web Speech API:', error);
+        alert('Ошибка распознавания речи. Попробуй еще раз!\n\n' + error.message);
+    } finally {
         recordBtn.textContent = '🎤 Записать голос';
         recordBtn.style.background = 'linear-gradient(145deg, #ff6b6b, #ee5a6f)';
         recordBtn.disabled = false;
@@ -763,32 +666,6 @@ function recognizeWithWebSpeech(expectedText) {
         recognition.start();
         console.log('🎤 Web Speech API начал слушать...');
     });
-}
-
-// Отправка аудио на Whisper API
-async function sendToWhisper(audioBlob) {
-    const formData = new FormData();
-    formData.append('audio', audioBlob, 'recording.webm');
-
-    const response = await fetch(`${recognizerSettings.apiUrl}/transcribe`, {
-        method: 'POST',
-        headers: {
-            'ngrok-skip-browser-warning': 'true'  // Пропускаем предупреждение ngrok
-        },
-        body: formData
-    });
-
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-
-    if (!data.success) {
-        throw new Error(data.error || 'Ошибка распознавания');
-    }
-
-    return data;  // Возвращаем весь объект {text, success}
 }
 
 // Сравнение текстов и расчет точности
@@ -952,7 +829,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const versionBtn = document.getElementById('versionBtn');
     const devModal = document.getElementById('devModal');
-    const devSaveBtn = document.getElementById('devSaveBtn');
     const devCloseBtn = document.getElementById('devCloseBtn');
 
     if (!versionBtn || !devModal) {
@@ -963,13 +839,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Открытие модального окна при клике на версию
     versionBtn.addEventListener('click', () => {
         devModal.style.display = 'flex';
-
-        // Загружаем текущие настройки
-        const currentRecognizer = recognizerSettings.type;
-        const radioBtn = document.querySelector(`input[name="recognizer"][value="${currentRecognizer}"]`);
-        if (radioBtn) {
-            radioBtn.checked = true;
-        }
     });
 
     // Закрытие модального окна
@@ -982,33 +851,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === devModal) {
             devModal.style.display = 'none';
         }
-    });
-
-    // Сохранение настроек
-    devSaveBtn.addEventListener('click', () => {
-        const selectedRecognizer = document.querySelector('input[name="recognizer"]:checked').value;
-
-        // Обновляем настройки
-        recognizerSettings.type = selectedRecognizer;
-
-        // В будущем здесь можно менять API URL для разных моделей
-        switch (selectedRecognizer) {
-            case 'whisper-small':
-                recognizerSettings.apiUrl = 'https://pried-isolation-joystick.ngrok-free.dev';
-                break;
-            // Добавим другие модели позже
-        }
-
-        // Сохраняем в localStorage
-        localStorage.setItem('recognizerSettings', JSON.stringify(recognizerSettings));
-
-        console.log(`✅ Распознаватель изменен на: ${selectedRecognizer}`);
-
-        // Закрываем окно
-        devModal.style.display = 'none';
-
-        // Показываем уведомление
-        alert(`Распознаватель изменен на: ${selectedRecognizer}\n\nНастройки сохранены!`);
     });
 
     // Кнопка "Сбросить прогресс"

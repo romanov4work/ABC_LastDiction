@@ -206,7 +206,7 @@
     <div class="cloud cloud-8">☁️</div>
 
     <!-- Номер деплоя -->
-    <div class="deploy-version" id="versionBtn">v2.0.5</div>
+    <div class="deploy-version" id="versionBtn">v2.1.0</div>
 
     <!-- Кот-помощник (справа снизу) -->
     <div class="cat-helper" id="catHelper">
@@ -214,31 +214,16 @@
     </div>
 
     <!-- Модальное окно разработчика -->
+    <!-- Модальное окно разработчика (только сброс прогресса) -->
     <div id="devModal" class="dev-modal" style="display: none;">
         <div class="dev-modal-content">
             <h2>🔧 Меню разработчика</h2>
-            <div class="dev-section">
-                <h3>Распознаватель речи:</h3>
-                <div class="recognizer-options">
-                    <label class="recognizer-option">
-                        <input type="radio" name="recognizer" value="web-speech-api" checked>
-                        <span>Web Speech API (Google) - Рекомендуется</span>
-                        <small>Точность: отлично, Время: мгновенно, Требует: интернет</small>
-                    </label>
-                    <label class="recognizer-option">
-                        <input type="radio" name="recognizer" value="whisper-small">
-                        <span>Whisper Small (offline)</span>
-                        <small>Точность: ~6-8% ошибок, Время: ~10 сек, Работает: offline</small>
-                    </label>
-                </div>
-            </div>
             <div class="dev-section">
                 <h3>Прогресс игры:</h3>
                 <button id="devResetBtn" class="btn-secondary" style="width: 100%; margin-top: 10px;">🔄 Сбросить прогресс</button>
                 <small style="display: block; margin-top: 5px; color: #999;">Удалит все звезды и пройденные уровни</small>
             </div>
             <div class="dev-actions">
-                <button id="devSaveBtn" class="btn-primary">Сохранить</button>
                 <button id="devCloseBtn" class="btn-secondary">Закрыть</button>
             </div>
         </div>
