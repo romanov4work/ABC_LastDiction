@@ -703,10 +703,10 @@ p.small {
 }
 
 .tongue-twister-text {
-    font-size: 1.4em;
+    font-size: 1.2em;
     font-weight: 700;
     color: var(--text-dark);
-    line-height: 1.4;
+    line-height: 1.3;
     margin: 0;
     flex: 1;
 }
@@ -715,7 +715,7 @@ p.small {
 .tongue-twister-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 20px;
 }
 
@@ -723,7 +723,7 @@ p.small {
 .btn-listen-small {
     background: transparent;
     border: none;
-    font-size: 1.2em;
+    font-size: 1em;
     cursor: pointer;
     transition: all 0.2s ease;
     flex-shrink: 0;
@@ -732,11 +732,11 @@ p.small {
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0.7;
+    opacity: 0.6;
 }
 
 .btn-listen-small:hover {
-    transform: scale(1.2);
+    transform: scale(1.3);
     opacity: 1;
 }
 
