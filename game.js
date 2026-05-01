@@ -30,6 +30,9 @@ let hasMicPermission = false;
 // Переменная для хранения объекта распознавания речи
 let currentRecognition = null;
 
+// Переменная для хранения текущего аудио
+let currentAudio = null;
+
 // Функция переключения экранов
 function showScreen(screen) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -451,9 +454,20 @@ function startLevel(levelNum) {
 
     // Автоматически проигрываем скороговорку при входе на уровень
     if (twister) {
+        // Останавливаем предыдущее аудио если оно играет
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio = null;
+        }
+
+        // Останавливаем синтез речи если он запущен
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+
         const audioPath = `assets/audio/level${levelNum}.mp3`;
-        const audio = new Audio(audioPath);
-        audio.play().catch(error => {
+        currentAudio = new Audio(audioPath);
+        currentAudio.play().catch(error => {
             console.error('Ошибка автовоспроизведения:', error);
             // Fallback на синтез речи если аудио не загрузилось
             speakText(twister);
@@ -517,10 +531,21 @@ function initLevelScreen() {
 
     // Кнопка "Послушать" - озвучка скороговорки
     listenBtn.addEventListener('click', () => {
+        // Останавливаем предыдущее аудио если оно играет
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio = null;
+        }
+
+        // Останавливаем синтез речи если он запущен
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+
         // Проигрываем аудиофайл для текущего уровня
         const audioPath = `assets/audio/level${currentLevel}.mp3`;
-        const audio = new Audio(audioPath);
-        audio.play().catch(error => {
+        currentAudio = new Audio(audioPath);
+        currentAudio.play().catch(error => {
             console.error('Ошибка воспроизведения:', error);
             // Fallback на синтез речи если аудио не загрузилось
             const text = document.getElementById('tonguetwisterText').textContent;
