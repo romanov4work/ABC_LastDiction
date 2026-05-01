@@ -1,9 +1,6 @@
-# Backend (не деплоим на GitHub)
-backend/ffmpeg-master-latest-win64-gpl/
-backend/ffmpeg.zip
-backend/ngrok.exe
-backend/ngrok.zip
-backend/*.log
-backend/test.html
-backend/test_whisper.py
-backend/__pycache__/
+# Логи
+*.log
+
+# Временные файлы
+*.tmp
+*.temp
