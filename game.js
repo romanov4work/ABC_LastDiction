@@ -409,15 +409,20 @@ function startLevel(levelNum) {
     // Устанавливаем номер уровня
     document.getElementById('currentLevelNum').textContent = levelNum;
 
-    // Загружаем скороговорку для уровня
-    const twister = tongueTwisters[levelNum];
+    // Получаем элементы
+    const tonguetwisterBox = document.querySelector('.tongue-twister-box');
+    const resultSection = document.getElementById('resultSection');
 
     // Для уровня 5 - пустой экран
     if (levelNum === 5) {
-        tonguetwisterBox.style.display = 'none';
-        resultSection.style.display = 'none';
+        if (tonguetwisterBox) tonguetwisterBox.style.display = 'none';
+        if (resultSection) resultSection.style.display = 'none';
+        window.currentLevel = levelNum;
         return;
     }
+
+    // Загружаем скороговорку для уровня
+    const twister = tongueTwisters[levelNum];
 
     if (twister) {
         // Разбиваем текст по 2 слова на строку
@@ -438,9 +443,6 @@ function startLevel(levelNum) {
     }
 
     // Показываем скороговорку, скрываем результаты
-    const tonguetwisterBox = document.querySelector('.tongue-twister-box');
-    const resultSection = document.getElementById('resultSection');
-
     if (tonguetwisterBox) tonguetwisterBox.style.display = 'block';
     if (resultSection) resultSection.style.display = 'none';
 
