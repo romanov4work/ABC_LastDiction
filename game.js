@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.0.3 ===
+// === ВЕРСИЯ 3.0.4 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -412,7 +412,15 @@ function startLevel(levelNum) {
     // Загружаем скороговорку для уровня
     const twister = tongueTwisters[levelNum];
     if (twister) {
-        document.getElementById('tonguetwisterText').textContent = twister;
+        // Разбиваем текст по 2 слова на строку
+        const words = twister.split(' ');
+        let formattedText = '';
+        for (let i = 0; i < words.length; i += 2) {
+            if (i > 0) formattedText += '<br>';
+            formattedText += words[i];
+            if (words[i + 1]) formattedText += ' ' + words[i + 1];
+        }
+        document.getElementById('tonguetwisterText').innerHTML = formattedText;
     } else {
         document.getElementById('tonguetwisterText').textContent = "Озвучь персонажа мультика";
     }
