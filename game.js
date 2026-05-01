@@ -416,7 +416,7 @@ function startLevel(levelNum) {
 
     // Загружаем скороговорку для уровня
     const twister = tongueTwisters[levelNum];
-    if (twister) {
+    if (twister && levelNum !== 5) {
         // Для уровня 5 (мультик) добавляем эмодзи кота с анимацией
         if (levelNum === 5) {
             const words = twister.split(' ');
@@ -456,15 +456,20 @@ function startLevel(levelNum) {
     // Сохраняем текущий уровень
     window.currentLevel = levelNum;
 
-    // Автоматически проигрываем скороговорку при входе на уровень
-    if (twister) {
-        const audioPath = `assets/audio/level${levelNum}.mp3`;
-        const audio = new Audio(audioPath);
-        audio.play().catch(error => {
-            console.error('Ошибка автовоспроизведения:', error);
-            // Fallback на синтез речи если аудио не загрузилось
-            speakText(twister);
-        });
+    // Для уровня 5 показываем пример мультика
+    if (levelNum === 5) {
+        showExampleCartoon();
+    } else {
+        // Автоматически проигрываем скороговорку при входе на уровень
+        if (twister) {
+            const audioPath = `assets/audio/level${levelNum}.mp3`;
+            const audio = new Audio(audioPath);
+            audio.play().catch(error => {
+                console.error('Ошибка автовоспроизведения:', error);
+                // Fallback на синтез речи если аудио не загрузилось
+                speakText(twister);
+            });
+        }
     }
 }
 
@@ -692,6 +697,61 @@ async function recordAndTranscribe() {
 }
 
 // ========== ПЛЕЕР МУЛЬТИКА (УРОВЕНЬ 5) ==========
+
+function showExampleCartoon() {
+    const tonguetwisterBox = document.querySelector('.tongue-twister-box');
+    const resultSection = document.getElementById('resultSection');
+
+    // Скрываем кнопку записи
+    tonguetwisterBox.style.display = 'none';
+
+    // Показываем пример
+    resultSection.style.display = 'block';
+    resultSection.innerHTML = `
+        <h3>🎬 Пример мультика</h3>
+        <p style="margin-bottom: 20px;">Посмотри как это работает, потом запиши свой голос!</p>
+        <div class="cartoon-player">
+            <div class="cat-animation" style="font-size: 8em; margin: 20px 0;">🐱</div>
+            <div class="player-controls">
+                <button id="playExampleBtn" class="btn-primary">▶️ Посмотреть пример</button>
+            </div>
+        </div>
+        <div class="level-actions" style="margin-top: 20px;">
+            <button id="recordMyVoiceBtn" class="btn-primary">🎤 Записать свой голос</button>
+        </div>
+    `;
+
+    const playExampleBtn = document.getElementById('playExampleBtn');
+    const recordMyVoiceBtn = document.getElementById('recordMyVoiceBtn');
+    const catAnimation = resultSection.querySelector('.cat-animation');
+
+    // Воспроизведение примера (используем готовую озвучку level5.mp3)
+    playExampleBtn.addEventListener('click', () => {
+        const audio = new Audio('assets/audio/level5.mp3');
+        playExampleBtn.textContent = '⏸️ Пауза';
+        catAnimation.style.animationPlayState = 'running';
+
+        audio.play();
+
+        audio.addEventListener('ended', () => {
+            playExampleBtn.textContent = '▶️ Посмотреть пример';
+            catAnimation.style.animationPlayState = 'paused';
+        });
+
+        playExampleBtn.onclick = () => {
+            audio.pause();
+            playExampleBtn.textContent = '▶️ Посмотреть пример';
+            catAnimation.style.animationPlayState = 'paused';
+            playExampleBtn.onclick = null;
+            playExampleBtn.click();
+        };
+    });
+
+    // Записать свой голос
+    recordMyVoiceBtn.addEventListener('click', () => {
+        startLevel(5);
+    });
+}
 
 function showCartoonPlayer() {
     const tonguetwisterBox = document.querySelector('.tongue-twister-box');
