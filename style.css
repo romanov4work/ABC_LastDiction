@@ -699,8 +699,8 @@ p.small {
     padding: 40px 30px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     text-align: center;
-    width: 100%;
-    max-width: 600px;
+    width: 90%;
+    max-width: 800px;
 }
 
 .tongue-twister-text {
@@ -709,8 +709,6 @@ p.small {
     color: var(--text-dark);
     line-height: 1.4;
     margin: 0;
-    flex: 1;
-    width: 80%;
 }
 
 @media (min-width: 600px) {
