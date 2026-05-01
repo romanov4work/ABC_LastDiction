@@ -30,11 +30,6 @@ let hasMicPermission = false;
 // Переменная для хранения объекта распознавания речи
 let currentRecognition = null;
 
-// Переменная для записи аудио (для уровня 5)
-let mediaRecorder = null;
-let audioChunks = [];
-let recordedAudioBlob = null;
-
 // Функция переключения экранов
 function showScreen(screen) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -416,28 +411,24 @@ function startLevel(levelNum) {
 
     // Загружаем скороговорку для уровня
     const twister = tongueTwisters[levelNum];
-    if (twister && levelNum !== 5) {
-        // Для уровня 5 (мультик) добавляем эмодзи кота с анимацией
-        if (levelNum === 5) {
-            const words = twister.split(' ');
-            let formattedText = '<div class="cat-animation" style="font-size: 5em; margin-bottom: 20px;">🐱</div>';
-            for (let i = 0; i < words.length; i += 2) {
-                if (i > 0) formattedText += '<br>';
-                formattedText += words[i];
-                if (words[i + 1]) formattedText += ' ' + words[i + 1];
-            }
-            document.getElementById('tonguetwisterText').innerHTML = formattedText;
-        } else {
-            // Разбиваем текст по 2 слова на строку
-            const words = twister.split(' ');
-            let formattedText = '';
-            for (let i = 0; i < words.length; i += 2) {
-                if (i > 0) formattedText += '<br>';
-                formattedText += words[i];
-                if (words[i + 1]) formattedText += ' ' + words[i + 1];
-            }
-            document.getElementById('tonguetwisterText').innerHTML = formattedText;
+
+    // Для уровня 5 - пустой экран
+    if (levelNum === 5) {
+        tonguetwisterBox.style.display = 'none';
+        resultSection.style.display = 'none';
+        return;
+    }
+
+    if (twister) {
+        // Разбиваем текст по 2 слова на строку
+        const words = twister.split(' ');
+        let formattedText = '';
+        for (let i = 0; i < words.length; i += 2) {
+            if (i > 0) formattedText += '<br>';
+            formattedText += words[i];
+            if (words[i + 1]) formattedText += ' ' + words[i + 1];
         }
+        document.getElementById('tonguetwisterText').innerHTML = formattedText;
 
         // Сохраняем оригинальный текст для распознавания
         window.currentTwister = twister;
@@ -456,20 +447,15 @@ function startLevel(levelNum) {
     // Сохраняем текущий уровень
     window.currentLevel = levelNum;
 
-    // Для уровня 5 показываем пример мультика
-    if (levelNum === 5) {
-        showExampleCartoon();
-    } else {
-        // Автоматически проигрываем скороговорку при входе на уровень
-        if (twister) {
-            const audioPath = `assets/audio/level${levelNum}.mp3`;
-            const audio = new Audio(audioPath);
-            audio.play().catch(error => {
-                console.error('Ошибка автовоспроизведения:', error);
-                // Fallback на синтез речи если аудио не загрузилось
-                speakText(twister);
-            });
-        }
+    // Автоматически проигрываем скороговорку при входе на уровень
+    if (twister) {
+        const audioPath = `assets/audio/level${levelNum}.mp3`;
+        const audio = new Audio(audioPath);
+        audio.play().catch(error => {
+            console.error('Ошибка автовоспроизведения:', error);
+            // Fallback на синтез речи если аудио не загрузилось
+            speakText(twister);
+        });
     }
 }
 
@@ -616,56 +602,6 @@ async function recordAndTranscribe() {
     const recordBtn = document.getElementById('recordBtn');
     const expectedText = window.currentTwister || document.getElementById('tonguetwisterText').textContent;
 
-    // Для уровня 5 (мультик) - записываем аудио с MediaRecorder
-    if (window.currentLevel === 5) {
-        try {
-            if (mediaRecorder && mediaRecorder.state === 'recording') {
-                // Останавливаем запись
-                mediaRecorder.stop();
-                recordBtn.textContent = '🎤 Записать голос';
-                recordBtn.style.background = 'linear-gradient(145deg, #ff6b6b, #ee5a6f)';
-                return;
-            }
-
-            // Начинаем запись
-            const stream = await startRecording();
-            if (!stream) return;
-
-            audioChunks = [];
-            mediaRecorder = new MediaRecorder(stream);
-
-            mediaRecorder.ondataavailable = (event) => {
-                audioChunks.push(event.data);
-            };
-
-            mediaRecorder.onstop = () => {
-                recordedAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-
-                // Сохраняем в localStorage
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    localStorage.setItem('level5_audio', reader.result);
-                    console.log('🎬 Аудио сохранено для мультика');
-
-                    // Показываем плеер
-                    showCartoonPlayer();
-                };
-                reader.readAsDataURL(recordedAudioBlob);
-
-                stopRecording();
-            };
-
-            mediaRecorder.start();
-            recordBtn.textContent = '⏹️ Завершить запись';
-            recordBtn.style.background = 'linear-gradient(145deg, #ff4444, #cc0000)';
-
-        } catch (error) {
-            console.error('❌ Ошибка записи:', error);
-            alert('Ошибка записи. Попробуй еще раз!');
-        }
-        return;
-    }
-
     // Для остальных уровней - используем Web Speech API (Google)
     try {
         recordBtn.textContent = '⏹️ Завершить запись';
@@ -694,150 +630,6 @@ async function recordAndTranscribe() {
         recordBtn.style.background = 'linear-gradient(145deg, #ff6b6b, #ee5a6f)';
         recordBtn.disabled = false;
     }
-}
-
-// ========== ПЛЕЕР МУЛЬТИКА (УРОВЕНЬ 5) ==========
-
-function showExampleCartoon() {
-    const tonguetwisterBox = document.querySelector('.tongue-twister-box');
-    const resultSection = document.getElementById('resultSection');
-
-    // Скрываем кнопку записи
-    tonguetwisterBox.style.display = 'none';
-
-    // Показываем пример
-    resultSection.style.display = 'block';
-    resultSection.innerHTML = `
-        <h3>🎬 Пример мультика</h3>
-        <p style="margin-bottom: 20px;">Посмотри как это работает, потом запиши свой голос!</p>
-        <div class="cartoon-player">
-            <div class="cat-animation" style="font-size: 8em; margin: 20px 0;">🐱</div>
-            <div class="player-controls">
-                <button id="playExampleBtn" class="btn-primary">▶️ Посмотреть пример</button>
-            </div>
-        </div>
-        <div class="level-actions" style="margin-top: 20px;">
-            <button id="recordMyVoiceBtn" class="btn-primary">🎤 Записать свой голос</button>
-        </div>
-    `;
-
-    const playExampleBtn = document.getElementById('playExampleBtn');
-    const recordMyVoiceBtn = document.getElementById('recordMyVoiceBtn');
-    const catAnimation = resultSection.querySelector('.cat-animation');
-
-    // Воспроизведение примера (используем готовую озвучку level5.mp3)
-    playExampleBtn.addEventListener('click', () => {
-        const audio = new Audio('assets/audio/level5.mp3');
-        playExampleBtn.textContent = '⏸️ Пауза';
-        catAnimation.style.animationPlayState = 'running';
-
-        audio.play();
-
-        audio.addEventListener('ended', () => {
-            playExampleBtn.textContent = '▶️ Посмотреть пример';
-            catAnimation.style.animationPlayState = 'paused';
-        });
-
-        playExampleBtn.onclick = () => {
-            audio.pause();
-            playExampleBtn.textContent = '▶️ Посмотреть пример';
-            catAnimation.style.animationPlayState = 'paused';
-            playExampleBtn.onclick = null;
-            playExampleBtn.click();
-        };
-    });
-
-    // Записать свой голос
-    recordMyVoiceBtn.addEventListener('click', () => {
-        startLevel(5);
-    });
-}
-
-function showCartoonPlayer() {
-    const tonguetwisterBox = document.querySelector('.tongue-twister-box');
-    const resultSection = document.getElementById('resultSection');
-
-    // Скрываем кнопку записи
-    tonguetwisterBox.style.display = 'none';
-
-    // Показываем плеер
-    resultSection.style.display = 'block';
-    resultSection.innerHTML = `
-        <h3>🎬 Твой мультик готов!</h3>
-        <div class="cartoon-player">
-            <div class="cat-animation" style="font-size: 8em; margin: 20px 0;">🐱</div>
-            <div class="player-controls">
-                <button id="playBtn" class="btn-primary">▶️ Воспроизвести</button>
-                <button id="pauseBtn" class="btn-secondary" style="display: none;">⏸️ Пауза</button>
-            </div>
-        </div>
-        <div class="level-actions" style="margin-top: 20px;">
-            <button id="rerecordBtn" class="btn-secondary">🔄 Записать заново</button>
-            <button id="nextLevelBtn" class="btn-primary">➡️ Следующий уровень</button>
-        </div>
-    `;
-
-    // Загружаем аудио из localStorage
-    const audioData = localStorage.getItem('level5_audio');
-    if (!audioData) {
-        console.error('❌ Аудио не найдено');
-        return;
-    }
-
-    const audio = new Audio(audioData);
-    const catAnimation = resultSection.querySelector('.cat-animation');
-    const playBtn = document.getElementById('playBtn');
-    const pauseBtn = document.getElementById('pauseBtn');
-    const rerecordBtn = document.getElementById('rerecordBtn');
-    const nextLevelBtn = document.getElementById('nextLevelBtn');
-
-    // Воспроизведение
-    playBtn.addEventListener('click', () => {
-        audio.play();
-        playBtn.style.display = 'none';
-        pauseBtn.style.display = 'inline-block';
-        catAnimation.style.animationPlayState = 'running';
-    });
-
-    // Пауза
-    pauseBtn.addEventListener('click', () => {
-        audio.pause();
-        pauseBtn.style.display = 'none';
-        playBtn.style.display = 'inline-block';
-        catAnimation.style.animationPlayState = 'paused';
-    });
-
-    // Когда аудио закончилось
-    audio.addEventListener('ended', () => {
-        pauseBtn.style.display = 'none';
-        playBtn.style.display = 'inline-block';
-        catAnimation.style.animationPlayState = 'paused';
-    });
-
-    // Записать заново
-    rerecordBtn.addEventListener('click', () => {
-        audio.pause();
-        startLevel(5);
-    });
-
-    // Следующий уровень
-    nextLevelBtn.addEventListener('click', () => {
-        audio.pause();
-        completeLevel(5);
-        saveLevelStars(5, 3); // Даем 3 звезды за прохождение
-
-        // Конфетти
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 }
-        });
-
-        // Переход на карту
-        setTimeout(() => {
-            showScreen(document.getElementById('gameScreen'));
-        }, 1500);
-    });
 }
 
 // ========== WEB SPEECH API (GOOGLE) ==========
