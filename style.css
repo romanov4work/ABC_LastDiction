@@ -197,6 +197,70 @@ body:has(#gameScreen.active) {
     }
 }
 
+/* Firefox Warning Screen */
+.firefox-warning {
+    max-width: 600px;
+}
+
+.firefox-icon {
+    font-size: 5em;
+    margin-bottom: 20px;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.firefox-warning h2 {
+    font-size: 1.8em;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+.firefox-warning p {
+    font-size: 1.2em;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.firefox-warning .small {
+    font-size: 1em;
+    color: #666;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.browser-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 25px 0;
+    flex-wrap: wrap;
+}
+
+.browser-item {
+    background: white;
+    border-radius: 20px;
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+    font-size: 1.1em;
+    color: var(--text-dark);
+}
+
+.browser-emoji {
+    font-size: 1.5em;
+}
+
+.copy-hint {
+    margin-top: 15px;
+    font-size: 1em;
+    color: var(--grass-green);
+    font-weight: 700;
+}
+
 @keyframes sway {
     0%, 100% { transform: rotate(-3deg); }
     50% { transform: rotate(3deg); }

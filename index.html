@@ -42,6 +42,32 @@
         </div>
     </div>
 
+    <!-- Экран для Firefox (не поддерживает Web Speech API) -->
+    <div id="firefoxWarningScreen" class="screen">
+        <div class="permission-box firefox-warning">
+            <div class="firefox-icon">🦊</div>
+            <h2>Firefox заботится о твоей приватности</h2>
+            <p>Mozilla Firefox не поддерживает распознавание речи, чтобы твои данные не отправлялись на серверы Google.</p>
+            <p class="small">Для игры используй один из этих браузеров:</p>
+            <div class="browser-list">
+                <div class="browser-item">
+                    <span class="browser-emoji">🌐</span>
+                    <span>Chrome</span>
+                </div>
+                <div class="browser-item">
+                    <span class="browser-emoji">🔷</span>
+                    <span>Edge</span>
+                </div>
+                <div class="browser-item">
+                    <span class="browser-emoji">🧭</span>
+                    <span>Safari</span>
+                </div>
+            </div>
+            <button id="copyLinkBtn" class="btn-primary">📋 Скопировать ссылку</button>
+            <p class="copy-hint" style="display: none;">✅ Ссылка скопирована! Открой её в другом браузере</p>
+        </div>
+    </div>
+
     <!-- Главный экран игры - Карта уровней -->
     <div id="gameScreen" class="screen">
         <div class="level-map">
@@ -180,7 +206,7 @@
     <div class="cloud cloud-8">☁️</div>
 
     <!-- Номер деплоя -->
-    <div class="deploy-version" id="versionBtn">v2.0.4</div>
+    <div class="deploy-version" id="versionBtn">v2.0.5</div>
 
     <!-- Кот-помощник (справа снизу) -->
     <div class="cat-helper" id="catHelper">

@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 2.0.4 ===
+// === ВЕРСИЯ 2.0.5 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -15,11 +15,13 @@ const tongueTwisters = {
 // Экраны
 const micPermissionScreen = document.getElementById('micPermissionScreen');
 const micDeniedScreen = document.getElementById('micDeniedScreen');
+const firefoxWarningScreen = document.getElementById('firefoxWarningScreen');
 const gameScreen = document.getElementById('gameScreen');
 
 // Кнопки
 const requestMicBtn = document.getElementById('requestMicBtn');
 const retryMicBtn = document.getElementById('retryMicBtn');
+const copyLinkBtn = document.getElementById('copyLinkBtn');
 
 // Переменная для хранения потока микрофона
 let micStream = null;
@@ -113,6 +115,25 @@ window.addEventListener('beforeunload', () => {
 requestMicBtn.addEventListener('click', requestMicrophone);
 retryMicBtn.addEventListener('click', requestMicrophone);
 
+// Кнопка копирования ссылки (для Firefox)
+copyLinkBtn.addEventListener('click', () => {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+        console.log('✓ Ссылка скопирована:', url);
+        // Показываем подсказку
+        const hint = document.querySelector('.copy-hint');
+        if (hint) {
+            hint.style.display = 'block';
+            setTimeout(() => {
+                hint.style.display = 'none';
+            }, 3000);
+        }
+    }).catch(err => {
+        console.error('Ошибка копирования:', err);
+        alert('Ссылка: ' + url);
+    });
+});
+
 // Проверка при загрузке страницы
 window.addEventListener('load', async () => {
     console.log('Игра "Прокачай Речь" загружена');
@@ -127,6 +148,14 @@ window.addEventListener('load', async () => {
 
 // Функция проверки доступа к микрофону
 async function checkMicrophonePermission() {
+    // Проверяем поддержку Web Speech API (Firefox не поддерживает)
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        console.warn('⚠️ Web Speech API не поддерживается (возможно Firefox)');
+        showScreen(firefoxWarningScreen);
+        return;
+    }
+
     try {
         // Проверяем через Permissions API
         if (navigator.permissions && navigator.permissions.query) {
