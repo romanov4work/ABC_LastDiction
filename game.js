@@ -6,7 +6,7 @@ const tongueTwisters = {
     2: "Мама мыла Милу мылом",
     3: "Три сороки три трещотки",
     4: "Четыре чёрненьких чумазеньких чертёнка",
-    5: "Я кот Матроскин и я очень люблю молоко", // Озвучка мультика
+    5: "", // Пустой уровень
     6: "На дворе трава на траве дрова",
     7: "Корабли лавировали лавировали да не вылавировали",
     8: "Расскажите про покупки про какие про покупки"
@@ -844,43 +844,6 @@ function showResults(time, accuracy, recognizedText) {
 
 // Инициализация после загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
-    // Приветствие кота при первом входе
-    const catHelper = document.getElementById('catHelper');
-    const hasSeenCatGreeting = localStorage.getItem('hasSeenCatGreeting');
-
-    if (!hasSeenCatGreeting && catHelper) {
-        setTimeout(() => {
-            // Останавливаем текущее аудио
-            if (currentAudio) {
-                currentAudio.pause();
-            }
-
-            currentAudio = new Audio('assets/audio/cat_greeting.mp3');
-            currentAudio.play().catch(error => {
-                console.log('Не удалось воспроизвести приветствие кота:', error);
-            });
-            localStorage.setItem('hasSeenCatGreeting', 'true');
-
-            // Анимация кота при приветствии
-            catHelper.style.animation = 'catBounce 0.5s ease-in-out 3';
-        }, 1000);
-    }
-
-    // Клик по коту - повторное приветствие
-    if (catHelper) {
-        catHelper.addEventListener('click', () => {
-            // Останавливаем текущее аудио
-            if (currentAudio) {
-                currentAudio.pause();
-            }
-
-            currentAudio = new Audio('assets/audio/cat_greeting.mp3');
-            currentAudio.play().catch(error => {
-                console.log('Не удалось воспроизвести приветствие кота:', error);
-            });
-        });
-    }
-
     const versionBtn = document.getElementById('versionBtn');
     const devModal = document.getElementById('devModal');
     const devCloseBtn = document.getElementById('devCloseBtn');
@@ -914,7 +877,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (confirm('Вы уверены? Это удалит все звезды и пройденные уровни!')) {
                 // Очищаем прогресс
                 localStorage.removeItem('speechGameProgress');
-                localStorage.removeItem('hasSeenCatGreeting');
 
                 // Сбрасываем в памяти
                 playerProgress = {
