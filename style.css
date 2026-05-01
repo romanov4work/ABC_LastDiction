@@ -1096,3 +1096,17 @@ p.small {
 .cat-body {
     font-size: 3em;
 }
+
+/* Анимация кота для уровня 5 */
+.cat-animation {
+    animation: catBounce 2s ease-in-out infinite;
+}
+
+@keyframes catBounce {
+    0%, 100% {
+        transform: translateY(0) rotate(-5deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+}
