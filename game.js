@@ -534,6 +534,7 @@ function initLevelScreen() {
         // Останавливаем предыдущее аудио если оно играет
         if (currentAudio) {
             currentAudio.pause();
+            currentAudio.currentTime = 0;
             currentAudio = null;
         }
 
