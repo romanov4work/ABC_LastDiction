@@ -460,17 +460,10 @@ function startLevel(levelNum) {
             currentAudio = null;
         }
 
-        // Останавливаем синтез речи если он запущен
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-        }
-
         const audioPath = `assets/audio/level${levelNum}.mp3`;
         currentAudio = new Audio(audioPath);
         currentAudio.play().catch(error => {
             console.error('Ошибка автовоспроизведения:', error);
-            // Fallback на синтез речи если аудио не загрузилось
-            speakText(twister);
         });
     }
 }
@@ -538,19 +531,11 @@ function initLevelScreen() {
             currentAudio = null;
         }
 
-        // Останавливаем синтез речи если он запущен
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-        }
-
         // Проигрываем аудиофайл для текущего уровня
         const audioPath = `assets/audio/level${currentLevel}.mp3`;
         currentAudio = new Audio(audioPath);
         currentAudio.play().catch(error => {
             console.error('Ошибка воспроизведения:', error);
-            // Fallback на синтез речи если аудио не загрузилось
-            const text = document.getElementById('tonguetwisterText').textContent;
-            speakText(text);
         });
     });
 
@@ -604,24 +589,6 @@ function initLevelScreen() {
             initLevelMap(); // Обновляем карту со звездами
         }
     });
-}
-
-// Озвучка текста через Web Speech API
-function speakText(text) {
-    if ('speechSynthesis' in window) {
-        // Останавливаем предыдущую озвучку если есть
-        window.speechSynthesis.cancel();
-
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ru-RU';
-        utterance.rate = 0.9; // Немного медленнее для детей
-        utterance.pitch = 1.2; // Чуть выше для детского голоса
-
-        window.speechSynthesis.speak(utterance);
-        console.log('🔊 Озвучка:', text);
-    } else {
-        alert('Озвучка не поддерживается в этом браузере');
-    }
 }
 
 // ========== ЗАПИСЬ И РАСПОЗНАВАНИЕ ГОЛОСА ==========
@@ -853,9 +820,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentAudio) {
                 currentAudio.pause();
             }
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-            }
 
             currentAudio = new Audio('assets/audio/cat_greeting.mp3');
             currentAudio.play().catch(error => {
@@ -874,9 +838,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Останавливаем текущее аудио
             if (currentAudio) {
                 currentAudio.pause();
-            }
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
             }
 
             currentAudio = new Audio('assets/audio/cat_greeting.mp3');
