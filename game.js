@@ -215,6 +215,13 @@ function initControlButtons() {
         const levelScreen = document.getElementById('levelScreen');
 
         if (levelScreen.classList.contains('active')) {
+            // Останавливаем аудио при выходе из уровня
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                currentAudio = null;
+            }
+
             // Если в уровне - возвращаемся на карту
             showScreen(gameScreen);
             initLevelMap(); // Обновляем карту со звездами
