@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.0.9 ===
+// === ВЕРСИЯ 3.1.0 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -6,7 +6,7 @@ const tongueTwisters = {
     2: "Мама мыла Милу мылом",
     3: "Три сороки три трещотки",
     4: "Четыре чёрненьких чумазеньких чертёнка",
-    5: null, // Озвучка мультика - без скороговорки
+    5: "Я кот Матроскин и я очень люблю молоко", // Озвучка мультика
     6: "На дворе трава на траве дрова",
     7: "Корабли лавировали лавировали да не вылавировали",
     8: "Расскажите про покупки про какие про покупки"
@@ -412,15 +412,27 @@ function startLevel(levelNum) {
     // Загружаем скороговорку для уровня
     const twister = tongueTwisters[levelNum];
     if (twister) {
-        // Разбиваем текст по 2 слова на строку
-        const words = twister.split(' ');
-        let formattedText = '';
-        for (let i = 0; i < words.length; i += 2) {
-            if (i > 0) formattedText += '<br>';
-            formattedText += words[i];
-            if (words[i + 1]) formattedText += ' ' + words[i + 1];
+        // Для уровня 5 (мультик) добавляем эмодзи кота
+        if (levelNum === 5) {
+            const words = twister.split(' ');
+            let formattedText = '<div style="font-size: 3em; margin-bottom: 20px;">🐱</div>';
+            for (let i = 0; i < words.length; i += 2) {
+                if (i > 0) formattedText += '<br>';
+                formattedText += words[i];
+                if (words[i + 1]) formattedText += ' ' + words[i + 1];
+            }
+            document.getElementById('tonguetwisterText').innerHTML = formattedText;
+        } else {
+            // Разбиваем текст по 2 слова на строку
+            const words = twister.split(' ');
+            let formattedText = '';
+            for (let i = 0; i < words.length; i += 2) {
+                if (i > 0) formattedText += '<br>';
+                formattedText += words[i];
+                if (words[i + 1]) formattedText += ' ' + words[i + 1];
+            }
+            document.getElementById('tonguetwisterText').innerHTML = formattedText;
         }
-        document.getElementById('tonguetwisterText').innerHTML = formattedText;
 
         // Сохраняем оригинальный текст для распознавания
         window.currentTwister = twister;
