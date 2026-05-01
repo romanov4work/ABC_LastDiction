@@ -522,6 +522,19 @@ function initLevelScreen() {
     const retryBtn = document.getElementById('retryBtn');
     const nextLevelBtn = document.getElementById('nextLevelBtn');
 
+    // Кнопка "Назад на карту"
+    if (backToMapBtn) {
+        backToMapBtn.addEventListener('click', () => {
+            // Останавливаем аудио при выходе
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                currentAudio = null;
+            }
+            showScreen(document.getElementById('gameScreen'));
+        });
+    }
+
     // Кнопка "Послушать" - озвучка скороговорки
     listenBtn.addEventListener('click', () => {
         // Останавливаем предыдущее аудио если оно играет
@@ -553,6 +566,13 @@ function initLevelScreen() {
 
     // Кнопка "Повторить"
     retryBtn.addEventListener('click', () => {
+        // Останавливаем аудио
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+            currentAudio = null;
+        }
+
         const resultSection = document.getElementById('resultSection');
         const tonguetwisterBox = document.querySelector('.tongue-twister-box');
 
@@ -565,6 +585,13 @@ function initLevelScreen() {
 
     // Кнопка "Следующий уровень"
     nextLevelBtn.addEventListener('click', () => {
+        // Останавливаем аудио
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+            currentAudio = null;
+        }
+
         const currentLevel = window.currentLevel || 1;
 
         // Отмечаем уровень как пройденный (уже сделано в saveLevelStars)
