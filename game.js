@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 2.1.8 ===
+// === ВЕРСИЯ 2.1.9 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -26,6 +26,9 @@ const copyLinkBtn = document.getElementById('copyLinkBtn');
 // Переменная для хранения потока микрофона
 let micStream = null;
 let hasMicPermission = false;
+
+// Переменная для хранения объекта распознавания речи
+let currentRecognition = null;
 
 // Функция переключения экранов
 function showScreen(screen) {
@@ -504,8 +507,15 @@ function initLevelScreen() {
         });
     });
 
-    // Кнопка "Записать голос"
+    // Кнопка "Записать голос" / "Завершить запись"
     recordBtn.addEventListener('click', async () => {
+        // Если запись идет - останавливаем
+        if (currentRecognition) {
+            currentRecognition.stop();
+            return;
+        }
+
+        // Иначе начинаем запись
         await recordAndTranscribe();
     });
 
@@ -596,7 +606,7 @@ async function recordAndTranscribe() {
     try {
         recordBtn.textContent = '⏹️ Завершить запись';
         recordBtn.style.background = 'linear-gradient(145deg, #ff4444, #cc0000)';
-        recordBtn.disabled = true;
+        recordBtn.disabled = false; // Оставляем активной для возможности остановки
 
         const startTime = Date.now();
         const response = await recognizeWithWebSpeech(expectedText);
@@ -640,6 +650,9 @@ function recognizeWithWebSpeech(expectedText) {
         recognition.interimResults = false;
         recognition.maxAlternatives = 1;
 
+        // Сохраняем в глобальную переменную для возможности остановки
+        currentRecognition = recognition;
+
         recognition.onresult = (event) => {
             const transcript = event.results[0][0].transcript;
             const confidence = event.results[0][0].confidence;
@@ -655,11 +668,13 @@ function recognizeWithWebSpeech(expectedText) {
 
         recognition.onerror = (event) => {
             console.error('❌ Ошибка Web Speech API:', event.error);
+            currentRecognition = null; // Очищаем при ошибке
             reject(new Error(`Web Speech API ошибка: ${event.error}`));
         };
 
         recognition.onend = () => {
             console.log('🎤 Web Speech API завершил работу');
+            currentRecognition = null; // Очищаем при завершении
         };
 
         // Запускаем распознавание
