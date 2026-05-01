@@ -700,16 +700,23 @@ p.small {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     text-align: center;
     width: 100%;
+    max-width: 600px;
 }
 
 .tongue-twister-text {
-    font-size: 1.5em;
+    font-size: 5vw;
     font-weight: 700;
     color: var(--text-dark);
     line-height: 1.4;
     margin: 0;
     flex: 1;
-    width: 100%;
+    width: 80%;
+}
+
+@media (min-width: 600px) {
+    .tongue-twister-text {
+        font-size: 2em;
+    }
 }
 
 /* Строка со скороговоркой и кнопкой прослушивания */
