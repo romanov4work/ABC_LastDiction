@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 2.1.0 ===
+// === ВЕРСИЯ 2.1.7 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -594,7 +594,7 @@ async function recordAndTranscribe() {
 
     // Используем Web Speech API (Google)
     try {
-        recordBtn.textContent = '🎤 Говорите...';
+        recordBtn.textContent = '⏹️ Завершить запись';
         recordBtn.style.background = 'linear-gradient(145deg, #ff4444, #cc0000)';
         recordBtn.disabled = true;
 
