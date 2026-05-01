@@ -391,7 +391,6 @@ function handleIslandClick(levelNum, island) {
     if (island.classList.contains('locked')) {
         // Закрытый уровень - показываем сообщение
         console.log(`Уровень ${levelNum} закрыт. Пройди предыдущие уровни!`);
-        // TODO: показать всплывающее сообщение
         return;
     }
 
@@ -575,25 +574,6 @@ function speakText(text) {
     } else {
         alert('Озвучка не поддерживается в этом браузере');
     }
-}
-
-// Показать mock результаты (для демонстрации)
-function showMockResults() {
-    const resultSection = document.getElementById('resultSection');
-    const timeResult = document.getElementById('timeResult');
-    const dictionResult = document.getElementById('dictionResult');
-
-    // Mock данные
-    const mockTime = (Math.random() * 2 + 2).toFixed(1); // 2.0-4.0 сек
-    const mockDiction = Math.floor(Math.random() * 20 + 75); // 75-95%
-
-    timeResult.textContent = `${mockTime} сек`;
-    dictionResult.textContent = `${mockDiction}%`;
-
-    // Показываем результаты
-    resultSection.style.display = 'block';
-
-    console.log(`📊 Mock результаты: ${mockTime} сек, ${mockDiction}%`);
 }
 
 // ========== ЗАПИСЬ И РАСПОЗНАВАНИЕ ГОЛОСА ==========
