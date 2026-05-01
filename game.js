@@ -848,8 +848,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!hasSeenCatGreeting && catHelper) {
         setTimeout(() => {
-            const greetingAudio = new Audio('assets/audio/cat_greeting.mp3');
-            greetingAudio.play().catch(error => {
+            // Останавливаем текущее аудио
+            if (currentAudio) {
+                currentAudio.pause();
+            }
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+
+            currentAudio = new Audio('assets/audio/cat_greeting.mp3');
+            currentAudio.play().catch(error => {
                 console.log('Не удалось воспроизвести приветствие кота:', error);
             });
             localStorage.setItem('hasSeenCatGreeting', 'true');
@@ -862,8 +870,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Клик по коту - повторное приветствие
     if (catHelper) {
         catHelper.addEventListener('click', () => {
-            const greetingAudio = new Audio('assets/audio/cat_greeting.mp3');
-            greetingAudio.play().catch(error => {
+            // Останавливаем текущее аудио
+            if (currentAudio) {
+                currentAudio.pause();
+            }
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+
+            currentAudio = new Audio('assets/audio/cat_greeting.mp3');
+            currentAudio.play().catch(error => {
                 console.log('Не удалось воспроизвести приветствие кота:', error);
             });
         });
