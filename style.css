@@ -343,41 +343,6 @@ p.small {
         0 6px 15px rgba(255, 217, 61, 0.3);
 }
 
-.game-container {
-    background: linear-gradient(180deg, #FFFEF9 0%, #F0F8FF 100%);
-    border-radius: 40px;
-    padding: 40px;
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.15),
-        0 0 0 8px rgba(255, 255, 255, 0.5);
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Декоративная речка внизу контейнера */
-.game-container::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    background: linear-gradient(180deg, transparent 0%, var(--river-blue) 100%);
-    border-radius: 0 0 40px 40px;
-    opacity: 0.3;
-}
-
-/* Солнышко в углу */
-.game-container::after {
-    content: '☀️';
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 50px;
-    animation: rotate 20s linear infinite;
-}
-
 /* КАРТА УРОВНЕЙ */
 .level-map {
     width: 100%;
@@ -729,14 +694,6 @@ p.small {
     .tongue-twister-text {
         font-size: 3.5em;
     }
-}
-
-/* Строка со скороговоркой и кнопкой прослушивания */
-.tongue-twister-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 20px;
 }
 
 /* Маленькая кнопка прослушивания (только эмодзи) */
