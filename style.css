@@ -250,10 +250,6 @@ body:has(#gameScreen.active) {
     font-weight: 700;
 }
 
-@keyframes sway {
-    0%, 100% { transform: rotate(-3deg); }
-    50% { transform: rotate(3deg); }
-}
 
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
@@ -572,10 +568,6 @@ p.small {
     100% { transform: translate(-50%, -50%) scale(1); }
 }
 
-@keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
 
 /* Кнопки управления */
 .control-btn {
