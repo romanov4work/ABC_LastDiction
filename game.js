@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 5.0.0 ===
+// === ВЕРСИЯ 5.1.0 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -9,7 +9,11 @@ const tongueTwisters = {
     5: "На дворе трава на траве дрова",
     6: "Корабли лавировали лавировали да не вылавировали",
     7: "Расскажите про покупки про какие про покупки",
-    8: "" // Озвучь мультик (пустой уровень)
+    8: "Высокопревосходительство",
+    9: "Высокопревосходительство",
+    10: "Переосвидетельствование",
+    11: "Частнопредпринимательский",
+    12: "" // Озвучь мультик (пустой уровень)
 };
 
 // Экраны
@@ -328,12 +332,11 @@ function isLevelUnlocked(levelNum) {
         return isLevelCompleted(2) || isLevelCompleted(3);
     }
 
-    // Уровень 5 открывается после уровня 4
+    // Уровни 5, 6, 7 открываются последовательно
     if (levelNum === 5) {
         return isLevelCompleted(4);
     }
 
-    // Уровни 6, 7, 8 открываются последовательно после уровня 5
     if (levelNum === 6) {
         return isLevelCompleted(5);
     }
@@ -342,8 +345,26 @@ function isLevelUnlocked(levelNum) {
         return isLevelCompleted(6);
     }
 
+    // Уровни 8, 9, 10, 11 (сложные слова) открываются последовательно
     if (levelNum === 8) {
         return isLevelCompleted(7);
+    }
+
+    if (levelNum === 9) {
+        return isLevelCompleted(8);
+    }
+
+    if (levelNum === 10) {
+        return isLevelCompleted(9);
+    }
+
+    if (levelNum === 11) {
+        return isLevelCompleted(10);
+    }
+
+    // Уровень 12 (мультик) открывается после уровня 11
+    if (levelNum === 12) {
+        return isLevelCompleted(11);
     }
 
     // Остальные уровни открываются последовательно
@@ -699,7 +720,7 @@ function initLevelScreen() {
         // Переходим на следующий уровень
         const nextLevel = currentLevel + 1;
 
-        if (nextLevel <= 8 && tongueTwisters[nextLevel] !== undefined) {
+        if (nextLevel <= 12 && tongueTwisters[nextLevel] !== undefined) {
             // Запускаем следующий уровень
             startLevel(nextLevel);
         } else {
