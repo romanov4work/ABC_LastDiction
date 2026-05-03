@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.10.1 ===
+// === ВЕРСИЯ 3.10.2 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -1058,7 +1058,6 @@ function activateEasterEgg() {
 
     const windSlider = document.getElementById('windSlider');
     const windValue = document.getElementById('windValue');
-    const windLabels = ['Очень медленный', 'Медленный', 'Средняя', 'Быстрый', 'Очень быстрый'];
     windSlider.addEventListener('input', (e) => {
         const speed = e.target.value;
         windValue.textContent = windLabels[speed - 1];
