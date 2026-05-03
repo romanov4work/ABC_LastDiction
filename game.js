@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.6.1 ===
+// === ВЕРСИЯ 3.7.0 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -32,6 +32,9 @@ let currentRecognition = null;
 
 // Переменная для хранения текущего аудио
 let currentAudio = null;
+
+// Флаг для онбординга
+let onboardingCompleted = false;
 
 // Функция переключения экранов
 function showScreen(screen) {
@@ -269,6 +272,10 @@ function loadProgress() {
     } else {
         console.log('📊 Прогресс не найден, начинаем с нуля');
     }
+
+    // Проверяем онбординг
+    const onboardingDone = localStorage.getItem('onboardingCompleted');
+    onboardingCompleted = onboardingDone === 'true';
 }
 
 // Сохранение прогресса в localStorage
@@ -343,6 +350,9 @@ function initLevelMap() {
         if (oldDecoration) oldDecoration.remove();
         if (oldStars) oldStars.remove();
 
+        // Убираем анимацию пульсации со всех уровней
+        island.classList.remove('pulse-animation');
+
         // Устанавливаем состояние острова
         if (isLevelCompleted(levelNum)) {
             const stars = getLevelStars(levelNum);
@@ -394,6 +404,14 @@ function initLevelMap() {
         // Обработчик клика
         island.addEventListener('click', () => handleIslandClick(levelNum, island));
     });
+
+    // Добавляем анимацию пульсации на уровень 1, если онбординг не пройден
+    if (!onboardingCompleted && isLevelUnlocked(1)) {
+        const level1 = document.querySelector('.level-island[data-level="1"]');
+        if (level1) {
+            level1.classList.add('pulse-animation');
+        }
+    }
 }
 
 // Обработка клика по острову
@@ -412,6 +430,12 @@ function handleIslandClick(levelNum, island) {
 // Запуск уровня
 function startLevel(levelNum) {
     console.log(`🎮 Начинаем уровень ${levelNum}`);
+
+    // Если это уровень 1 и онбординг не пройден - показываем онбординг
+    if (levelNum === 1 && !onboardingCompleted) {
+        showOnboarding();
+        return;
+    }
 
     // Скрываем карту, показываем экран уровня
     showScreen(document.getElementById('levelScreen'));
@@ -460,7 +484,8 @@ function startLevel(levelNum) {
     window.currentLevel = levelNum;
 
     // Автоматически проигрываем скороговорку при входе на уровень
-    if (twister) {
+    // НО только если онбординг пройден (для уровня 1)
+    if (twister && (levelNum !== 1 || onboardingCompleted)) {
         // Останавливаем предыдущее аудио если оно играет
         if (currentAudio) {
             currentAudio.pause();
@@ -895,5 +920,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Прогресс сброшен! Игра как для нового пользователя.');
             }
         });
+    }
+});
+
+// ========== ОНБОРДИНГ ==========
+
+function showOnboarding() {
+    const modal = document.getElementById('onboardingModal');
+    if (modal) {
+        modal.classList.add('active');
+        console.log('📖 Показан онбординг');
+    }
+}
+
+function hideOnboarding() {
+    const modal = document.getElementById('onboardingModal');
+    if (modal) {
+        modal.classList.remove('active');
+
+        // Отмечаем онбординг как пройденный
+        onboardingCompleted = true;
+        localStorage.setItem('onboardingCompleted', 'true');
+
+        // Убираем анимацию пульсации с уровня 1
+        const level1 = document.querySelector('.level-island[data-level="1"]');
+        if (level1) {
+            level1.classList.remove('pulse-animation');
+        }
+
+        console.log('✅ Онбординг завершен');
+
+        // Запускаем уровень 1
+        startLevel(1);
+    }
+}
+
+// Инициализация онбординга
+document.addEventListener('DOMContentLoaded', () => {
+    const onboardingPlayBtn = document.getElementById('onboardingPlayBtn');
+
+    if (onboardingPlayBtn) {
+        onboardingPlayBtn.addEventListener('click', hideOnboarding);
     }
 });

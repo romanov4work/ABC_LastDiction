@@ -525,6 +525,16 @@ p.small {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Анимация пульсации для первого уровня (онбординг) */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.level-island.pulse-animation {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
 /* Скрываем замочек на пройденных и открытых уровнях */
 .level-island.completed .island-lock,
 .level-island.unlocked .island-lock {
@@ -963,6 +973,105 @@ p.small {
         font-size: 1.2em;
         white-space: nowrap;
     }
+}
+
+/* ========== МОДАЛЬНОЕ ОКНО ОНБОРДИНГА ========== */
+.onboarding-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    backdrop-filter: blur(8px);
+}
+
+.onboarding-modal.active {
+    display: flex;
+}
+
+.onboarding-content {
+    background: linear-gradient(135deg, #FFFEF9 0%, #FFF8E1 100%);
+    border-radius: 30px;
+    padding: 40px 30px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.4s ease-out;
+    text-align: center;
+}
+
+.onboarding-content h2 {
+    font-size: 2em;
+    font-weight: 800;
+    color: var(--house-red);
+    margin-bottom: 20px;
+}
+
+.onboarding-content p {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.onboarding-steps {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.onboarding-step {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.onboarding-step:last-child {
+    margin-bottom: 0;
+}
+
+.onboarding-step-icon {
+    font-size: 2em;
+    flex-shrink: 0;
+}
+
+.onboarding-play-btn {
+    font-family: inherit;
+    font-size: 1.4em;
+    padding: 18px 50px;
+    border: none;
+    border-radius: 60px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    margin-top: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, var(--grass-green) 0%, #5FB83D 100%);
+    color: white;
+    box-shadow: 0 8px 0 #4A9630, 0 12px 25px rgba(126, 200, 80, 0.4);
+}
+
+.onboarding-play-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 0 #4A9630, 0 18px 35px rgba(126, 200, 80, 0.5);
+}
+
+.onboarding-play-btn:active {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 0 #4A9630, 0 8px 20px rgba(126, 200, 80, 0.4);
 }
 
 /* ========== МОДАЛЬНОЕ ОКНО РАЗРАБОТЧИКА ========== */
