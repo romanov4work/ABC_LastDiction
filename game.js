@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 4.3.1 ===
+// === ВЕРСИЯ 4.3.2 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -923,7 +923,7 @@ function showResults(time, accuracy, recognizedText) {
     }
 
     if (isNewRecord) {
-        newRecordMessage.textContent = '🏆 Новый рекорд!';
+        newRecordMessage.textContent = 'Новый рекорд!';
         newRecordMessage.style.display = 'block';
     } else {
         newRecordMessage.style.display = 'none';
@@ -963,7 +963,7 @@ function showResults(time, accuracy, recognizedText) {
     const emptyStars = starsElement.querySelector('.empty-stars');
 
     if (filledStars) {
-        filledStars.style.cssText = 'color: white; -webkit-text-stroke: 2px gold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);';
+        filledStars.style.cssText = 'color: gold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);';
     }
     if (emptyStars) {
         emptyStars.style.cssText = 'color: #666; -webkit-text-stroke: 1px #999;';
