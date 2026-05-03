@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.5.0 ===
+// === ВЕРСИЯ 3.6.0 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -6,10 +6,10 @@ const tongueTwisters = {
     2: "Мама мыла Милу мылом",
     3: "Три сороки три трещотки",
     4: "Четыре чёрненьких чумазеньких чертёнка",
-    5: "", // Пустой уровень
-    6: "На дворе трава на траве дрова",
-    7: "Корабли лавировали лавировали да не вылавировали",
-    8: "Расскажите про покупки про какие про покупки"
+    5: "На дворе трава на траве дрова",
+    6: "Корабли лавировали лавировали да не вылавировали",
+    7: "Расскажите про покупки про какие про покупки",
+    8: "" // Озвучь мультик (пустой уровень)
 };
 
 // Экраны
@@ -423,8 +423,8 @@ function startLevel(levelNum) {
     const tonguetwisterBox = document.querySelector('.tongue-twister-box');
     const resultSection = document.getElementById('resultSection');
 
-    // Для уровня 5 - пустой экран
-    if (levelNum === 5) {
+    // Для уровня 8 - пустой экран (Озвучь мультик)
+    if (levelNum === 8) {
         if (tonguetwisterBox) tonguetwisterBox.style.display = 'none';
         if (resultSection) resultSection.style.display = 'none';
         window.currentLevel = levelNum;
