@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.7.0 ===
+// === ВЕРСИЯ 3.7.1 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -431,12 +431,6 @@ function handleIslandClick(levelNum, island) {
 function startLevel(levelNum) {
     console.log(`🎮 Начинаем уровень ${levelNum}`);
 
-    // Если это уровень 1 и онбординг не пройден - показываем онбординг
-    if (levelNum === 1 && !onboardingCompleted) {
-        showOnboarding();
-        return;
-    }
-
     // Скрываем карту, показываем экран уровня
     showScreen(document.getElementById('levelScreen'));
 
@@ -483,9 +477,15 @@ function startLevel(levelNum) {
     // Сохраняем текущий уровень
     window.currentLevel = levelNum;
 
+    // Если это уровень 1 и онбординг не пройден - показываем онбординг
+    if (levelNum === 1 && !onboardingCompleted) {
+        showOnboarding();
+        // Не воспроизводим аудио, пока онбординг не закрыт
+        return;
+    }
+
     // Автоматически проигрываем скороговорку при входе на уровень
-    // НО только если онбординг пройден (для уровня 1)
-    if (twister && (levelNum !== 1 || onboardingCompleted)) {
+    if (twister) {
         // Останавливаем предыдущее аудио если оно играет
         if (currentAudio) {
             currentAudio.pause();
@@ -950,8 +950,23 @@ function hideOnboarding() {
 
         console.log('✅ Онбординг завершен');
 
-        // Запускаем уровень 1
-        startLevel(1);
+        // Воспроизводим аудио для уровня 1
+        const levelNum = window.currentLevel || 1;
+        const twister = tongueTwisters[levelNum];
+
+        if (twister) {
+            // Останавливаем предыдущее аудио если оно играет
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+
+            const audioPath = `assets/audio/level${levelNum}.mp3`;
+            currentAudio = new Audio(audioPath);
+            currentAudio.play().catch(error => {
+                console.error('Ошибка воспроизведения:', error);
+            });
+        }
     }
 }
 
