@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.9.7 ===
+// === ВЕРСИЯ 3.9.8 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -1092,7 +1092,7 @@ function applyEasterEggSettings(sunEnabled, cloudsCount, windSpeed) {
         }
 
         // Устанавливаем скорость ветра
-        const baseSpeed = [50, 40, 45, 42, 38, 50, 43, 47][index] || 40;
+        const baseSpeed = [50, 40, 45, 42, 38, 50, 43, 47, 38, 44, 41, 39, 43, 46, 37, 42][index] || 40;
         const speedMultiplier = 6 - windSpeed; // 5 = медленно, 1 = быстро
         const newSpeed = baseSpeed * speedMultiplier / 3;
         cloud.style.animationDuration = `${newSpeed}s`;

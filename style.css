@@ -162,6 +162,70 @@ body.easter-egg-mode .sun {
     animation-delay: 25s;
 }
 
+.cloud-9 {
+    top: 15%;
+    left: -150px;
+    font-size: 145px;
+    animation: cloudFloat1 38s linear infinite;
+    animation-delay: 5s;
+}
+
+.cloud-10 {
+    top: 35%;
+    right: -150px;
+    font-size: 125px;
+    animation: cloudFloat2 44s linear infinite reverse;
+    animation-delay: 12s;
+}
+
+.cloud-11 {
+    top: 55%;
+    left: -150px;
+    font-size: 155px;
+    animation: cloudFloat1 41s linear infinite;
+    animation-delay: 18s;
+}
+
+.cloud-12 {
+    top: 75%;
+    right: -150px;
+    font-size: 138px;
+    animation: cloudFloat2 39s linear infinite reverse;
+    animation-delay: 7s;
+}
+
+.cloud-13 {
+    top: 20%;
+    left: -150px;
+    font-size: 148px;
+    animation: cloudFloat1 43s linear infinite;
+    animation-delay: 15s;
+}
+
+.cloud-14 {
+    top: 45%;
+    right: -150px;
+    font-size: 142px;
+    animation: cloudFloat2 46s linear infinite reverse;
+    animation-delay: 20s;
+}
+
+.cloud-15 {
+    top: 65%;
+    left: -150px;
+    font-size: 133px;
+    animation: cloudFloat1 37s linear infinite;
+    animation-delay: 10s;
+}
+
+.cloud-16 {
+    top: 90%;
+    right: -150px;
+    font-size: 150px;
+    animation: cloudFloat2 42s linear infinite reverse;
+    animation-delay: 3s;
+}
+
 @keyframes cloudFloat1 {
     from { transform: translateX(0); }
     to { transform: translateX(calc(100vw + 300px)); }
