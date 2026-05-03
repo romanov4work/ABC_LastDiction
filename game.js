@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 4.1.0 ===
+// === ВЕРСИЯ 4.1.1 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -153,6 +153,32 @@ window.addEventListener('load', async () => {
 
     // Проверяем доступ к микрофону
     await checkMicrophonePermission();
+
+    // Добавляем начальное состояние в историю
+    history.pushState({ screen: 'menu' }, '', '');
+});
+
+// Обработка аппаратной кнопки "Назад"
+window.addEventListener('popstate', (event) => {
+    const levelScreen = document.getElementById('levelScreen');
+
+    // Если мы в уровне - возвращаемся в меню
+    if (levelScreen && levelScreen.classList.contains('active')) {
+        // Останавливаем аудио при выходе из уровня
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+            currentAudio = null;
+        }
+
+        // Возвращаемся на карту
+        showScreen(gameScreen);
+        initLevelMap();
+        console.log('Возврат на карту уровней (аппаратная кнопка)');
+
+        // Добавляем состояние меню обратно
+        history.pushState({ screen: 'menu' }, '', '');
+    }
 });
 
 // Функция проверки доступа к микрофону
@@ -430,6 +456,9 @@ function handleIslandClick(levelNum, island) {
 // Запуск уровня
 function startLevel(levelNum) {
     console.log(`🎮 Начинаем уровень ${levelNum}`);
+
+    // Добавляем состояние уровня в историю
+    history.pushState({ screen: 'level', levelNum: levelNum }, '', '');
 
     // Скрываем карту, показываем экран уровня
     showScreen(document.getElementById('levelScreen'));
