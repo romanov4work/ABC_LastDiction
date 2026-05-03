@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.9.8 ===
+// === ВЕРСИЯ 3.9.9 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -1040,29 +1040,53 @@ function activateEasterEgg() {
     const cloudsSlider = document.getElementById('cloudsSlider');
     const cloudsValue = document.getElementById('cloudsValue');
     cloudsSlider.addEventListener('input', (e) => {
-        cloudsValue.textContent = e.target.value;
+        const count = e.target.value;
+        cloudsValue.textContent = count;
+        // Применяем изменение облаков сразу
+        updateCloudsCount(parseInt(count));
     });
 
     const windSlider = document.getElementById('windSlider');
     const windValue = document.getElementById('windValue');
     const windLabels = ['Очень медленный', 'Медленный', 'Средняя', 'Быстрый', 'Очень быстрый'];
     windSlider.addEventListener('input', (e) => {
-        windValue.textContent = windLabels[e.target.value - 1];
+        const speed = e.target.value;
+        windValue.textContent = windLabels[speed - 1];
+        // Применяем изменение скорости ветра сразу
+        updateWindSpeed(parseInt(speed));
+    });
+
+    // Обработчик для переключателя солнца
+    const sunToggle = document.getElementById('sunToggle');
+    sunToggle.addEventListener('change', (e) => {
+        // Применяем изменение солнца сразу
+        updateSunVisibility(e.target.checked);
     });
 
     // Обработчик кнопки "Применить"
     const applyBtn = document.getElementById('easterEggApplyBtn');
     applyBtn.addEventListener('click', () => {
-        // Сохраняем значения ДО удаления модального окна
-        const sunEnabled = document.getElementById('sunToggle').checked;
-        const cloudsCount = parseInt(document.getElementById('cloudsSlider').value);
-        const windSpeed = parseInt(document.getElementById('windSlider').value);
+        // Запускаем конфетти
+        if (typeof confetti !== 'undefined') {
+            confetti({
+                particleCount: 200,
+                spread: 100,
+                origin: { y: 0.4 },
+                colors: ['#FFD93D', '#FF6B6B', '#7EC850', '#6FBAFF', '#FFA94D']
+            });
+
+            setTimeout(() => {
+                confetti({
+                    particleCount: 150,
+                    spread: 80,
+                    origin: { y: 0.5 },
+                    colors: ['#FFD93D', '#FF6B6B', '#7EC850', '#6FBAFF', '#FFA94D']
+                });
+            }, 300);
+        }
 
         // Удаляем модальное окно
         modal.remove();
-
-        // Применяем настройки
-        applyEasterEggSettings(sunEnabled, cloudsCount, windSpeed);
     });
 
     // Обработчик кнопки закрытия
@@ -1072,48 +1096,37 @@ function activateEasterEgg() {
     });
 }
 
-function applyEasterEggSettings(sunEnabled, cloudsCount, windSpeed) {
-    console.log(`☀️ Солнце: ${sunEnabled}, ☁️ Облака: ${cloudsCount}, 💨 Ветер: ${windSpeed}`);
-
-    // Применяем настройки
-    if (sunEnabled) {
-        document.body.classList.add('easter-egg-mode');
-    } else {
-        document.body.classList.remove('easter-egg-mode');
-    }
-
-    // Управление облаками
+// Функции для применения настроек в реальном времени
+function updateCloudsCount(count) {
     const clouds = document.querySelectorAll('.cloud');
     clouds.forEach((cloud, index) => {
-        if (index < cloudsCount) {
+        if (index < count) {
             cloud.style.display = 'block';
         } else {
             cloud.style.display = 'none';
         }
+    });
+}
 
-        // Устанавливаем скорость ветра
+function updateWindSpeed(speed) {
+    const clouds = document.querySelectorAll('.cloud');
+    clouds.forEach((cloud, index) => {
         const baseSpeed = [50, 40, 45, 42, 38, 50, 43, 47, 38, 44, 41, 39, 43, 46, 37, 42][index] || 40;
-        const speedMultiplier = 6 - windSpeed; // 5 = медленно, 1 = быстро
+        const speedMultiplier = 6 - speed; // 5 = медленно, 1 = быстро
         const newSpeed = baseSpeed * speedMultiplier / 3;
         cloud.style.animationDuration = `${newSpeed}s`;
     });
+}
 
-    // Запускаем конфетти
-    if (typeof confetti !== 'undefined') {
-        confetti({
-            particleCount: 200,
-            spread: 100,
-            origin: { y: 0.4 },
-            colors: ['#FFD93D', '#FF6B6B', '#7EC850', '#6FBAFF', '#FFA94D']
-        });
-
-        setTimeout(() => {
-            confetti({
-                particleCount: 150,
-                spread: 80,
-                origin: { y: 0.5 },
-                colors: ['#FFD93D', '#FF6B6B', '#7EC850', '#6FBAFF', '#FFA94D']
-            });
-        }, 300);
+function updateSunVisibility(enabled) {
+    if (enabled) {
+        document.body.classList.add('easter-egg-mode');
+    } else {
+        document.body.classList.remove('easter-egg-mode');
     }
+}
+
+function applyEasterEggSettings(sunEnabled, cloudsCount, windSpeed) {
+    // Эта функция больше не используется, все применяется в реальном времени
+    console.log('applyEasterEggSettings deprecated');
 }
