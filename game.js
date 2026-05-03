@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 4.0.0 ===
+// === ВЕРСИЯ 4.0.1 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -494,9 +494,19 @@ function startLevel(levelNum) {
 
         const audioPath = `assets/audio/level${levelNum}.mp3`;
         currentAudio = new Audio(audioPath);
-        currentAudio.play().catch(error => {
-            console.error('Ошибка автовоспроизведения:', error);
-        });
+
+        // Предзагружаем аудио для быстрого старта
+        currentAudio.preload = 'auto';
+
+        // Начинаем воспроизведение как только можно
+        currentAudio.addEventListener('canplay', () => {
+            currentAudio.play().catch(error => {
+                console.error('Ошибка автовоспроизведения:', error);
+            });
+        }, { once: true });
+
+        // Загружаем аудио
+        currentAudio.load();
     }
 }
 
@@ -963,9 +973,19 @@ function hideOnboarding() {
 
             const audioPath = `assets/audio/level${levelNum}.mp3`;
             currentAudio = new Audio(audioPath);
-            currentAudio.play().catch(error => {
-                console.error('Ошибка воспроизведения:', error);
-            });
+
+            // Предзагружаем аудио для быстрого старта
+            currentAudio.preload = 'auto';
+
+            // Начинаем воспроизведение как только можно
+            currentAudio.addEventListener('canplay', () => {
+                currentAudio.play().catch(error => {
+                    console.error('Ошибка воспроизведения:', error);
+                });
+            }, { once: true });
+
+            // Загружаем аудио
+            currentAudio.load();
         }
     }
 }
