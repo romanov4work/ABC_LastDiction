@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 5.2.0 ===
+// === ВЕРСИЯ 5.2.1 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -331,17 +331,14 @@ function isLevelUnlocked(levelNum) {
         return isLevelCompleted(2) || isLevelCompleted(3);
     }
 
-    // Уровни 5, 6, 7 открываются последовательно
-    if (levelNum === 5) {
+    // Уровень 5 и 6 открываются после уровня 4
+    if (levelNum === 5 || levelNum === 6) {
         return isLevelCompleted(4);
     }
 
-    if (levelNum === 6) {
-        return isLevelCompleted(5);
-    }
-
+    // Уровень 7 открывается после уровня 5 ИЛИ 6
     if (levelNum === 7) {
-        return isLevelCompleted(6);
+        return isLevelCompleted(5) || isLevelCompleted(6);
     }
 
     // Уровни 8, 9, 10, 11 (сложные слова) открываются последовательно
