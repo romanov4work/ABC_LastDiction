@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 4.3.3 ===
+// === ВЕРСИЯ 4.3.2 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -941,18 +941,18 @@ function showResults(time, accuracy, recognizedText) {
     if (!messageElement) {
         messageElement = document.createElement('div');
         messageElement.id = 'resultMessage';
-        messageElement.style.cssText = 'font-size: 1.5em; font-weight: 800; margin-bottom: 15px; color: var(--text-dark);';
+        messageElement.style.cssText = 'font-size: 1.5em; font-weight: 800; margin-bottom: 20px; color: var(--text-dark);';
         resultSection.insertBefore(messageElement, resultSection.querySelector('.result-stats'));
     }
     messageElement.textContent = message;
 
-    // Добавляем звезды ПОСЛЕ сообщения
+    // Добавляем звезды
     let starsElement = document.getElementById('resultStars');
     if (!starsElement) {
         starsElement = document.createElement('div');
         starsElement.id = 'resultStars';
-        starsElement.style.cssText = 'font-size: 3em; margin-bottom: 20px;';
-        resultSection.insertBefore(starsElement, resultSection.querySelector('.result-stats'));
+        starsElement.style.cssText = 'font-size: 3em; margin-bottom: 15px;';
+        resultSection.insertBefore(starsElement, messageElement);
     }
     // Используем HTML символы вместо эмодзи
     starsElement.innerHTML = '<span class="filled-stars">' + '★'.repeat(stars) + '</span>' +
