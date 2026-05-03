@@ -82,13 +82,14 @@ body.easter-egg-mode .cloud {
 .sun {
     position: fixed;
     top: 50px;
-    left: 20px;
-    font-size: 100px;
+    left: 10px;
+    font-size: 67px;
     z-index: 0;
     pointer-events: none;
     opacity: 0;
     transition: opacity 1s ease;
     animation: sunRotate 20s linear infinite;
+    transform-origin: center;
 }
 
 body.easter-egg-mode .sun {
