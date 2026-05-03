@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.9.5 ===
+// === ВЕРСИЯ 3.9.7 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -1053,9 +1053,16 @@ function activateEasterEgg() {
     // Обработчик кнопки "Применить"
     const applyBtn = document.getElementById('easterEggApplyBtn');
     applyBtn.addEventListener('click', () => {
-        applyEasterEggSettings();
+        // Сохраняем значения ДО удаления модального окна
+        const sunEnabled = document.getElementById('sunToggle').checked;
+        const cloudsCount = parseInt(document.getElementById('cloudsSlider').value);
+        const windSpeed = parseInt(document.getElementById('windSlider').value);
+
         // Удаляем модальное окно
         modal.remove();
+
+        // Применяем настройки
+        applyEasterEggSettings(sunEnabled, cloudsCount, windSpeed);
     });
 
     // Обработчик кнопки закрытия
@@ -1065,11 +1072,7 @@ function activateEasterEgg() {
     });
 }
 
-function applyEasterEggSettings() {
-    const sunEnabled = document.getElementById('sunToggle').checked;
-    const cloudsCount = parseInt(document.getElementById('cloudsSlider').value);
-    const windSpeed = parseInt(document.getElementById('windSlider').value);
-
+function applyEasterEggSettings(sunEnabled, cloudsCount, windSpeed) {
     console.log(`☀️ Солнце: ${sunEnabled}, ☁️ Облака: ${cloudsCount}, 💨 Ветер: ${windSpeed}`);
 
     // Применяем настройки
