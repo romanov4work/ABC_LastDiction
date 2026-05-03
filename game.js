@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.8.0 ===
+// === ВЕРСИЯ 3.9.0 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -983,6 +983,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (gameTitle) {
         gameTitle.addEventListener('click', activateEasterEgg);
     }
+
+    // Обработчики для пасхалки
+    const easterEggApplyBtn = document.getElementById('easterEggApplyBtn');
+    if (easterEggApplyBtn) {
+        easterEggApplyBtn.addEventListener('click', applyEasterEggSettings);
+    }
+
+    // Обновление значений слайдеров
+    const cloudsSlider = document.getElementById('cloudsSlider');
+    const cloudsValue = document.getElementById('cloudsValue');
+    if (cloudsSlider && cloudsValue) {
+        cloudsSlider.addEventListener('input', (e) => {
+            cloudsValue.textContent = e.target.value;
+        });
+    }
+
+    const windSlider = document.getElementById('windSlider');
+    const windValue = document.getElementById('windValue');
+    if (windSlider && windValue) {
+        const windLabels = ['Очень медленный', 'Медленный', 'Средний', 'Быстрый', 'Очень быстрый'];
+        windSlider.addEventListener('input', (e) => {
+            windValue.textContent = windLabels[e.target.value - 1];
+        });
+    }
 });
 
 // ========== ПАСХАЛКА ==========
@@ -990,15 +1014,53 @@ document.addEventListener('DOMContentLoaded', () => {
 function activateEasterEgg() {
     console.log('🎉 Пасхалка активирована!');
 
-    // Добавляем класс для быстрых облаков и солнышка
-    document.body.classList.add('easter-egg-mode');
+    // Показываем модальное окно настроек
+    const modal = document.getElementById('easterEggModal');
+    if (modal) {
+        modal.classList.add('active');
+    }
+}
+
+function applyEasterEggSettings() {
+    const modal = document.getElementById('easterEggModal');
+    const sunEnabled = document.getElementById('sunToggle').checked;
+    const cloudsCount = parseInt(document.getElementById('cloudsSlider').value);
+    const windSpeed = parseInt(document.getElementById('windSlider').value);
+
+    console.log(`☀️ Солнце: ${sunEnabled}, ☁️ Облака: ${cloudsCount}, 💨 Ветер: ${windSpeed}`);
+
+    // Закрываем модальное окно
+    if (modal) {
+        modal.classList.remove('active');
+    }
+
+    // Применяем настройки
+    if (sunEnabled) {
+        document.body.classList.add('easter-egg-mode');
+    } else {
+        document.body.classList.remove('easter-egg-mode');
+    }
+
+    // Управление облаками
+    const clouds = document.querySelectorAll('.cloud');
+    clouds.forEach((cloud, index) => {
+        if (index < cloudsCount) {
+            cloud.style.display = 'block';
+        } else {
+            cloud.style.display = 'none';
+        }
+
+        // Устанавливаем скорость ветра
+        const baseSpeed = [50, 40, 45, 42, 38, 50, 43, 47][index] || 40;
+        const speedMultiplier = 6 - windSpeed; // 5 = медленно, 1 = быстро
+        const newSpeed = baseSpeed * speedMultiplier / 3;
+        cloud.style.animationDuration = `${newSpeed}s`;
+    });
 
     // Показываем секретное сообщение
     const message = document.getElementById('easterEggMessage');
     if (message) {
         message.classList.add('show');
-
-        // Скрываем через 3 секунды
         setTimeout(() => {
             message.classList.remove('show');
         }, 3000);
@@ -1013,7 +1075,6 @@ function activateEasterEgg() {
             colors: ['#FFD93D', '#FF6B6B', '#7EC850', '#6FBAFF', '#FFA94D']
         });
 
-        // Второй залп через 0.3 секунды
         setTimeout(() => {
             confetti({
                 particleCount: 150,
@@ -1023,9 +1084,4 @@ function activateEasterEgg() {
             });
         }, 300);
     }
-
-    // Убираем режим пасхалки через 10 секунд
-    setTimeout(() => {
-        document.body.classList.remove('easter-egg-mode');
-    }, 10000);
 }

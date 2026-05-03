@@ -82,7 +82,7 @@ body.easter-egg-mode .cloud {
 .sun {
     position: fixed;
     top: 50px;
-    right: 80px;
+    left: 80px;
     font-size: 100px;
     z-index: 1;
     pointer-events: none;
@@ -1036,6 +1036,176 @@ p.small {
 .easter-egg-message.show {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
+}
+
+/* Модальное окно пасхалки */
+.easter-egg-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10003;
+    backdrop-filter: blur(8px);
+}
+
+.easter-egg-modal.active {
+    display: flex;
+}
+
+.easter-egg-content {
+    background: linear-gradient(135deg, #FFFEF9 0%, #FFF8E1 100%);
+    border-radius: 30px;
+    padding: 40px 30px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.4s ease-out;
+    text-align: center;
+}
+
+.easter-egg-content h2 {
+    font-size: 2em;
+    font-weight: 800;
+    color: var(--house-red);
+    margin-bottom: 20px;
+}
+
+.easter-egg-controls {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.easter-egg-control {
+    margin-bottom: 20px;
+}
+
+.easter-egg-control:last-child {
+    margin-bottom: 0;
+}
+
+.easter-egg-control label {
+    display: block;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.easter-egg-control input[type="range"] {
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: #ddd;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.easter-egg-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--grass-green);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.easter-egg-control input[type="range"]::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--grass-green);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.easter-egg-control .value-display {
+    display: inline-block;
+    margin-left: 10px;
+    font-weight: 800;
+    color: var(--grass-green);
+}
+
+.easter-egg-control .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.easter-egg-control .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.easter-egg-control .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.easter-egg-control .toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+.easter-egg-control input:checked + .toggle-slider {
+    background-color: var(--grass-green);
+}
+
+.easter-egg-control input:checked + .toggle-slider:before {
+    transform: translateX(26px);
+}
+
+.easter-egg-apply-btn {
+    font-family: inherit;
+    font-size: 1.4em;
+    padding: 18px 50px;
+    border: none;
+    border-radius: 60px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    margin-top: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, var(--grass-green) 0%, #5FB83D 100%);
+    color: white;
+    box-shadow: 0 8px 0 #4A9630, 0 12px 25px rgba(126, 200, 80, 0.4);
+}
+
+.easter-egg-apply-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 0 #4A9630, 0 18px 35px rgba(126, 200, 80, 0.5);
+}
+
+.easter-egg-apply-btn:active {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 0 #4A9630, 0 8px 20px rgba(126, 200, 80, 0.4);
 }
 
 /* ========== МОДАЛЬНОЕ ОКНО ОНБОРДИНГА ========== */

@@ -206,8 +206,44 @@
     <!-- Секретное сообщение (пасхалка) -->
     <div id="easterEggMessage" class="easter-egg-message">🎉 Ты нашел секрет! 🎉</div>
 
+    <!-- Модальное окно пасхалки -->
+    <div id="easterEggModal" class="easter-egg-modal">
+        <div class="easter-egg-content">
+            <h2>🎉 Секретная настройка!</h2>
+            <p>Настрой свою погоду!</p>
+
+            <div class="easter-egg-controls">
+                <div class="easter-egg-control">
+                    <label>
+                        ☀️ Солнышко
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="sunToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </label>
+                </div>
+
+                <div class="easter-egg-control">
+                    <label>
+                        ☁️ Количество облаков: <span class="value-display" id="cloudsValue">8</span>
+                    </label>
+                    <input type="range" id="cloudsSlider" min="4" max="16" value="8" step="1">
+                </div>
+
+                <div class="easter-egg-control">
+                    <label>
+                        💨 Скорость ветра: <span class="value-display" id="windValue">Средняя</span>
+                    </label>
+                    <input type="range" id="windSlider" min="1" max="5" value="3" step="1">
+                </div>
+            </div>
+
+            <button id="easterEggApplyBtn" class="easter-egg-apply-btn">🎮 Применить</button>
+        </div>
+    </div>
+
     <!-- Номер деплоя -->
-    <div class="deploy-version" id="versionBtn">v3.8.0</div>
+    <div class="deploy-version" id="versionBtn">v3.9.0</div>
 
     <!-- Модальное окно онбординга -->
     <div id="onboardingModal" class="onboarding-modal">
@@ -250,6 +286,6 @@
         </div>
     </div>
 
-    <script src="game.js?v=3.8.0"></script>
+    <script src="game.js?v=3.9.0"></script>
 </body>
 </html>
