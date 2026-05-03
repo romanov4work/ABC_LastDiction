@@ -50,6 +50,16 @@ html {
     background: white;
     border-radius: 50px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.game-title:hover {
+    transform: translateX(-50%) scale(1.05);
+}
+
+.game-title:active {
+    transform: translateX(-50%) scale(0.98);
 }
 
 /* Облака - красивые, объемные, всегда минимум 4 на экране */
@@ -60,6 +70,34 @@ html {
     z-index: 1;
     pointer-events: none;
     filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.1));
+    transition: animation-duration 0.5s ease;
+}
+
+/* Режим пасхалки - быстрые облака */
+body.easter-egg-mode .cloud {
+    animation-duration: 15s !important;
+}
+
+/* Солнышко (скрыто по умолчанию) */
+.sun {
+    position: fixed;
+    top: 50px;
+    right: 80px;
+    font-size: 100px;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1s ease;
+    animation: sunRotate 20s linear infinite;
+}
+
+body.easter-egg-mode .sun {
+    opacity: 1;
+}
+
+@keyframes sunRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .cloud-1 {
@@ -973,6 +1011,31 @@ p.small {
         font-size: 1.2em;
         white-space: nowrap;
     }
+}
+
+/* Секретное сообщение пасхалки */
+.easter-egg-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: linear-gradient(135deg, #FFD93D 0%, #FFA94D 100%);
+    padding: 30px 50px;
+    border-radius: 30px;
+    font-size: 2em;
+    font-weight: 800;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 10002;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.easter-egg-message.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
 }
 
 /* ========== МОДАЛЬНОЕ ОКНО ОНБОРДИНГА ========== */

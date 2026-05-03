@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.7.1 ===
+// === ВЕРСИЯ 3.8.0 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -977,4 +977,55 @@ document.addEventListener('DOMContentLoaded', () => {
     if (onboardingPlayBtn) {
         onboardingPlayBtn.addEventListener('click', hideOnboarding);
     }
+
+    // Пасхалка при клике на название игры
+    const gameTitle = document.querySelector('.game-title');
+    if (gameTitle) {
+        gameTitle.addEventListener('click', activateEasterEgg);
+    }
 });
+
+// ========== ПАСХАЛКА ==========
+
+function activateEasterEgg() {
+    console.log('🎉 Пасхалка активирована!');
+
+    // Добавляем класс для быстрых облаков и солнышка
+    document.body.classList.add('easter-egg-mode');
+
+    // Показываем секретное сообщение
+    const message = document.getElementById('easterEggMessage');
+    if (message) {
+        message.classList.add('show');
+
+        // Скрываем через 3 секунды
+        setTimeout(() => {
+            message.classList.remove('show');
+        }, 3000);
+    }
+
+    // Запускаем конфетти
+    if (typeof confetti !== 'undefined') {
+        confetti({
+            particleCount: 200,
+            spread: 100,
+            origin: { y: 0.4 },
+            colors: ['#FFD93D', '#FF6B6B', '#7EC850', '#6FBAFF', '#FFA94D']
+        });
+
+        // Второй залп через 0.3 секунды
+        setTimeout(() => {
+            confetti({
+                particleCount: 150,
+                spread: 80,
+                origin: { y: 0.5 },
+                colors: ['#FFD93D', '#FF6B6B', '#7EC850', '#6FBAFF', '#FFA94D']
+            });
+        }, 300);
+    }
+
+    // Убираем режим пасхалки через 10 секунд
+    setTimeout(() => {
+        document.body.classList.remove('easter-egg-mode');
+    }, 10000);
+}
