@@ -883,6 +883,16 @@ p.small {
     margin-bottom: 20px;
 }
 
+.best-time-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+    font-size: 1.3em;
+    font-weight: 700;
+}
+
 .stat-item {
     display: flex;
     flex-direction: column;
