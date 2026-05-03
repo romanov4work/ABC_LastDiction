@@ -1002,7 +1002,7 @@ function activateEasterEgg() {
                     <path d="M15 5L5 15M5 5L15 15" stroke="white" stroke-width="3" stroke-linecap="round"/>
                 </svg>
             </button>
-            <h2>🎉 Ты нашел секрет! 🎉</h2>
+            <h2>🎉 Секрет найден! 🎉</h2>
 
             <div class="easter-egg-controls">
                 <div class="easter-egg-control">
