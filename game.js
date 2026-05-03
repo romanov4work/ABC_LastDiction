@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 4.1.1 ===
+// === ВЕРСИЯ 4.2.0 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -738,11 +738,18 @@ async function recordAndTranscribe() {
 
     } catch (error) {
         console.error('❌ Ошибка Web Speech API:', error);
-        alert('Ошибка распознавания речи. Попробуй еще раз!\n\n' + error.message);
+
+        // Показываем дружелюбное сообщение вместо технической ошибки
+        if (error.message.includes('Ничего не услышано')) {
+            alert('😔 ' + error.message);
+        } else {
+            alert('Ошибка распознавания речи. Попробуй еще раз!\n\n' + error.message);
+        }
     } finally {
         recordBtn.textContent = '🎤 Записать голос';
         recordBtn.style.background = 'linear-gradient(145deg, #ff6b6b, #ee5a6f)';
         recordBtn.disabled = false;
+        currentRecognition = null; // Очищаем на всякий случай
     }
 }
 
@@ -767,7 +774,21 @@ function recognizeWithWebSpeech(expectedText) {
         // Сохраняем в глобальную переменную для возможности остановки
         currentRecognition = recognition;
 
+        let hasResult = false;
+        let timeoutId = null;
+
+        // Таймаут на 15 секунд
+        timeoutId = setTimeout(() => {
+            console.log('⏱️ Таймаут записи (15 сек)');
+            if (currentRecognition) {
+                currentRecognition.stop();
+            }
+        }, 15000);
+
         recognition.onresult = (event) => {
+            hasResult = true;
+            clearTimeout(timeoutId);
+
             const transcript = event.results[0][0].transcript;
             const confidence = event.results[0][0].confidence;
 
@@ -781,14 +802,27 @@ function recognizeWithWebSpeech(expectedText) {
         };
 
         recognition.onerror = (event) => {
+            clearTimeout(timeoutId);
             console.error('❌ Ошибка Web Speech API:', event.error);
-            currentRecognition = null; // Очищаем при ошибке
-            reject(new Error(`Web Speech API ошибка: ${event.error}`));
+            currentRecognition = null;
+
+            // Обрабатываем ошибку "no-speech" отдельно
+            if (event.error === 'no-speech') {
+                reject(new Error('Ничего не услышано. Попробуй говорить громче!'));
+            } else {
+                reject(new Error(`Web Speech API ошибка: ${event.error}`));
+            }
         };
 
         recognition.onend = () => {
+            clearTimeout(timeoutId);
             console.log('🎤 Web Speech API завершил работу');
-            currentRecognition = null; // Очищаем при завершении
+            currentRecognition = null;
+
+            // Если не было результата и не было ошибки - пользователь молчал
+            if (!hasResult) {
+                reject(new Error('Ничего не услышано. Попробуй еще раз!'));
+            }
         };
 
         // Запускаем распознавание
