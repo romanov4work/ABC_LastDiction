@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 5.1.3 ===
+// === ВЕРСИЯ 5.2.0 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -12,8 +12,7 @@ const tongueTwisters = {
     8: "Высокопревосходительство",
     9: "Благотворительность",
     10: "Достопримечательность",
-    11: "Частнопредпринимательский",
-    12: "" // Озвучь мультик (пустой уровень)
+    11: "" // Озвучь мультик (пустой уровень)
 };
 
 // Экраны
@@ -362,11 +361,6 @@ function isLevelUnlocked(levelNum) {
         return isLevelCompleted(10);
     }
 
-    // Уровень 12 (мультик) открывается после уровня 11
-    if (levelNum === 12) {
-        return isLevelCompleted(11);
-    }
-
     // Остальные уровни открываются последовательно
     return isLevelCompleted(levelNum - 1);
 }
@@ -491,8 +485,8 @@ function startLevel(levelNum) {
     const tonguetwisterBox = document.querySelector('.tongue-twister-box');
     const resultSection = document.getElementById('resultSection');
 
-    // Для уровня 12 - пустой экран (Озвучь мультик)
-    if (levelNum === 12) {
+    // Для уровня 11 - пустой экран (Озвучь мультик)
+    if (levelNum === 11) {
         if (tonguetwisterBox) tonguetwisterBox.style.display = 'none';
         if (resultSection) resultSection.style.display = 'none';
         window.currentLevel = levelNum;
@@ -720,7 +714,7 @@ function initLevelScreen() {
         // Переходим на следующий уровень
         const nextLevel = currentLevel + 1;
 
-        if (nextLevel <= 12 && tongueTwisters[nextLevel] !== undefined) {
+        if (nextLevel <= 11 && tongueTwisters[nextLevel] !== undefined) {
             // Запускаем следующий уровень
             startLevel(nextLevel);
         } else {
