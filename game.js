@@ -997,9 +997,12 @@ function activateEasterEgg() {
 
     modal.innerHTML = `
         <div class="easter-egg-content">
-            <button class="easter-egg-close" id="easterEggCloseBtn">✕</button>
+            <button class="easter-egg-close" id="easterEggCloseBtn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 5L5 15M5 5L15 15" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+            </button>
             <h2>🎉 Ты нашел секрет! 🎉</h2>
-            <p>Настрой свою погоду!</p>
 
             <div class="easter-egg-controls">
                 <div class="easter-egg-control">
