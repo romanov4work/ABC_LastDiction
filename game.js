@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.10.2 ===
+// === ВЕРСИЯ 3.10.3 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -994,7 +994,7 @@ function activateEasterEgg() {
     console.log('🎉 Пасхалка активирована!');
 
     // Загружаем сохраненные настройки из localStorage
-    const savedSunEnabled = localStorage.getItem('easterEgg_sunEnabled') !== 'false'; // по умолчанию true
+    const savedSunEnabled = localStorage.getItem('easterEgg_sunEnabled') === 'true'; // по умолчанию false
     const savedCloudsCount = parseInt(localStorage.getItem('easterEgg_cloudsCount')) || 8;
     const savedWindSpeed = parseInt(localStorage.getItem('easterEgg_windSpeed')) || 3;
 
@@ -1012,7 +1012,7 @@ function activateEasterEgg() {
                     <path d="M15 5L5 15M5 5L15 15" stroke="white" stroke-width="3" stroke-linecap="round"/>
                 </svg>
             </button>
-            <h2>🎉 Секрет найден! 🎉</h2>
+            <h2>Секретное меню</h2>
 
             <div class="easter-egg-controls">
                 <div class="easter-egg-control">
@@ -1143,7 +1143,7 @@ function updateSunVisibility(enabled) {
 
 // Загрузка сохраненных настроек пасхалки при старте
 function loadEasterEggSettings() {
-    const savedSunEnabled = localStorage.getItem('easterEgg_sunEnabled') !== 'false'; // по умолчанию true
+    const savedSunEnabled = localStorage.getItem('easterEgg_sunEnabled') === 'true'; // по умолчанию false
     const savedCloudsCount = parseInt(localStorage.getItem('easterEgg_cloudsCount')) || 8;
     const savedWindSpeed = parseInt(localStorage.getItem('easterEgg_windSpeed')) || 3;
 
