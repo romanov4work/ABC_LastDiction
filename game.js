@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 4.0.1 ===
+// === ВЕРСИЯ 4.1.0 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -524,9 +524,12 @@ function completeLevel(levelNum) {
 }
 
 // Сохранение звезд для уровня
-function saveLevelStars(levelNum, stars) {
+function saveLevelStars(levelNum, stars, time) {
     if (!playerProgress.levelStars) {
         playerProgress.levelStars = {};
+    }
+    if (!playerProgress.bestTimes) {
+        playerProgress.bestTimes = {};
     }
 
     // Сохраняем только если новый результат лучше
@@ -538,6 +541,16 @@ function saveLevelStars(levelNum, stars) {
         console.log(`📊 Все звезды:`, playerProgress.levelStars);
     } else {
         console.log(`⭐ Уровень ${levelNum}: оставляем ${currentStars} звезд (новый результат ${stars})`);
+    }
+
+    // Сохраняем лучшее время (только если прошел уровень)
+    if (stars > 0) {
+        const currentBestTime = playerProgress.bestTimes[levelNum];
+        if (!currentBestTime || time < currentBestTime) {
+            playerProgress.bestTimes[levelNum] = time;
+            saveProgress();
+            console.log(`⏱️ Уровень ${levelNum}: новый рекорд ${time} сек (было ${currentBestTime || '-'})`);
+        }
     }
 
     // Если набрал хотя бы 1 звезду - уровень пройден
@@ -552,6 +565,14 @@ function getLevelStars(levelNum) {
         return 0;
     }
     return playerProgress.levelStars[levelNum] || 0;
+}
+
+// Получение лучшего времени для уровня
+function getBestTime(levelNum) {
+    if (!playerProgress.bestTimes) {
+        return null;
+    }
+    return playerProgress.bestTimes[levelNum] || null;
 }
 
 // ========== ЭКРАН УРОВНЯ ==========
@@ -777,6 +798,7 @@ function showResults(time, accuracy, recognizedText) {
     const tonguetwisterBox = document.querySelector('.tongue-twister-box');
     const timeResult = document.getElementById('timeResult');
     const dictionResult = document.getElementById('dictionResult');
+    const bestTimeResult = document.getElementById('bestTimeResult');
     const nextLevelBtn = document.getElementById('nextLevelBtn');
 
     timeResult.textContent = `${time} сек`;
@@ -805,9 +827,29 @@ function showResults(time, accuracy, recognizedText) {
         showConfetti = false;
     }
 
-    // Сохраняем звезды для текущего уровня
+    // Сохраняем звезды и время для текущего уровня
     const currentLevel = window.currentLevel || 1;
-    saveLevelStars(currentLevel, stars);
+    const timeNum = parseFloat(time);
+    saveLevelStars(currentLevel, stars, timeNum);
+
+    // Получаем лучшее время
+    const bestTime = getBestTime(currentLevel);
+    const isNewRecord = bestTime === timeNum && stars > 0;
+
+    // Отображаем лучшее время
+    if (bestTime) {
+        bestTimeResult.textContent = `${bestTime} сек`;
+        if (isNewRecord) {
+            bestTimeResult.style.color = '#FFD93D';
+            bestTimeResult.style.fontWeight = '800';
+            message = '🏆 Новый рекорд! ' + message;
+        } else {
+            bestTimeResult.style.color = '';
+            bestTimeResult.style.fontWeight = '';
+        }
+    } else {
+        bestTimeResult.textContent = '-';
+    }
 
     // Показываем/скрываем кнопку "Следующий уровень"
     if (stars > 0) {
