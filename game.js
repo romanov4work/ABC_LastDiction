@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 4.3.0 ===
+// === ВЕРСИЯ 4.3.1 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -905,13 +905,28 @@ function showResults(time, accuracy, recognizedText) {
         if (isNewRecord) {
             bestTimeResult.style.color = '#FFD93D';
             bestTimeResult.style.fontWeight = '800';
-            message = '🏆 Новый рекорд! ' + message;
         } else {
             bestTimeResult.style.color = '';
             bestTimeResult.style.fontWeight = '';
         }
     } else {
         bestTimeResult.textContent = '-';
+    }
+
+    // Добавляем сообщение "Новый рекорд!" под строкой с рекордом
+    let newRecordMessage = document.getElementById('newRecordMessage');
+    if (!newRecordMessage) {
+        newRecordMessage = document.createElement('div');
+        newRecordMessage.id = 'newRecordMessage';
+        newRecordMessage.style.cssText = 'font-size: 1.2em; font-weight: 800; color: #FFD93D; margin-top: 5px;';
+        document.querySelector('.best-time-row').parentNode.insertBefore(newRecordMessage, document.querySelector('.best-time-row').nextSibling);
+    }
+
+    if (isNewRecord) {
+        newRecordMessage.textContent = '🏆 Новый рекорд!';
+        newRecordMessage.style.display = 'block';
+    } else {
+        newRecordMessage.style.display = 'none';
     }
 
     // Показываем/скрываем кнопку "Следующий уровень"
