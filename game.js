@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.9.9 ===
+// === ВЕРСИЯ 3.10.0 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -983,6 +983,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (gameTitle) {
         gameTitle.addEventListener('click', activateEasterEgg);
     }
+
+    // Применяем сохраненные настройки пасхалки при загрузке страницы
+    loadEasterEggSettings();
 });
 
 // ========== ПАСХАЛКА ==========
@@ -990,10 +993,17 @@ document.addEventListener('DOMContentLoaded', () => {
 function activateEasterEgg() {
     console.log('🎉 Пасхалка активирована!');
 
+    // Загружаем сохраненные настройки из localStorage
+    const savedSunEnabled = localStorage.getItem('easterEgg_sunEnabled') !== 'false'; // по умолчанию true
+    const savedCloudsCount = parseInt(localStorage.getItem('easterEgg_cloudsCount')) || 8;
+    const savedWindSpeed = parseInt(localStorage.getItem('easterEgg_windSpeed')) || 3;
+
     // Создаем модальное окно динамически
     const modal = document.createElement('div');
     modal.id = 'easterEggModal';
     modal.className = 'easter-egg-modal active';
+
+    const windLabels = ['Очень медленный', 'Медленный', 'Средняя', 'Быстрый', 'Очень быстрый'];
 
     modal.innerHTML = `
         <div class="easter-egg-content">
@@ -1009,7 +1019,7 @@ function activateEasterEgg() {
                     <label>
                         ☀️ Солнышко
                         <label class="toggle-switch">
-                            <input type="checkbox" id="sunToggle" checked>
+                            <input type="checkbox" id="sunToggle" ${savedSunEnabled ? 'checked' : ''}>
                             <span class="toggle-slider"></span>
                         </label>
                     </label>
@@ -1017,16 +1027,16 @@ function activateEasterEgg() {
 
                 <div class="easter-egg-control">
                     <label>
-                        ☁️ Количество облаков: <span class="value-display" id="cloudsValue">8</span>
+                        ☁️ Количество облаков: <span class="value-display" id="cloudsValue">${savedCloudsCount}</span>
                     </label>
-                    <input type="range" id="cloudsSlider" min="4" max="16" value="8" step="1">
+                    <input type="range" id="cloudsSlider" min="4" max="16" value="${savedCloudsCount}" step="1">
                 </div>
 
                 <div class="easter-egg-control">
                     <label>
-                        💨 Скорость ветра: <span class="value-display" id="windValue">Средняя</span>
+                        💨 Скорость ветра: <span class="value-display" id="windValue">${windLabels[savedWindSpeed - 1]}</span>
                     </label>
-                    <input type="range" id="windSlider" min="1" max="5" value="3" step="1">
+                    <input type="range" id="windSlider" min="1" max="5" value="${savedWindSpeed}" step="1">
                 </div>
             </div>
 
@@ -1106,6 +1116,8 @@ function updateCloudsCount(count) {
             cloud.style.display = 'none';
         }
     });
+    // Сохраняем в localStorage
+    localStorage.setItem('easterEgg_cloudsCount', count);
 }
 
 function updateWindSpeed(speed) {
@@ -1116,6 +1128,8 @@ function updateWindSpeed(speed) {
         const newSpeed = baseSpeed * speedMultiplier / 3;
         cloud.style.animationDuration = `${newSpeed}s`;
     });
+    // Сохраняем в localStorage
+    localStorage.setItem('easterEgg_windSpeed', speed);
 }
 
 function updateSunVisibility(enabled) {
@@ -1124,9 +1138,25 @@ function updateSunVisibility(enabled) {
     } else {
         document.body.classList.remove('easter-egg-mode');
     }
+    // Сохраняем в localStorage
+    localStorage.setItem('easterEgg_sunEnabled', enabled);
 }
 
 function applyEasterEggSettings(sunEnabled, cloudsCount, windSpeed) {
     // Эта функция больше не используется, все применяется в реальном времени
     console.log('applyEasterEggSettings deprecated');
+}
+
+// Загрузка сохраненных настроек пасхалки при старте
+function loadEasterEggSettings() {
+    const savedSunEnabled = localStorage.getItem('easterEgg_sunEnabled') !== 'false'; // по умолчанию true
+    const savedCloudsCount = parseInt(localStorage.getItem('easterEgg_cloudsCount')) || 8;
+    const savedWindSpeed = parseInt(localStorage.getItem('easterEgg_windSpeed')) || 3;
+
+    // Применяем сохраненные настройки
+    updateSunVisibility(savedSunEnabled);
+    updateCloudsCount(savedCloudsCount);
+    updateWindSpeed(savedWindSpeed);
+
+    console.log(`🎨 Загружены настройки: Солнце=${savedSunEnabled}, Облака=${savedCloudsCount}, Ветер=${savedWindSpeed}`);
 }
