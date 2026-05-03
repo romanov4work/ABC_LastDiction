@@ -983,30 +983,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (gameTitle) {
         gameTitle.addEventListener('click', activateEasterEgg);
     }
-
-    // Обработчики для пасхалки
-    const easterEggApplyBtn = document.getElementById('easterEggApplyBtn');
-    if (easterEggApplyBtn) {
-        easterEggApplyBtn.addEventListener('click', applyEasterEggSettings);
-    }
-
-    // Обновление значений слайдеров
-    const cloudsSlider = document.getElementById('cloudsSlider');
-    const cloudsValue = document.getElementById('cloudsValue');
-    if (cloudsSlider && cloudsValue) {
-        cloudsSlider.addEventListener('input', (e) => {
-            cloudsValue.textContent = e.target.value;
-        });
-    }
-
-    const windSlider = document.getElementById('windSlider');
-    const windValue = document.getElementById('windValue');
-    if (windSlider && windValue) {
-        const windLabels = ['Очень медленный', 'Медленный', 'Средний', 'Быстрый', 'Очень быстрый'];
-        windSlider.addEventListener('input', (e) => {
-            windValue.textContent = windLabels[e.target.value - 1];
-        });
-    }
 });
 
 // ========== ПАСХАЛКА ==========
@@ -1014,25 +990,77 @@ document.addEventListener('DOMContentLoaded', () => {
 function activateEasterEgg() {
     console.log('🎉 Пасхалка активирована!');
 
-    // Показываем модальное окно настроек
-    const modal = document.getElementById('easterEggModal');
-    if (modal) {
-        modal.classList.add('active');
-    }
+    // Создаем модальное окно динамически
+    const modal = document.createElement('div');
+    modal.id = 'easterEggModal';
+    modal.className = 'easter-egg-modal active';
+
+    modal.innerHTML = `
+        <div class="easter-egg-content">
+            <h2>🎉 Ты нашел секрет! 🎉</h2>
+            <p>Настрой свою погоду!</p>
+
+            <div class="easter-egg-controls">
+                <div class="easter-egg-control">
+                    <label>
+                        ☀️ Солнышко
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="sunToggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </label>
+                </div>
+
+                <div class="easter-egg-control">
+                    <label>
+                        ☁️ Количество облаков: <span class="value-display" id="cloudsValue">8</span>
+                    </label>
+                    <input type="range" id="cloudsSlider" min="4" max="16" value="8" step="1">
+                </div>
+
+                <div class="easter-egg-control">
+                    <label>
+                        💨 Скорость ветра: <span class="value-display" id="windValue">Средняя</span>
+                    </label>
+                    <input type="range" id="windSlider" min="1" max="5" value="3" step="1">
+                </div>
+            </div>
+
+            <button id="easterEggApplyBtn" class="easter-egg-apply-btn">🎮 Применить</button>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Добавляем обработчики для слайдеров
+    const cloudsSlider = document.getElementById('cloudsSlider');
+    const cloudsValue = document.getElementById('cloudsValue');
+    cloudsSlider.addEventListener('input', (e) => {
+        cloudsValue.textContent = e.target.value;
+    });
+
+    const windSlider = document.getElementById('windSlider');
+    const windValue = document.getElementById('windValue');
+    const windLabels = ['Очень медленный', 'Медленный', 'Средняя', 'Быстрый', 'Очень быстрый'];
+    windSlider.addEventListener('input', (e) => {
+        windValue.textContent = windLabels[e.target.value - 1];
+    });
+
+    // Обработчик кнопки "Применить"
+    const applyBtn = document.getElementById('easterEggApplyBtn');
+    applyBtn.addEventListener('click', () => {
+        applyEasterEggSettings();
+        // Удаляем модальное окно
+        modal.remove();
+    });
 }
 
 function applyEasterEggSettings() {
-    const modal = document.getElementById('easterEggModal');
     const sunEnabled = document.getElementById('sunToggle').checked;
     const cloudsCount = parseInt(document.getElementById('cloudsSlider').value);
     const windSpeed = parseInt(document.getElementById('windSlider').value);
 
     console.log(`☀️ Солнце: ${sunEnabled}, ☁️ Облака: ${cloudsCount}, 💨 Ветер: ${windSpeed}`);
-
-    // Закрываем модальное окно
-    if (modal) {
-        modal.classList.remove('active');
-    }
 
     // Применяем настройки
     if (sunEnabled) {
