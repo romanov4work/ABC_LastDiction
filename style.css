@@ -81,7 +81,7 @@ body.easter-egg-mode .cloud {
 /* Солнышко (скрыто по умолчанию) */
 .sun {
     position: fixed;
-    top: 50px;
+    top: 70px;
     left: 10px;
     font-size: 51px;
     z-index: 0;
