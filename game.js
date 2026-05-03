@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 4.3.4 ===
+// === ВЕРСИЯ 4.3.5 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -902,13 +902,7 @@ function showResults(time, accuracy, recognizedText) {
     // Отображаем лучшее время
     if (bestTime) {
         bestTimeResult.textContent = `${bestTime} сек`;
-        if (isNewRecord) {
-            bestTimeResult.style.color = '#FFD93D';
-            bestTimeResult.style.fontWeight = '800';
-        } else {
-            bestTimeResult.style.color = '';
-            bestTimeResult.style.fontWeight = '';
-        }
+        // Убираем изменение цвета - всегда обычный цвет
     } else {
         bestTimeResult.textContent = '-';
     }
