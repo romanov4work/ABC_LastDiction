@@ -916,9 +916,17 @@ p.small {
 
 .level-actions {
     display: flex;
-    gap: 15px;
+    gap: 10px;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+.level-actions button {
+    flex: 1;
+    min-width: 0;
+    font-size: 2em;
+    padding: 15px;
 }
 
 /* Адаптив для мобильных */
