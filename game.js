@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.9.0 ===
+// === ВЕРСИЯ 3.9.1 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -1056,15 +1056,6 @@ function applyEasterEggSettings() {
         const newSpeed = baseSpeed * speedMultiplier / 3;
         cloud.style.animationDuration = `${newSpeed}s`;
     });
-
-    // Показываем секретное сообщение
-    const message = document.getElementById('easterEggMessage');
-    if (message) {
-        message.classList.add('show');
-        setTimeout(() => {
-            message.classList.remove('show');
-        }, 3000);
-    }
 
     // Запускаем конфетти
     if (typeof confetti !== 'undefined') {
