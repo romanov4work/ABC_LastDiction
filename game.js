@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.10.0 ===
+// === ВЕРСИЯ 3.10.1 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -1142,11 +1142,6 @@ function updateSunVisibility(enabled) {
     localStorage.setItem('easterEgg_sunEnabled', enabled);
 }
 
-function applyEasterEggSettings(sunEnabled, cloudsCount, windSpeed) {
-    // Эта функция больше не используется, все применяется в реальном времени
-    console.log('applyEasterEggSettings deprecated');
-}
-
 // Загрузка сохраненных настроек пасхалки при старте
 function loadEasterEggSettings() {
     const savedSunEnabled = localStorage.getItem('easterEgg_sunEnabled') !== 'false'; // по умолчанию true
@@ -1159,4 +1154,9 @@ function loadEasterEggSettings() {
     updateWindSpeed(savedWindSpeed);
 
     console.log(`🎨 Загружены настройки: Солнце=${savedSunEnabled}, Облака=${savedCloudsCount}, Ветер=${savedWindSpeed}`);
+}
+
+function applyEasterEggSettings(sunEnabled, cloudsCount, windSpeed) {
+    // Эта функция больше не используется, все применяется в реальном времени
+    console.log('applyEasterEggSettings deprecated');
 }
