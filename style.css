@@ -889,8 +889,15 @@ p.small {
     align-items: center;
     gap: 10px;
     margin-bottom: 25px;
-    font-size: 1.3em;
+    font-size: 1.1em;
     font-weight: 700;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .best-time-row {
+        font-size: 0.9em;
+    }
 }
 
 .stat-item {
