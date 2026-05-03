@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 5.1.2 ===
+// === ВЕРСИЯ 5.1.3 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -491,8 +491,8 @@ function startLevel(levelNum) {
     const tonguetwisterBox = document.querySelector('.tongue-twister-box');
     const resultSection = document.getElementById('resultSection');
 
-    // Для уровня 8 - пустой экран (Озвучь мультик)
-    if (levelNum === 8) {
+    // Для уровня 12 - пустой экран (Озвучь мультик)
+    if (levelNum === 12) {
         if (tonguetwisterBox) tonguetwisterBox.style.display = 'none';
         if (resultSection) resultSection.style.display = 'none';
         window.currentLevel = levelNum;
