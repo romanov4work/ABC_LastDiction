@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 3.9.2 ===
+// === ВЕРСИЯ 3.9.3 ===
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -997,6 +997,7 @@ function activateEasterEgg() {
 
     modal.innerHTML = `
         <div class="easter-egg-content">
+            <button class="easter-egg-close" id="easterEggCloseBtn">✕</button>
             <h2>🎉 Ты нашел секрет! 🎉</h2>
             <p>Настрой свою погоду!</p>
 
@@ -1051,6 +1052,12 @@ function activateEasterEgg() {
     applyBtn.addEventListener('click', () => {
         applyEasterEggSettings();
         // Удаляем модальное окно
+        modal.remove();
+    });
+
+    // Обработчик кнопки закрытия
+    const closeBtn = document.getElementById('easterEggCloseBtn');
+    closeBtn.addEventListener('click', () => {
         modal.remove();
     });
 }
