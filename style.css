@@ -1574,7 +1574,7 @@ p.small {
 
     /* Увеличиваем облака и солнце */
     .cloud {
-        font-size: 3.5em;
+        font-size: 5.4em; /* 3em * 1.8 = 5.4em */
     }
 
     .sun {
