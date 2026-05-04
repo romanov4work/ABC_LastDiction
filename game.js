@@ -952,7 +952,7 @@ function showResults(time, accuracy, recognizedText) {
     }
     messageElement.textContent = message;
 
-    // Добавляем звезды
+    // Добавляем звезды (изначально все серые)
     let starsElement = document.getElementById('resultStars');
     if (!starsElement) {
         starsElement = document.createElement('div');
@@ -960,19 +960,35 @@ function showResults(time, accuracy, recognizedText) {
         starsElement.style.cssText = 'font-size: 3em; margin-bottom: 15px;';
         resultSection.insertBefore(starsElement, messageElement);
     }
-    // Используем HTML символы вместо эмодзи
-    starsElement.innerHTML = '<span class="filled-stars">' + '★'.repeat(stars) + '</span>' +
-                             '<span class="empty-stars">' + '☆'.repeat(3 - stars) + '</span>';
 
-    // Стили для звезд
-    const filledStars = starsElement.querySelector('.filled-stars');
-    const emptyStars = starsElement.querySelector('.empty-stars');
-
-    if (filledStars) {
-        filledStars.style.cssText = 'color: gold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);';
+    // Создаем 3 звезды как отдельные элементы для анимации
+    starsElement.innerHTML = '';
+    for (let i = 0; i < 3; i++) {
+        const star = document.createElement('span');
+        star.className = 'result-star';
+        star.textContent = '★';
+        star.style.cssText = 'display: inline-block; color: #666; -webkit-text-stroke: 1px #999; transition: all 0.3s ease; transform: scale(1);';
+        starsElement.appendChild(star);
     }
-    if (emptyStars) {
-        emptyStars.style.cssText = 'color: #666; -webkit-text-stroke: 1px #999;';
+
+    // Анимация появления звезд по очереди
+    const starElements = starsElement.querySelectorAll('.result-star');
+    for (let i = 0; i < stars; i++) {
+        setTimeout(() => {
+            const star = starElements[i];
+            // Анимация: увеличение + золотой цвет
+            star.style.color = 'gold';
+            star.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.8)';
+            star.style.transform = 'scale(1.3)';
+
+            // TODO: Добавить звук звезды
+            // playSound('star');
+
+            // Возвращаем размер обратно
+            setTimeout(() => {
+                star.style.transform = 'scale(1)';
+            }, 200);
+        }, i * 300); // Задержка 0.3 сек между звездами
     }
 
     // Добавляем отображение распознанного текста
@@ -989,13 +1005,32 @@ function showResults(time, accuracy, recognizedText) {
     tonguetwisterBox.style.display = 'none';
     resultSection.style.display = 'block';
 
-    // Запускаем конфетти только если прошел уровень
+    // Запускаем конфетти только если прошел уровень (с задержкой после анимации звезд)
     if (showConfetti) {
-        confetti({
-            particleCount: stars === 3 ? 150 : 100,
-            spread: 70,
-            origin: { y: 0.6 }
-        });
+        const confettiDelay = stars * 300 + 200; // Ждем пока все звезды появятся
+        setTimeout(() => {
+            let particleCount = 50; // По умолчанию для 1 звезды
+            let colors = ['#FFD700', '#FFA500', '#FF6347']; // Обычные цвета
+
+            if (stars === 3) {
+                particleCount = 150; // Много конфетти
+            } else if (stars === 2) {
+                particleCount = 100; // Среднее количество
+            }
+
+            // Если новый рекорд - золотое конфетти
+            if (isNewRecord) {
+                colors = ['#FFD700', '#FFC700', '#FFB700']; // Золотые оттенки
+                particleCount += 50; // Еще больше конфетти
+            }
+
+            confetti({
+                particleCount: particleCount,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: colors
+            });
+        }, confettiDelay);
     }
 
     console.log(`✅ Результаты: ${time} сек, ${accuracy}%, ${stars} звезд, распознано: "${recognizedText}"`);
