@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 6.0.1 ===
+// === ВЕРСИЯ 6.1.0 ===
 
 // Звуковые эффекты
 const sounds = {
@@ -35,6 +35,21 @@ const tongueTwisters = {
     9: "Благотворительность",
     10: "Достопримечательность",
     11: "" // Озвучь мультик (пустой уровень)
+};
+
+// Целевое время для каждого уровня (в секундах)
+const levelTimings = {
+    1: 2.0,   // Белый снег белый мел
+    2: 2.5,   // Мама мыла Милу мылом
+    3: 2.5,   // Три сороки три трещотки
+    4: 3.0,   // Четыре чёрненьких чумазеньких чертёнка
+    5: 3.5,   // На дворе трава на траве дрова
+    6: 4.0,   // Корабли лавировали...
+    7: 3.5,   // Расскажите про покупки...
+    8: 2.5,   // Высокопревосходительство
+    9: 2.0,   // Благотворительность
+    10: 2.5,  // Достопримечательность
+    11: 0     // Мультик
 };
 
 // Экраны
@@ -901,16 +916,20 @@ function showResults(time, accuracy, recognizedText) {
     timeResult.textContent = `${time} сек`;
     dictionResult.textContent = `${accuracy}%`;
 
+    // Получаем целевое время для текущего уровня
+    const currentLevel = window.currentLevel || 1;
+    const targetTime = levelTimings[currentLevel] || 3.0;
+
     // Определяем количество звезд
     let stars = 0;
     let message = '';
     let showConfetti = false;
 
-    if (accuracy >= 90 && time <= 3) {
+    if (accuracy >= 90 && time <= targetTime) {
         stars = 3;
         message = '🌟 Невероятно! Ты настоящий мастер!';
         showConfetti = true;
-    } else if (accuracy >= 80 || time <= 3) {
+    } else if (accuracy >= 80 || time <= targetTime) {
         stars = 2;
         message = '✅ Отлично! Так держать!';
         showConfetti = true;
@@ -925,7 +944,6 @@ function showResults(time, accuracy, recognizedText) {
     }
 
     // Сохраняем звезды и время для текущего уровня
-    const currentLevel = window.currentLevel || 1;
     const timeNum = parseFloat(time);
     saveLevelStars(currentLevel, stars, timeNum);
 
