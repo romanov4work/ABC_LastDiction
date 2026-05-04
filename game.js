@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 5.5.1 ===
+// === ВЕРСИЯ 6.0.0 ===
 
 // Звуковые эффекты
 const sounds = {
@@ -482,8 +482,7 @@ function handleIslandClick(levelNum, island) {
         return;
     }
 
-    // Открытый или пройденный уровень - играем звук и запускаем
-    playSound('click');
+    // Открытый или пройденный уровень - запускаем (без звука)
     console.log(`Запуск уровня ${levelNum}`);
     startLevel(levelNum);
 }
