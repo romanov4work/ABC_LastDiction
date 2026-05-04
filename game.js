@@ -1,4 +1,4 @@
-// === ВЕРСИЯ 6.2.0 ===
+// === ВЕРСИЯ 6.2.1 ===
 
 // Звуковые эффекты
 const sounds = {
@@ -163,6 +163,14 @@ window.addEventListener('beforeunload', () => {
 // Обработчики кнопок
 requestMicBtn.addEventListener('click', requestMicrophone);
 retryMicBtn.addEventListener('click', requestMicrophone);
+
+// Кнопка закрытия экрана отказа микрофона
+const closeMicDeniedBtn = document.getElementById('closeMicDeniedBtn');
+if (closeMicDeniedBtn) {
+    closeMicDeniedBtn.addEventListener('click', () => {
+        showScreen(gameScreen);
+    });
+}
 
 // Кнопка копирования ссылки (для Firefox)
 copyLinkBtn.addEventListener('click', () => {
