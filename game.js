@@ -1,8 +1,8 @@
-// === ВЕРСИЯ 5.5.0 ===
+// === ВЕРСИЯ 5.5.1 ===
 
 // Звуковые эффекты
 const sounds = {
-    click: new Audio('assets/audio/кликвменю.wav'),
+    click: new Audio('assets/audio/новый звук клика в меню.wav'),
     star: new Audio('assets/audio/звездочки.wav'),
     victory: new Audio('assets/audio/победаконфетти.wav')
 };
