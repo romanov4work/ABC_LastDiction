@@ -1,4 +1,26 @@
-// === ВЕРСИЯ 5.3.1 ===
+// === ВЕРСИЯ 5.5.0 ===
+
+// Звуковые эффекты
+const sounds = {
+    click: new Audio('assets/audio/кликвменю.wav'),
+    star: new Audio('assets/audio/звездочки.wav'),
+    victory: new Audio('assets/audio/победаконфетти.wav')
+};
+
+// Предзагрузка звуков
+Object.values(sounds).forEach(audio => {
+    audio.volume = 0.5; // Громкость 50%
+    audio.load();
+});
+
+// Функция для воспроизведения звука
+function playSound(soundName) {
+    if (sounds[soundName]) {
+        const audio = sounds[soundName].cloneNode();
+        audio.volume = 0.5;
+        audio.play().catch(e => console.log('Звук не воспроизведен:', e));
+    }
+}
 
 // Скороговорки для каждого уровня
 const tongueTwisters = {
@@ -455,12 +477,13 @@ function initLevelMap() {
 // Обработка клика по острову
 function handleIslandClick(levelNum, island) {
     if (island.classList.contains('locked')) {
-        // Закрытый уровень - показываем сообщение
+        // Закрытый уровень - показываем сообщение (без звука)
         console.log(`Уровень ${levelNum} закрыт. Пройди предыдущие уровни!`);
         return;
     }
 
-    // Открытый или пройденный уровень - запускаем
+    // Открытый или пройденный уровень - играем звук и запускаем
+    playSound('click');
     console.log(`Запуск уровня ${levelNum}`);
     startLevel(levelNum);
 }
@@ -981,8 +1004,8 @@ function showResults(time, accuracy, recognizedText) {
             star.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.8)';
             star.style.transform = 'scale(1.3)';
 
-            // TODO: Добавить звук звезды
-            // playSound('star');
+            // Звук звезды
+            playSound('star');
 
             // Возвращаем размер обратно
             setTimeout(() => {
@@ -1023,6 +1046,9 @@ function showResults(time, accuracy, recognizedText) {
                 colors = ['#FFD700', '#FFC700', '#FFB700']; // Золотые оттенки
                 particleCount += 50; // Еще больше конфетти
             }
+
+            // Звук победы
+            playSound('victory');
 
             confetti({
                 particleCount: particleCount,
