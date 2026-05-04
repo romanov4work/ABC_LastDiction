@@ -1544,10 +1544,10 @@ p.small {
         font-size: 1.1em;
     }
     
-    /* Увеличиваем заголовок */
+    /* Заголовок на десктопе */
     .game-title {
-        font-size: 3.5em;
-        margin-bottom: 40px;
+        font-size: 2.5em;
+        margin-bottom: 30px;
     }
     
     /* Увеличиваем кнопки управления */
