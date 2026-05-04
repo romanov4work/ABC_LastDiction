@@ -1035,7 +1035,7 @@ p.small {
 
     /* Карта уровней на мобильных */
     .level-map {
-        padding: 80px 10px 40px 10px;
+        padding: 60px 10px 40px 10px;
         gap: 30px;
     }
 
@@ -1526,52 +1526,57 @@ p.small {
 
 /* ========== DESKTOP АДАПТАЦИЯ (1024px+) ========== */
 @media (min-width: 1024px) {
+    /* Увеличиваем отступ сверху для level-map из-за большего заголовка */
+    .level-map {
+        padding-top: 100px;
+    }
+
     /* Увеличиваем острова */
     .level-island {
         width: 120px;
         height: 120px;
     }
-    
+
     .island-number {
         font-size: 3em;
     }
-    
+
     .island-lock {
         font-size: 2.5em;
     }
-    
+
     .island-stars {
         font-size: 1.1em;
     }
-    
+
     /* Заголовок на десктопе */
     .game-title {
         font-size: 2.5em;
         margin-bottom: 30px;
     }
-    
+
     /* Увеличиваем кнопки управления */
     .control-btn {
         width: 60px;
         height: 60px;
     }
-    
+
     .control-btn svg {
         width: 28px;
         height: 28px;
     }
-    
+
     /* Увеличиваем версию */
     .deploy-version {
         font-size: 1.2em;
         padding: 12px 20px;
     }
-    
+
     /* Увеличиваем облака и солнце */
     .cloud {
         font-size: 3.5em;
     }
-    
+
     .sun {
         font-size: 4em;
     }
