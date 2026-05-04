@@ -988,7 +988,7 @@ function showResults(time, accuracy, recognizedText) {
             setTimeout(() => {
                 star.style.transform = 'scale(1)';
             }, 200);
-        }, i * 300); // Задержка 0.3 сек между звездами
+        }, i * 1000); // Задержка 1 сек между звездами
     }
 
     // Добавляем отображение распознанного текста
@@ -1007,7 +1007,7 @@ function showResults(time, accuracy, recognizedText) {
 
     // Запускаем конфетти только если прошел уровень (с задержкой после анимации звезд)
     if (showConfetti) {
-        const confettiDelay = stars * 300 + 200; // Ждем пока все звезды появятся
+        const confettiDelay = stars * 1000 + 200; // Ждем пока все звезды появятся (1 сек на звезду)
         setTimeout(() => {
             let particleCount = 50; // По умолчанию для 1 звезды
             let colors = ['#FFD700', '#FFA500', '#FF6347']; // Обычные цвета
